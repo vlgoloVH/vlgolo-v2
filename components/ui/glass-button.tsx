@@ -188,16 +188,23 @@ function compile(gl: WebGLRenderingContext, type: number, src: string) {
 interface Props {
   href: string;
   label: string;
-  /** Which video the lens refracts. Defaults to the first one on the page. */
-  videoSelector?: string;
+  /** Which video the lens refracts. Defaults to the first one on the page;
+   *  null means there is nothing to refract, and the lens runs flat — the
+   *  sheen, the glare and the hover colour still play. */
+  videoSelector?: string | null;
   /** Set for a file the visitor should get rather than a page to open. */
   download?: boolean;
   className?: string;
 }
 
+/** The flat colour the lens sits on when there is no video to refract: the
+ *  section surface, so the pill still reads as glass. */
+const FLAT = [20, 20, 21, 255];
+
 /** The pill renders the video behind it again, bent through a rounded-rect
- *  lens, so the refraction shows what is genuinely there. If WebGL or the video
- *  is unavailable it silently keeps the CSS glass underneath. */
+ *  lens, so the refraction shows what is genuinely there. Without a video it
+ *  refracts a flat colour instead, and without WebGL it silently keeps the CSS
+ *  glass underneath. */
 export function GlassButton({
   href,
   label,
@@ -214,8 +221,9 @@ export function GlassButton({
     const canvas = canvasRef.current;
     if (!root || !canvas) return;
 
-    const video = document.querySelector<HTMLVideoElement>(videoSelector);
-    if (!video) return;
+    const video = videoSelector
+      ? document.querySelector<HTMLVideoElement>(videoSelector)
+      : null;
 
     const gl = canvas.getContext("webgl", {
       alpha: true,
@@ -253,6 +261,22 @@ export function GlassButton({
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+    if (!video) {
+      // One pixel of the section colour: the lens has something to sample, and
+      // nothing to upload every frame.
+      gl.texImage2D(
+        gl.TEXTURE_2D,
+        0,
+        gl.RGBA,
+        1,
+        1,
+        0,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        new Uint8Array(FLAT),
+      );
+    }
 
     const u = (name: string) => gl.getUniformLocation(program, name);
     const uniforms = {
@@ -307,6 +331,15 @@ export function GlassButton({
     const leave = () => {
       hoverTarget = 0;
     };
+    let onScreen = true;
+    const visibility = new IntersectionObserver(
+      ([entry]) => {
+        onScreen = entry.isIntersecting;
+      },
+      { threshold: 0 },
+    );
+    visibility.observe(root);
+
     root.addEventListener("pointerenter", enter);
     root.addEventListener("pointerleave", leave);
     root.addEventListener("focus", enter);
@@ -320,18 +353,25 @@ export function GlassButton({
       last = now;
       hover += (hoverTarget - hover) * Math.min(dt / GLASS.hoverEase, 1);
 
-      if (video.readyState < 2) return;
+      // Off screen there is nothing to show, and the frame upload is the kind of
+      // work that turns up as scroll jank.
+      if (!onScreen) return;
+      if (video && video.readyState < 2) return;
 
       const pill = root.getBoundingClientRect();
-      const box = video.getBoundingClientRect();
-      if (!pill.width || !box.width) return;
+      if (!pill.width) return;
 
       // The video is object-contain, so work out the letterboxed draw area.
-      const scale = Math.min(box.width / video.videoWidth, box.height / video.videoHeight);
-      const drawW = video.videoWidth * scale;
-      const drawH = video.videoHeight * scale;
-      const drawX = box.x + (box.width - drawW) / 2;
-      const drawY = box.y + (box.height - drawH) / 2;
+      const box = video?.getBoundingClientRect();
+      const scale =
+        video && box
+          ? Math.min(box.width / video.videoWidth, box.height / video.videoHeight)
+          : 1;
+      const drawW = video ? video.videoWidth * scale : pill.width;
+      const drawH = video ? video.videoHeight * scale : pill.height;
+      const drawX = video && box ? box.x + (box.width - drawW) / 2 : pill.x;
+      const drawY = video && box ? box.y + (box.height - drawH) / 2 : pill.y;
+      if (!drawW || !drawH) return;
 
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const key = `${pill.width}x${pill.height}x${dpr}`;
@@ -347,16 +387,21 @@ export function GlassButton({
       gl.uniform2f(uniforms.uUv0, (pill.x - drawX) / drawW, (pill.y - drawY) / drawH);
       gl.uniform2f(uniforms.uUvSize, pill.width / drawW, pill.height / drawH);
       gl.uniform2f(uniforms.uPxToUv, 1 / drawW, 1 / drawH);
-      gl.uniform1f(uniforms.uDim, parseFloat(getComputedStyle(video).opacity) || 1);
+      gl.uniform1f(
+        uniforms.uDim,
+        video ? parseFloat(getComputedStyle(video).opacity) || 1 : 1,
+      );
       gl.uniform1f(uniforms.uTime, (now - t0) / 1000);
       gl.uniform1f(uniforms.uHover, hover);
 
       gl.bindTexture(gl.TEXTURE_2D, texture);
-      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 0);
-      try {
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video);
-      } catch {
-        return;
+      if (video) {
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 0);
+        try {
+          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video);
+        } catch {
+          return;
+        }
       }
 
       gl.clearColor(0, 0, 0, 0);
@@ -383,6 +428,7 @@ export function GlassButton({
     return () => {
       cancelAnimationFrame(raf);
       document.removeEventListener("visibilitychange", onVisibility);
+      visibility.disconnect();
       root.removeEventListener("pointerenter", enter);
       root.removeEventListener("pointerleave", leave);
       root.removeEventListener("focus", enter);

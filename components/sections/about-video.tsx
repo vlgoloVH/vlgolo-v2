@@ -56,10 +56,15 @@ export function AboutVideo() {
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    // Off screen, the clip stops and so does the draw loop: uploading frames to
+    // the GPU for a section nobody is looking at is exactly the sort of work
+    // that shows up as scroll jank.
+    let onScreen = false;
     const visibility = new IntersectionObserver(
       ([entry]) => {
+        onScreen = entry.isIntersecting;
         if (reduced) return;
-        if (entry.isIntersecting) {
+        if (onScreen) {
           void video.play().catch(() => {});
         } else {
           video.pause();
@@ -116,7 +121,7 @@ export function AboutVideo() {
 
     const draw = () => {
       raf = requestAnimationFrame(draw);
-      if (video.readyState < 2) return;
+      if (!onScreen || video.readyState < 2) return;
 
       const box = canvas.getBoundingClientRect();
       if (!box.width) return;

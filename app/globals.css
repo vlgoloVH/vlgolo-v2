@@ -52,7 +52,6 @@
 @layer base {
   html {
     color-scheme: dark;
-    scroll-behavior: smooth;
     overflow-x: clip;
   }
 
@@ -128,14 +127,20 @@
 }
 
 /* ──────────────────────────────────────────────
-   Slides. The hero is `sticky`, so it stays put while the next section, which
-   has an opaque background of its own, rides up over it. The two classes below
-   run off --scroll-y and --hero-progress, published by ScrollState.
+   Slides. Each section is its own screen; the one after the hero is opaque and
+   sits above it, and the hero's content lags behind the scroll, so that section
+   reads as sliding over the top. The classes below run off --scroll-y and
+   --hero-progress, published by ScrollState.
    ────────────────────────────────────────────── */
 .hero-parallax {
-  /* A quarter of the scroll distance: the hero content still moves, but the
-     incoming section visibly overtakes it. */
-  transform: translate3d(0, calc(var(--scroll-y, 0px) * -0.24), 0);
+  /* Held back by a third of the scroll distance: the hero leaves slower than
+     the page, which is what makes the next section look like it covers it. */
+  transform: translate3d(0, calc(var(--scroll-y, 0px) * 0.34), 0);
+  will-change: transform;
+}
+
+.hero-drift {
+  transform: translate3d(0, calc(var(--scroll-y, 0px) * 0.14), 0);
   will-change: transform;
 }
 
@@ -143,14 +148,12 @@
   opacity: calc(1 - var(--hero-progress, 0) * 2.2);
 }
 
-/* Every section is exactly one screen tall and snaps into place, so the page
-   behaves like a deck of slides rather than something to be nudged into
-   position by hand. Below md a section can be taller than the screen, so the
-   snap is only mandatory on desktop. */
+/* Every section is one screen tall and snaps into place. Nothing is pinned any
+   more, so each section's snap position is fixed and mandatory snapping behaves
+   in both directions. */
 .section-slide {
   min-height: 100dvh;
   scroll-snap-align: start;
-  scroll-snap-stop: always;
 }
 
 @media (min-width: 768px) {
@@ -387,10 +390,6 @@ html:not([data-ready]) .enter-line {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
   .enter-video,
   .enter-line,
   .enter-eyebrow,
@@ -438,7 +437,8 @@ html:not([data-ready]) .enter-line {
   }
 
   /* No parallax, and nothing fading out from under the visitor. */
-  .hero-parallax {
+  .hero-parallax,
+  .hero-drift {
     transform: none;
   }
 

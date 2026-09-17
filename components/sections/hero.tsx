@@ -4,8 +4,10 @@ import { GlassButton } from "@/components/ui/glass-button";
 
 export function Hero() {
   return (
-    <section className="section-slide sticky top-0 flex items-center justify-center overflow-hidden bg-bg">
-      <HeroVideo />
+    <section className="section-slide relative flex items-center justify-center overflow-hidden bg-bg">
+      <div className="hero-drift absolute inset-0">
+        <HeroVideo />
+      </div>
 
       {/* No vignette layer here: the footage carries its own falloff to black,
           which is also why letterboxing the full frame is invisible. */}
@@ -16,8 +18,10 @@ export function Hero() {
         <span className="enter-line absolute inset-y-0 right-[var(--frame-line)] w-px bg-white/12" />
       </div>
 
-      {/* The content drifts up at a fraction of the scroll speed, so the next
-          section clearly overtakes it as it slides over. */}
+      {/* The content hangs back as the page scrolls, so the next section, which
+          is opaque and sits above, visibly overtakes and covers it. The hero
+          itself scrolls normally: pinning it is what made the scroll fight
+          back, especially on the way up. */}
       <div className="hero-parallax relative z-10 flex w-full flex-col items-center px-6 text-center md:px-[var(--frame-pad)]">
         <p className="enter-eyebrow text-eyebrow font-medium uppercase text-ink/85">
           {HERO.eyebrow}

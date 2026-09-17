@@ -50,7 +50,7 @@ export function About() {
           <GlassButton
             href={ABOUT.cta.href}
             label={ABOUT.cta.label}
-            videoSelector="video[data-portrait]"
+            videoSelector={null}
             className="reveal [--reveal-i:3] mt-14"
           />
         </div>
