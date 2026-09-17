@@ -20,6 +20,12 @@ const GLASS = {
   /** Seconds between glare sweeps, and how long one sweep takes. */
   sweepEvery: 2.2,
   sweepTime: 1.1,
+  /** Hover: strength of the soap-film colour, 0 → none, 1 → full rainbow. */
+  iridescence: 0.28,
+  /** How much of the glare survives on hover, so it does not fight the colour. */
+  hoverGlare: 0.45,
+  /** Seconds for the hover state to ease in or out. */
+  hoverEase: 0.45,
 } as const;
 
 const VERT = `
@@ -54,6 +60,15 @@ uniform vec2 uLight;
 uniform float uTime;
 uniform float uSweepEvery;
 uniform float uSweepTime;
+uniform float uHover;      // 0 → resting glass, 1 → soap film
+uniform float uIrid;
+uniform float uHoverGlare;
+
+/* Thin-film interference, faked with a cosine palette: one number in, a full
+   spectrum out. The phases are what set the order of the bands. */
+vec3 filmColour(float t) {
+  return 0.5 + 0.5 * cos(6.28318 * (t + vec3(0.0, 0.33, 0.67)));
+}
 
 float sdRoundRect(vec2 p, vec2 half_, float r) {
   vec2 q = abs(p) - half_ + r;
@@ -81,14 +96,18 @@ void main() {
 
   // 1 hard against the rim, falling to 0 by uDepth inside.
   float edge = 1.0 - clamp(-d / uDepth, 0.0, 1.0);
-  float bend = pow(edge, 1.7) * uRefract;
+
+  // On hover the lens bends harder and splits the channels further, so the
+  // colour looks like it grows out of the refraction rather than sitting on top.
+  float bend = pow(edge, 1.7) * uRefract * (1.0 + 0.35 * uHover);
+  float disperse = uDisperse * (1.0 + 0.6 * uHover);
 
   // Splay pulls the whole sample outward from the centre.
   vec2 uv = (vUv - 0.5) * (1.0 - uSplay) + 0.5;
 
   vec2 pushG = n * bend;
-  vec2 pushR = n * bend * (1.0 + uDisperse);
-  vec2 pushB = n * bend * (1.0 - uDisperse);
+  vec2 pushR = n * bend * (1.0 + disperse);
+  vec2 pushB = n * bend * (1.0 - disperse);
 
   vec3 col;
   col.r = sampleAt(uv, pushR).r;
@@ -106,6 +125,24 @@ void main() {
   }
 
   col *= uDim;
+
+  // Soap film. The band position comes from the angle of the surface plus how
+  // close we are to the rim, with two slow waves stirring it so the patches
+  // crawl the way they do on a real bubble. Strongest at the edge, faint in the
+  // middle, which is where a film actually shows its colour.
+  if (uHover > 0.001) {
+    float swirl =
+      sin(vUv.x * 2.1 + uTime * 0.31) * 0.2 +
+      sin((vUv.y * 3.0 - vUv.x * 1.4) + uTime * 0.24) * 0.16;
+    // The normal feeds in as components, not as an angle: atan wraps at ±pi and
+    // that wrap shows up as a hard seam down one side of the pill.
+    float thickness = n.x * 0.1 + n.y * 0.05 + edge * 0.38 + swirl;
+    // Pulled towards white, so the film is pastel rather than a full rainbow.
+    vec3 film = mix(filmColour(thickness), vec3(1.0), 0.22);
+    float amount = uHover * uIrid * (0.72 + 0.28 * edge);
+    // Screen, not replace: the video keeps showing through the colour.
+    col = col + film * amount * (0.55 + 0.45 * (1.0 - col));
+  }
 
   // Sheen raking in from the light direction, strongest on the rim. It breathes
   // very slightly so the glass never looks like a still image.
@@ -125,7 +162,8 @@ void main() {
   float diag = vUv.x * 0.84 + vUv.y * 0.16;
   float glare = exp(-pow((diag - pos) * 6.5, 2.0));
   float fade = sin(phase * 3.14159);          // eases in and out of the sweep
-  col += glare * fade * 0.24 * (0.75 + 0.25 * edge);
+  float glareLevel = mix(1.0, uHoverGlare, uHover);
+  col += glare * fade * 0.24 * glareLevel * (0.75 + 0.25 * edge);
 
   // The 10% white fill from the Figma style.
   col += vec3(0.10) * 0.85;
@@ -223,6 +261,9 @@ export function CvButton({ href, label, className = "" }: Props) {
       uTime: u("uTime"),
       uSweepEvery: u("uSweepEvery"),
       uSweepTime: u("uSweepTime"),
+      uHover: u("uHover"),
+      uIrid: u("uIrid"),
+      uHoverGlare: u("uHoverGlare"),
     };
 
     const rad = (GLASS.lightAngle * Math.PI) / 180;
@@ -234,6 +275,8 @@ export function CvButton({ href, label, className = "" }: Props) {
     gl.uniform1f(uniforms.uSplay, GLASS.splay);
     gl.uniform1f(uniforms.uSweepEvery, GLASS.sweepEvery);
     gl.uniform1f(uniforms.uSweepTime, GLASS.sweepTime);
+    gl.uniform1f(uniforms.uIrid, GLASS.iridescence);
+    gl.uniform1f(uniforms.uHoverGlare, GLASS.hoverGlare);
 
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
@@ -243,8 +286,29 @@ export function CvButton({ href, label, className = "" }: Props) {
     let started = false;
     const t0 = performance.now();
 
+    // Pointer and keyboard both count as hover; the value eases towards the
+    // target so the colour arrives instead of snapping on.
+    let hover = 0;
+    let hoverTarget = 0;
+    let last = performance.now();
+    const enter = () => {
+      hoverTarget = 1;
+    };
+    const leave = () => {
+      hoverTarget = 0;
+    };
+    root.addEventListener("pointerenter", enter);
+    root.addEventListener("pointerleave", leave);
+    root.addEventListener("focus", enter);
+    root.addEventListener("blur", leave);
+
     const draw = () => {
       raf = requestAnimationFrame(draw);
+
+      const now = performance.now();
+      const dt = Math.min((now - last) / 1000, 0.1);
+      last = now;
+      hover += (hoverTarget - hover) * Math.min(dt / GLASS.hoverEase, 1);
 
       if (video.readyState < 2) return;
 
@@ -274,7 +338,8 @@ export function CvButton({ href, label, className = "" }: Props) {
       gl.uniform2f(uniforms.uUvSize, pill.width / drawW, pill.height / drawH);
       gl.uniform2f(uniforms.uPxToUv, 1 / drawW, 1 / drawH);
       gl.uniform1f(uniforms.uDim, parseFloat(getComputedStyle(video).opacity) || 1);
-      gl.uniform1f(uniforms.uTime, (performance.now() - t0) / 1000);
+      gl.uniform1f(uniforms.uTime, (now - t0) / 1000);
+      gl.uniform1f(uniforms.uHover, hover);
 
       gl.bindTexture(gl.TEXTURE_2D, texture);
       gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 0);
@@ -308,6 +373,10 @@ export function CvButton({ href, label, className = "" }: Props) {
     return () => {
       cancelAnimationFrame(raf);
       document.removeEventListener("visibilitychange", onVisibility);
+      root.removeEventListener("pointerenter", enter);
+      root.removeEventListener("pointerleave", leave);
+      root.removeEventListener("focus", enter);
+      root.removeEventListener("blur", leave);
       gl.deleteTexture(texture);
       gl.deleteBuffer(buffer);
       gl.deleteProgram(program);
