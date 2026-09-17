@@ -141,34 +141,49 @@
   }
 }
 
+/* Nothing runs until the preloader flips data-ready on <html>: otherwise the
+   sequence plays out against a black screen while the video is still loading
+   and the content all lands at once when it arrives. */
+html:not([data-ready]) .enter-video,
+html:not([data-ready]) .enter-eyebrow,
+html:not([data-ready]) .enter-headline,
+html:not([data-ready]) .enter-cta,
+html:not([data-ready]) .enter-chrome {
+  opacity: 0;
+}
+
+html:not([data-ready]) .enter-line {
+  transform: scaleY(0);
+}
+
 /* Linear overall, with the easing declared per keyframe, so the hold really
    does end at 4s instead of being pulled earlier by a global curve. */
-.enter-video {
+[data-ready] .enter-video {
   animation: video-in-dim 5.8s linear both;
 }
 
-.enter-line {
+[data-ready] .enter-line {
   transform-origin: top;
   animation: drop-line 2.2s var(--ease-soft) both;
   animation-delay: var(--enter-start);
 }
 
-.enter-eyebrow {
+[data-ready] .enter-eyebrow {
   animation: rise-in 1.6s var(--ease-soft) both;
   animation-delay: calc(var(--enter-start) + var(--enter-step) * 1);
 }
 
-.enter-headline {
+[data-ready] .enter-headline {
   animation: focus-in 2.2s var(--ease-soft) both;
   animation-delay: calc(var(--enter-start) + var(--enter-step) * 1.8);
 }
 
-.enter-cta {
+[data-ready] .enter-cta {
   animation: rise-in 1.6s var(--ease-soft) both;
   animation-delay: calc(var(--enter-start) + var(--enter-step) * 3);
 }
 
-.enter-chrome {
+[data-ready] .enter-chrome {
   animation: fade-in 1.8s var(--ease-soft) both;
   animation-delay: calc(var(--enter-start) + var(--enter-step) * 4);
 }
@@ -183,7 +198,13 @@
   .enter-eyebrow,
   .enter-headline,
   .enter-cta,
-  .enter-chrome {
+  .enter-chrome,
+  html:not([data-ready]) .enter-video,
+  html:not([data-ready]) .enter-line,
+  html:not([data-ready]) .enter-eyebrow,
+  html:not([data-ready]) .enter-headline,
+  html:not([data-ready]) .enter-cta,
+  html:not([data-ready]) .enter-chrome {
     animation: none;
     opacity: 1;
     filter: none;

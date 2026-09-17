@@ -5,8 +5,12 @@ import { HERO } from "@/lib/site";
 
 /** Muted autoplay has to be set on the element itself: React only sets `muted`
  *  as a property, so server-rendered markup would be missing the attribute and
- *  the browser would block playback. The observer also stops decoding frames
- *  once the hero has scrolled away. */
+ *  the browser would block playback.
+ *
+ *  Playback waits for the preloader to flip `data-ready` on <html>, so the loop
+ *  starts from its first frame at the moment the video becomes visible rather
+ *  than running unseen behind the overlay. The observer then stops decoding
+ *  once the hero scrolls away. */
 export function HeroVideo() {
   const ref = useRef<HTMLVideoElement>(null);
 
@@ -19,8 +23,28 @@ export function HeroVideo() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (reduced.matches) return;
 
-    const observer = new IntersectionObserver(
+    const startFromTop = () => {
+      video.currentTime = 0;
+      void video.play().catch(() => {});
+    };
+
+    const root = document.documentElement;
+    let attributes: MutationObserver | undefined;
+
+    if (root.dataset.ready) {
+      startFromTop();
+    } else {
+      attributes = new MutationObserver(() => {
+        if (!root.dataset.ready) return;
+        attributes?.disconnect();
+        startFromTop();
+      });
+      attributes.observe(root, { attributes: true, attributeFilter: ["data-ready"] });
+    }
+
+    const visibility = new IntersectionObserver(
       ([entry]) => {
+        if (!root.dataset.ready) return;
         if (entry.isIntersecting) {
           void video.play().catch(() => {});
         } else {
@@ -30,8 +54,12 @@ export function HeroVideo() {
       { threshold: 0.05 },
     );
 
-    observer.observe(video);
-    return () => observer.disconnect();
+    visibility.observe(video);
+
+    return () => {
+      attributes?.disconnect();
+      visibility.disconnect();
+    };
   }, []);
 
   return (
@@ -41,11 +69,10 @@ export function HeroVideo() {
          shape — never cropped, never stretched — and centres it. */
       className="enter-video absolute inset-0 h-full w-full object-contain object-center"
       poster={HERO.video.poster}
-      preload="metadata"
+      preload="auto"
       playsInline
       loop
       muted
-      autoPlay
       aria-hidden="true"
       tabIndex={-1}
     >

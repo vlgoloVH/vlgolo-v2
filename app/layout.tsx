@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "@fontsource-variable/inter";
 import "./globals.css";
+import { Preloader } from "@/components/layout/preloader";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SocialRail } from "@/components/layout/social-rail";
 import { SITE } from "@/lib/site";
@@ -36,6 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans">
+        <Preloader />
         <SiteHeader />
         <SocialRail />
         <main>{children}</main>
