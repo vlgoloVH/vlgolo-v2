@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
+import "@fontsource-variable/inter";
 import "./globals.css";
 import { SiteHeader } from "@/components/layout/site-header";
+import { SocialRail } from "@/components/layout/social-rail";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -22,7 +22,9 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#05070a",
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#000000",
   colorScheme: "dark",
 };
 
@@ -32,9 +34,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+    <html lang="en">
       <body className="font-sans">
         <SiteHeader />
+        <SocialRail />
         <main>{children}</main>
       </body>
     </html>
