@@ -29,10 +29,13 @@ export function About() {
 
       {/* The copy starts further in than the rule, at the proportion of the
           layout: 18.3% of the width, which is 264px on a 1440 screen. */}
-      <div className="relative z-10 w-full px-6 pb-[58vh] pt-28 md:px-0 md:py-0 md:pl-[clamp(var(--frame-pad),18.3vw,400px)]">
+      <div className="relative z-10 w-full px-6 pb-[58vh] pt-28 md:px-0 md:py-0 md:pl-[clamp(var(--frame-pad),22vw,470px)]">
         <div className="max-w-[30rem]">
           <p className="flex items-center gap-3 text-eyebrow font-medium uppercase text-ink">
-            <span aria-hidden="true" className="tracking-normal">
+            <span
+              aria-hidden="true"
+              className="hand-wave inline-block origin-[70%_80%] tracking-normal [animation:hand-wave_4.5s_var(--ease-soft)_infinite]"
+            >
               👋
             </span>
             {ABOUT.eyebrow}

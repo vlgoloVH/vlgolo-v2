@@ -163,6 +163,25 @@
   }
 }
 
+/* The portrait clip already fades to the section colour inside the file. This
+   takes the very edge to fully transparent as well, so no residual difference
+   between video decoding and a CSS colour can ever draw a visible box. The
+   bottom stays solid: the portrait stands on the section floor. */
+.portrait-blend {
+  --portrait-sides: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 9%,
+    #000 91%,
+    transparent 100%
+  );
+  --portrait-top: linear-gradient(to bottom, transparent 0%, #000 13%, #000 100%);
+  mask-image: var(--portrait-sides), var(--portrait-top);
+  mask-composite: intersect;
+  -webkit-mask-image: var(--portrait-sides), var(--portrait-top);
+  -webkit-mask-composite: source-in;
+}
+
 /* ──────────────────────────────────────────────
    Entrance animations.
    Only transform / opacity / filter are animated, so no layout work.
@@ -230,6 +249,36 @@
   100% {
     transform: translateY(-3px);
     opacity: 0.25;
+  }
+}
+
+/* The waving hand. Pivots on the wrist, waves three times, then rests. */
+@keyframes hand-wave {
+  0%,
+  64%,
+  100% {
+    transform: rotate(0deg);
+  }
+  8% {
+    transform: rotate(16deg);
+  }
+  16% {
+    transform: rotate(-9deg);
+  }
+  24% {
+    transform: rotate(14deg);
+  }
+  32% {
+    transform: rotate(-7deg);
+  }
+  40% {
+    transform: rotate(12deg);
+  }
+  48% {
+    transform: rotate(-4deg);
+  }
+  56% {
+    transform: rotate(6deg);
   }
 }
 
@@ -346,6 +395,10 @@ html:not([data-ready]) .enter-line {
     animation: none;
     opacity: 0.6;
     transform: none;
+  }
+
+  .hand-wave {
+    animation: none;
   }
 
   /* No parallax, and nothing fading out from under the visitor. */

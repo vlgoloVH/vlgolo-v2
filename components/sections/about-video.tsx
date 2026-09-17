@@ -39,7 +39,7 @@ export function AboutVideo() {
     <video
       ref={ref}
       data-portrait=""
-      className="h-full w-full object-cover object-bottom"
+      className="portrait-blend h-full w-full object-cover object-bottom"
       poster={ABOUT.video.poster}
       preload="metadata"
       playsInline
