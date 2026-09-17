@@ -163,23 +163,12 @@
   }
 }
 
-/* The portrait clip already fades to the section colour inside the file. This
-   takes the very edge to fully transparent as well, so no residual difference
-   between video decoding and a CSS colour can ever draw a visible box. The
-   bottom stays solid: the portrait stands on the section floor. */
+/* The portrait clip is graded so that everything outside the figure is true
+   black, and the element is screened over the section. Black adds nothing under
+   `screen`, so the clip has no edge at all: there is no colour left to differ
+   from the background, whatever a given browser does with video colour. */
 .portrait-blend {
-  --portrait-sides: linear-gradient(
-    to right,
-    transparent 0%,
-    #000 9%,
-    #000 91%,
-    transparent 100%
-  );
-  --portrait-top: linear-gradient(to bottom, transparent 0%, #000 13%, #000 100%);
-  mask-image: var(--portrait-sides), var(--portrait-top);
-  mask-composite: intersect;
-  -webkit-mask-image: var(--portrait-sides), var(--portrait-top);
-  -webkit-mask-composite: source-in;
+  mix-blend-mode: screen;
 }
 
 /* ──────────────────────────────────────────────

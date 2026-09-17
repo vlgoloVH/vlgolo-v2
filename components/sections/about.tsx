@@ -30,7 +30,7 @@ export function About() {
       {/* The copy starts further in than the rule, at the proportion of the
           layout: 18.3% of the width, which is 264px on a 1440 screen. */}
       <div className="relative z-10 w-full px-6 pb-[58vh] pt-28 md:px-0 md:py-0 md:pl-[clamp(var(--frame-pad),22vw,470px)]">
-        <div className="max-w-[30rem]">
+        <div className="max-w-[34rem]">
           <p className="flex items-center gap-3 text-eyebrow font-medium uppercase text-ink">
             <span
               aria-hidden="true"
@@ -41,7 +41,7 @@ export function About() {
             {ABOUT.eyebrow}
           </p>
 
-          <p className="mt-10 text-[17px] leading-[1.95] text-muted md:text-[19px]">
+          <p className="mt-10 text-[19px] leading-[1.85] text-muted md:text-[22px]">
             {ABOUT.body}
           </p>
 
