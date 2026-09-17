@@ -18,8 +18,8 @@ const GLASS = {
   /** Splay 60 → outward stretch of the whole sample. */
   splay: 0.06,
   /** Seconds between glare sweeps, and how long one sweep takes. */
-  sweepEvery: 6,
-  sweepTime: 1.7,
+  sweepEvery: 2.2,
+  sweepTime: 1.1,
 } as const;
 
 const VERT = `
