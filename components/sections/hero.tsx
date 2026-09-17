@@ -1,5 +1,6 @@
 import { HERO } from "@/lib/site";
 import { HeroVideo } from "@/components/sections/hero-video";
+import { CvButton } from "@/components/ui/cv-button";
 
 export function Hero() {
   return (
@@ -33,14 +34,11 @@ export function Hero() {
           ))}
         </h1>
 
-        <a
+        <CvButton
           href={HERO.cta.href}
-          download
-          className="glass glass-live enter-cta mt-10 inline-flex items-center justify-center overflow-hidden rounded-full px-8 py-4 text-[11px] font-medium uppercase tracking-[0.22em] text-ink transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/15 md:mt-12 md:text-xs"
-        >
-          <span aria-hidden="true" className="glass-bloom" />
-          {HERO.cta.label}
-        </a>
+          label={HERO.cta.label}
+          className="enter-cta mt-10 md:mt-12"
+        />
       </div>
     </section>
   );
