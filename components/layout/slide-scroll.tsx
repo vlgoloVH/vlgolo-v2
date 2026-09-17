@@ -7,17 +7,15 @@ const DURATION = 780;
 const ease = (t: number) =>
   t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
-/** A mouse wheel notch is a single large jump, so the browser lands on the next
- *  snap point instantly and it feels like a cut. A trackpad sends a stream of
- *  small deltas with momentum and already feels right, so it is left alone.
- *  The two are told apart by the first event of the gesture: a notch opens with
- *  a big delta, a swipe opens with a few pixels. */
-const WHEEL_NOTCH = 40;
-/** A gap this long means the next event starts a new gesture. */
-const GESTURE_GAP = 140;
+/** How much wheel movement counts as "go to the next slide". */
+const THRESHOLD = 60;
+/** No events for this long means the gesture, and its momentum tail, is over. */
+const IDLE = 200;
 
-/** Takes over the mouse wheel on desktop: one notch moves exactly one section,
- *  eased, instead of snapping there in a single frame. */
+/** Every scroll gesture moves exactly one section, eased, whatever the input.
+ *  Native snapping lands in a single frame, which a trackpad hides under its
+ *  own momentum but a mouse wheel does not: it reads as a cut. Both go through
+ *  the same animation here, so they feel the same. */
 export function SlideScroll() {
   useEffect(() => {
     const desktop = window.matchMedia("(min-width: 768px)");
@@ -27,6 +25,11 @@ export function SlideScroll() {
     const root = document.documentElement;
     let raf = 0;
     let animating = false;
+    let accumulated = 0;
+    let lastEvent = 0;
+    /** Set once a gesture has spent its move, cleared when the input goes idle,
+     *  so a trackpad's momentum tail cannot run through three slides. */
+    let spent = false;
 
     const tops = () =>
       [...document.querySelectorAll<HTMLElement>(".section-slide")]
@@ -59,21 +62,21 @@ export function SlideScroll() {
       raf = requestAnimationFrame(step);
     };
 
-    let lastEvent = 0;
-    let gestureIsWheel = false;
-
     const onWheel = (event: WheelEvent) => {
       if (event.ctrlKey) return; // pinch zoom
+      event.preventDefault();
 
       const now = performance.now();
-      if (now - lastEvent > GESTURE_GAP) {
-        gestureIsWheel = Math.abs(event.deltaY) >= WHEEL_NOTCH;
+      if (now - lastEvent > IDLE) {
+        accumulated = 0;
+        spent = false;
       }
       lastEvent = now;
 
-      if (!gestureIsWheel) return; // trackpad: the browser does it better
-      event.preventDefault();
-      if (animating) return;
+      if (animating || spent) return;
+
+      accumulated += event.deltaY;
+      if (Math.abs(accumulated) < THRESHOLD) return;
 
       const positions = tops();
       const y = window.scrollY;
@@ -82,7 +85,9 @@ export function SlideScroll() {
           Math.abs(top - y) < Math.abs(positions[best] - y) ? i : best,
         0,
       );
-      const next = current + (event.deltaY > 0 ? 1 : -1);
+      const next = current + (accumulated > 0 ? 1 : -1);
+      accumulated = 0;
+      spent = true;
       if (next < 0 || next >= positions.length) return;
       glide(positions[next]);
     };
