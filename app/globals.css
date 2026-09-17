@@ -182,20 +182,6 @@
   -webkit-mask-composite: source-in;
 }
 
-/* Scroll lag. --lag-y is how far the page has run ahead of a smoothed copy of
-   its own scroll position, so during a scroll these elements hang back and then
-   glide into place when it stops. Two depths, so the copy and the portrait do
-   not move as one flat sheet. */
-.lag-soft {
-  transform: translate3d(0, calc(var(--lag-y, 0px) * 0.55), 0);
-  will-change: transform;
-}
-
-.lag-deep {
-  transform: translate3d(0, calc(var(--lag-y, 0px) * 0.22), 0);
-  will-change: transform;
-}
-
 /* ──────────────────────────────────────────────
    Entrance animations.
    Only transform / opacity / filter are animated, so no layout work.
@@ -329,6 +315,49 @@
   }
 }
 
+/* ──────────────────────────────────────────────
+   Section reveals. A section marked data-shown (see RevealSection) plays its
+   contents in one at a time: --reveal-i is the element's place in the queue.
+   ────────────────────────────────────────────── */
+.reveal,
+.reveal-soft {
+  opacity: 0;
+}
+
+.reveal-line {
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+[data-shown] .reveal {
+  animation: rise-in 1.5s var(--ease-soft) both;
+  animation-delay: calc(var(--reveal-i, 0) * 0.17s);
+}
+
+/* The portrait resolves out of a blur instead of sliding: at that size a slide
+   reads as heavy. */
+[data-shown] .reveal-soft {
+  animation: settle-in 2.2s var(--ease-soft) both;
+  animation-delay: 0.1s;
+}
+
+[data-shown] .reveal-line {
+  animation: drop-line 1.9s var(--ease-soft) both;
+}
+
+@keyframes settle-in {
+  from {
+    opacity: 0;
+    filter: blur(14px);
+    transform: scale(1.04);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+
 /* Nothing runs until the preloader flips data-ready on <html>: otherwise the
    sequence plays out against a black screen while the video is still loading
    and the content all lands at once when it arrives. */
@@ -415,8 +444,15 @@ html:not([data-ready]) .enter-line {
     animation: none;
   }
 
-  .lag-soft,
-  .lag-deep {
+  .reveal,
+  .reveal-soft,
+  .reveal-line,
+  [data-shown] .reveal,
+  [data-shown] .reveal-soft,
+  [data-shown] .reveal-line {
+    animation: none;
+    opacity: 1;
+    filter: none;
     transform: none;
   }
 
