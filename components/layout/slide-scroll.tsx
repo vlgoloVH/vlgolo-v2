@@ -9,8 +9,12 @@ const ease = (t: number) =>
 
 /** How much wheel movement counts as "go to the next slide". */
 const THRESHOLD = 60;
-/** No events for this long means the gesture, and its momentum tail, is over. */
-const IDLE = 200;
+/** A pause this long starts a fresh burst. A trackpad's momentum tail thins out
+ *  into sparse little deltas, so each one lands in its own burst and never adds
+ *  up to a move of its own. */
+const BURST_GAP = 120;
+/** Quiet time after a slide lands, on top of the animation itself. */
+const COOLDOWN = 200;
 
 /** Every scroll gesture moves exactly one section, eased, whatever the input.
  *  Native snapping lands in a single frame, which a trackpad hides under its
@@ -27,9 +31,11 @@ export function SlideScroll() {
     let animating = false;
     let accumulated = 0;
     let lastEvent = 0;
-    /** Set once a gesture has spent its move, cleared when the input goes idle,
-     *  so a trackpad's momentum tail cannot run through three slides. */
-    let spent = false;
+    /** Nothing is accepted until this moment: the animation plus a little quiet
+     *  after it. Deliberately a deadline rather than a flag — a flag that waits
+     *  to be cleared can get stuck behind a long momentum tail, and then the
+     *  next gesture does nothing at all. */
+    let blockUntil = 0;
 
     const tops = () =>
       [...document.querySelectorAll<HTMLElement>(".section-slide")]
@@ -67,13 +73,13 @@ export function SlideScroll() {
       event.preventDefault();
 
       const now = performance.now();
-      if (now - lastEvent > IDLE) {
-        accumulated = 0;
-        spent = false;
-      }
+      if (now - lastEvent > BURST_GAP) accumulated = 0;
       lastEvent = now;
 
-      if (animating || spent) return;
+      if (animating || now < blockUntil) {
+        accumulated = 0;
+        return;
+      }
 
       accumulated += event.deltaY;
       if (Math.abs(accumulated) < THRESHOLD) return;
@@ -87,8 +93,8 @@ export function SlideScroll() {
       );
       const next = current + (accumulated > 0 ? 1 : -1);
       accumulated = 0;
-      spent = true;
       if (next < 0 || next >= positions.length) return;
+      blockUntil = now + DURATION + COOLDOWN;
       glide(positions[next]);
     };
 
