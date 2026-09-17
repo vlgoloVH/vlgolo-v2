@@ -163,12 +163,37 @@
   }
 }
 
-/* The portrait clip is graded so that everything outside the figure is true
-   black, and the element is screened over the section. Black adds nothing under
-   `screen`, so the clip has no edge at all: there is no colour left to differ
-   from the background, whatever a given browser does with video colour. */
+/* The portrait clip is graded to the section colour inside the file. This takes
+   the very edge to fully transparent as well, so no residual difference between
+   video decoding and a CSS colour can draw a visible box. The bottom stays
+   solid: the portrait stands on the section floor. */
 .portrait-blend {
-  mix-blend-mode: screen;
+  --portrait-sides: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 9%,
+    #000 91%,
+    transparent 100%
+  );
+  --portrait-top: linear-gradient(to bottom, transparent 0%, #000 13%, #000 100%);
+  mask-image: var(--portrait-sides), var(--portrait-top);
+  mask-composite: intersect;
+  -webkit-mask-image: var(--portrait-sides), var(--portrait-top);
+  -webkit-mask-composite: source-in;
+}
+
+/* Scroll lag. --lag-y is how far the page has run ahead of a smoothed copy of
+   its own scroll position, so during a scroll these elements hang back and then
+   glide into place when it stops. Two depths, so the copy and the portrait do
+   not move as one flat sheet. */
+.lag-soft {
+  transform: translate3d(0, calc(var(--lag-y, 0px) * 0.55), 0);
+  will-change: transform;
+}
+
+.lag-deep {
+  transform: translate3d(0, calc(var(--lag-y, 0px) * 0.22), 0);
+  will-change: transform;
 }
 
 /* ──────────────────────────────────────────────
@@ -388,6 +413,11 @@ html:not([data-ready]) .enter-line {
 
   .hand-wave {
     animation: none;
+  }
+
+  .lag-soft,
+  .lag-deep {
+    transform: none;
   }
 
   /* No parallax, and nothing fading out from under the visitor. */

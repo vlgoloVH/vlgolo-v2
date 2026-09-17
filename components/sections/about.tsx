@@ -22,7 +22,7 @@ export function About() {
         aria-hidden="true"
         className="absolute left-0 top-1/2 hidden w-[var(--frame-line)] -translate-y-1/2 justify-center md:flex"
       >
-        <span className="text-[14px] uppercase tracking-[0.36em] text-ink/60 [text-orientation:upright] [writing-mode:vertical-rl]">
+        <span className="lag-deep text-[14px] uppercase tracking-[0.36em] text-ink/60 [text-orientation:upright] [writing-mode:vertical-rl]">
           {ABOUT.rail}
         </span>
       </div>
@@ -30,7 +30,7 @@ export function About() {
       {/* The copy starts further in than the rule, at the proportion of the
           layout: 18.3% of the width, which is 264px on a 1440 screen. */}
       <div className="relative z-10 w-full px-6 pb-[58vh] pt-28 md:px-0 md:py-0 md:pl-[clamp(var(--frame-pad),22vw,470px)]">
-        <div className="max-w-[34rem]">
+        <div className="lag-soft max-w-[34rem]">
           <p className="flex items-center gap-3 text-eyebrow font-medium uppercase text-ink">
             <span
               aria-hidden="true"
@@ -55,9 +55,12 @@ export function About() {
       </div>
 
       {/* Standing on the floor of the section, at the clip's own 9:16 ratio so
-          the baked-in fade meets the section edge to edge. */}
+          the graded fade meets the section edge to edge. The inner wrapper
+          carries the lag, so it never fights the centring transform. */}
       <div className="pointer-events-none absolute bottom-0 right-1/2 aspect-[9/16] h-[42vh] translate-x-1/2 md:right-[15%] md:h-[min(96vh,62vw)] md:translate-x-0">
-        <AboutVideo />
+        <div className="lag-deep h-full w-full">
+          <AboutVideo />
+        </div>
       </div>
     </section>
   );
