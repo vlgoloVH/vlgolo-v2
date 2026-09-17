@@ -11,10 +11,10 @@
 
   --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;
 
-  /* Hero typography is measured off the 1440px Figma frame and expressed in vw,
-     so the proportions hold at every desktop width. The clamps only stop it
-     from getting silly on very small or very wide screens.
-     At 1440: display 91px, eyebrow 15px, button label 16.5px. */
+  /* Headline and eyebrow are measured off the 1440px Figma frame and expressed
+     in vw, so those two hold their proportions at every desktop width. The
+     clamps only stop them getting silly on very small or very wide screens.
+     At 1440: display 91px, eyebrow 15px. Everything else keeps fixed sizes. */
   --text-display: clamp(2.4rem, 6.32vw, 8.5rem);
   --text-display--line-height: 1.19;
   --text-display--letter-spacing: -0.002em;
@@ -24,12 +24,7 @@
   --text-eyebrow--line-height: 1.2;
   --text-eyebrow--letter-spacing: 0.4em;
 
-  --text-cta: clamp(0.72rem, 1.15vw, 1.55rem);
-  --text-cta--line-height: 1.2;
-  --text-cta--letter-spacing: 0.22em;
-
-  /* Frame of the hero: the content column and the vertical rules share it. */
-  --container-content: min(81.1vw, 1700px);
+  --container-content: 1400px;
 
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   /* Gentle in and out — no snap at the start, no crawl at the end. */
