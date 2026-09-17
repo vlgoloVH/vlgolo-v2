@@ -37,7 +37,7 @@
      keyframes carry the same numbers as percentages — see `video-in-dim`. */
   --enter-start: 2s;
   --enter-step: 0.62s;
-  --video-dim: 0.6;
+  --video-dim: 0.48;
 }
 
 @layer base {
