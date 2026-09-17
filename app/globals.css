@@ -19,11 +19,17 @@
   --container-content: 1400px;
 
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  /* Gentle in and out — no snap at the start, no crawl at the end. */
+  --ease-soft: cubic-bezier(0.33, 0, 0.22, 1);
 
-  /* Entrance choreography. Every delay is derived from these two values,
-     so the whole sequence can be retimed from one place. */
-  --enter-start: 0.15s;
-  --enter-step: 0.42s;
+  /* Entrance choreography.
+     The video plays alone for --enter-start, then it dims to --video-dim while
+     the content arrives, one element every --enter-step.
+     Retime the whole sequence from these three values. The video's own
+     keyframes carry the same numbers as percentages — see `video-in-dim`. */
+  --enter-start: 4s;
+  --enter-step: 0.62s;
+  --video-dim: 0.6;
 }
 
 @layer base {
@@ -114,35 +120,57 @@
   }
 }
 
+/* The video fades up alone, holds at full strength until the content is due,
+   then settles back so the type reads against it.
+   Total run is 5.8s: 1.8s in, held to 4s, dimmed by 5.8s. */
+@keyframes video-in-dim {
+  0% {
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.33, 0, 0.22, 1);
+  }
+  31% {
+    opacity: 1;
+    animation-timing-function: linear;
+  }
+  69% {
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.33, 0, 0.22, 1);
+  }
+  100% {
+    opacity: var(--video-dim);
+  }
+}
+
+/* Linear overall, with the easing declared per keyframe, so the hold really
+   does end at 4s instead of being pulled earlier by a global curve. */
 .enter-video {
-  animation: fade-in 1.8s ease-out both;
-  animation-delay: var(--enter-start);
+  animation: video-in-dim 5.8s linear both;
 }
 
 .enter-line {
   transform-origin: top;
-  animation: drop-line 1.5s var(--ease-out-quart) both;
-  animation-delay: calc(var(--enter-start) + var(--enter-step) * 1);
+  animation: drop-line 2.2s var(--ease-soft) both;
+  animation-delay: var(--enter-start);
 }
 
 .enter-eyebrow {
-  animation: rise-in 1s var(--ease-out-quart) both;
-  animation-delay: calc(var(--enter-start) + var(--enter-step) * 2);
+  animation: rise-in 1.6s var(--ease-soft) both;
+  animation-delay: calc(var(--enter-start) + var(--enter-step) * 1);
 }
 
 .enter-headline {
-  animation: focus-in 1.5s var(--ease-out-quart) both;
-  animation-delay: calc(var(--enter-start) + var(--enter-step) * 2.7);
+  animation: focus-in 2.2s var(--ease-soft) both;
+  animation-delay: calc(var(--enter-start) + var(--enter-step) * 1.8);
 }
 
 .enter-cta {
-  animation: rise-in 1s var(--ease-out-quart) both;
-  animation-delay: calc(var(--enter-start) + var(--enter-step) * 4);
+  animation: rise-in 1.6s var(--ease-soft) both;
+  animation-delay: calc(var(--enter-start) + var(--enter-step) * 3);
 }
 
 .enter-chrome {
-  animation: fade-in 1.2s ease-out both;
-  animation-delay: calc(var(--enter-start) + var(--enter-step) * 4.8);
+  animation: fade-in 1.8s var(--ease-soft) both;
+  animation-delay: calc(var(--enter-start) + var(--enter-step) * 4);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -160,5 +188,10 @@
     opacity: 1;
     filter: none;
     transform: none;
+  }
+
+  /* Skipping the sequence must not skip the dim, or the type loses contrast. */
+  .enter-video {
+    opacity: var(--video-dim);
   }
 }
