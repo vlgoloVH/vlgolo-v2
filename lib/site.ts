@@ -45,7 +45,7 @@ export const ABOUT = {
   rail: "About",
   eyebrow: "Hey there, I'm Vlad!",
   body: "I'm a Product Designer with 10+ years of experience building digital products across diverse industries and markets. I help teams transform complex ideas into intuitive experiences that create meaningful value for users and measurable results for businesses…",
-  cta: { label: "Read more", href: "/about" },
+  cta: { label: "Learn more", href: "/about" },
   video: {
     mp4: "/about/portrait.mp4",
     webm: "/about/portrait.webm",

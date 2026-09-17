@@ -36,9 +36,10 @@ export function AboutVideo() {
   return (
     <video
       ref={ref}
-      /* The mask feathers every edge into the section colour, so the frame of
-         the clip is never visible. */
-      className="portrait-mask h-full w-full object-contain object-bottom"
+      /* The mask feathers the top and the sides into the section colour; the
+         bottom stays solid because the portrait stands on the section floor. */
+      data-portrait=""
+      className="portrait-mask h-full w-full object-cover object-bottom"
       poster={ABOUT.video.poster}
       preload="metadata"
       playsInline

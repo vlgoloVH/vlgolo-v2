@@ -1,10 +1,10 @@
 import { HERO } from "@/lib/site";
 import { HeroVideo } from "@/components/sections/hero-video";
-import { CvButton } from "@/components/ui/cv-button";
+import { GlassButton } from "@/components/ui/glass-button";
 
 export function Hero() {
   return (
-    <section className="sticky top-0 flex h-dvh items-center justify-center overflow-hidden bg-bg">
+    <section className="section-slide sticky top-0 flex items-center justify-center overflow-hidden bg-bg">
       <HeroVideo />
 
       {/* No vignette layer here: the footage carries its own falloff to black,
@@ -31,9 +31,10 @@ export function Hero() {
           ))}
         </h1>
 
-        <CvButton
+        <GlassButton
           href={HERO.cta.href}
           label={HERO.cta.label}
+          download
           className="enter-cta mt-20 md:mt-24"
         />
       </div>

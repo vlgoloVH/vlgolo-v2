@@ -188,13 +188,23 @@ function compile(gl: WebGLRenderingContext, type: number, src: string) {
 interface Props {
   href: string;
   label: string;
+  /** Which video the lens refracts. Defaults to the first one on the page. */
+  videoSelector?: string;
+  /** Set for a file the visitor should get rather than a page to open. */
+  download?: boolean;
   className?: string;
 }
 
-/** The pill renders the hero video again, bent through a rounded-rect lens, so
- *  the refraction shows what is genuinely behind the button. If WebGL or the
- *  video is unavailable it silently keeps the CSS glass underneath. */
-export function CvButton({ href, label, className = "" }: Props) {
+/** The pill renders the video behind it again, bent through a rounded-rect
+ *  lens, so the refraction shows what is genuinely there. If WebGL or the video
+ *  is unavailable it silently keeps the CSS glass underneath. */
+export function GlassButton({
+  href,
+  label,
+  videoSelector = "video",
+  download = false,
+  className = "",
+}: Props) {
   const rootRef = useRef<HTMLAnchorElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [live, setLive] = useState(false);
@@ -204,7 +214,7 @@ export function CvButton({ href, label, className = "" }: Props) {
     const canvas = canvasRef.current;
     if (!root || !canvas) return;
 
-    const video = document.querySelector("video");
+    const video = document.querySelector<HTMLVideoElement>(videoSelector);
     if (!video) return;
 
     const gl = canvas.getContext("webgl", {
@@ -383,13 +393,13 @@ export function CvButton({ href, label, className = "" }: Props) {
       gl.deleteShader(vs);
       gl.deleteShader(fs);
     };
-  }, []);
+  }, [videoSelector]);
 
   return (
     <a
       ref={rootRef}
       href={href}
-      download
+      download={download || undefined}
       data-live={live ? "true" : undefined}
       className={`glass-pill group ${className}`}
     >

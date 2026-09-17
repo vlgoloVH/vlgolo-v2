@@ -152,16 +152,47 @@
   opacity: calc(1 - var(--hero-progress, 0) * 2.2);
 }
 
-/* Feathers the portrait loop into the section colour on all four sides. */
+/* Every section is exactly one screen tall and snaps into place, so the page
+   behaves like a deck of slides rather than something to be nudged into
+   position by hand. Below md a section can be taller than the screen, so the
+   snap is only mandatory on desktop. */
+.section-slide {
+  min-height: 100dvh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+@media (min-width: 768px) {
+  html {
+    scroll-snap-type: y mandatory;
+  }
+
+  .section-slide {
+    height: 100dvh;
+  }
+}
+
+/* Feathers the portrait loop into the section colour: soft on the sides and
+   across the top, solid along the bottom, where it meets the section floor.
+   The two gradients are intersected, so a pixel needs both to stay opaque. */
 .portrait-mask {
-  --portrait-feather: radial-gradient(
-    62% 48% at 50% 46%,
-    #000 42%,
-    rgba(0, 0, 0, 0.55) 68%,
-    transparent 84%
+  /* `lighten` keeps only what is brighter than the section colour, so the
+     clip's own backdrop disappears instead of sitting there as a visible box;
+     the slight contrast push makes sure it falls below that threshold. */
+  mix-blend-mode: lighten;
+  filter: contrast(1.14) brightness(0.92);
+  --portrait-sides: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 18%,
+    #000 82%,
+    transparent 100%
   );
-  mask-image: var(--portrait-feather);
-  -webkit-mask-image: var(--portrait-feather);
+  --portrait-top: linear-gradient(to bottom, transparent 0%, #000 26%, #000 100%);
+  mask-image: var(--portrait-sides), var(--portrait-top);
+  mask-composite: intersect;
+  -webkit-mask-image: var(--portrait-sides), var(--portrait-top);
+  -webkit-mask-composite: source-in;
 }
 
 /* ──────────────────────────────────────────────
