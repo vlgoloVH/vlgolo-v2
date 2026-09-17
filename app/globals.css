@@ -163,25 +163,6 @@
   }
 }
 
-/* The portrait clip is graded to the section colour inside the file. This takes
-   the very edge to fully transparent as well, so no residual difference between
-   video decoding and a CSS colour can draw a visible box. The bottom stays
-   solid: the portrait stands on the section floor. */
-.portrait-blend {
-  --portrait-sides: linear-gradient(
-    to right,
-    transparent 0%,
-    #000 9%,
-    #000 91%,
-    transparent 100%
-  );
-  --portrait-top: linear-gradient(to bottom, transparent 0%, #000 13%, #000 100%);
-  mask-image: var(--portrait-sides), var(--portrait-top);
-  mask-composite: intersect;
-  -webkit-mask-image: var(--portrait-sides), var(--portrait-top);
-  -webkit-mask-composite: source-in;
-}
-
 /* ──────────────────────────────────────────────
    Entrance animations.
    Only transform / opacity / filter are animated, so no layout work.
