@@ -1,4 +1,4 @@
-import { HERO, SINCE, STATUS } from "@/lib/site";
+import { HERO } from "@/lib/site";
 import { HeroVideo } from "@/components/sections/hero-video";
 import { CvButton } from "@/components/ui/cv-button";
 
@@ -34,19 +34,6 @@ export function Hero() {
           label={HERO.cta.label}
           className="enter-cta mt-10 md:mt-12"
         />
-      </div>
-
-      {/* Bottom line of the frame: availability on the left, since on the right. */}
-      <div className="enter-chrome absolute inset-x-0 bottom-6 z-10 flex items-center justify-between px-6 text-[13px] uppercase tracking-[0.15em] text-ink/85 md:bottom-12 md:px-[var(--frame-pad)]">
-        <span className="flex items-center gap-2.5">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full animate-[status-pulse_2.8s_ease-out_infinite] rounded-full bg-[#4ade80]" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#4ade80]" />
-          </span>
-          {STATUS}
-        </span>
-
-        <span>{SINCE}</span>
       </div>
     </section>
   );
