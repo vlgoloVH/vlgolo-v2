@@ -5,6 +5,8 @@
    ────────────────────────────────────────────── */
 @theme {
   --color-bg: #000000;
+  /* Every section after the hero sits on this, a shade up from pure black. */
+  --color-surface: #141415;
   --color-ink: #ffffff;
   --color-muted: rgba(255, 255, 255, 0.62);
   --color-line: rgba(255, 255, 255, 0.14);
@@ -132,6 +134,34 @@
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
+}
+
+/* ──────────────────────────────────────────────
+   Slides. The hero is `sticky`, so it stays put while the next section, which
+   has an opaque background of its own, rides up over it. The two classes below
+   run off --scroll-y and --hero-progress, published by ScrollState.
+   ────────────────────────────────────────────── */
+.hero-parallax {
+  /* A quarter of the scroll distance: the hero content still moves, but the
+     incoming section visibly overtakes it. */
+  transform: translate3d(0, calc(var(--scroll-y, 0px) * -0.24), 0);
+  will-change: transform;
+}
+
+.hero-fade {
+  opacity: calc(1 - var(--hero-progress, 0) * 2.2);
+}
+
+/* Feathers the portrait loop into the section colour on all four sides. */
+.portrait-mask {
+  --portrait-feather: radial-gradient(
+    62% 48% at 50% 46%,
+    #000 42%,
+    rgba(0, 0, 0, 0.55) 68%,
+    transparent 84%
+  );
+  mask-image: var(--portrait-feather);
+  -webkit-mask-image: var(--portrait-feather);
 }
 
 /* ──────────────────────────────────────────────
@@ -317,5 +347,14 @@ html:not([data-ready]) .enter-line {
     animation: none;
     opacity: 0.6;
     transform: none;
+  }
+
+  /* No parallax, and nothing fading out from under the visitor. */
+  .hero-parallax {
+    transform: none;
+  }
+
+  .hero-fade {
+    opacity: 1;
   }
 }

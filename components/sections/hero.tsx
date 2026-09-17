@@ -4,7 +4,7 @@ import { CvButton } from "@/components/ui/cv-button";
 
 export function Hero() {
   return (
-    <section className="relative flex min-h-dvh items-center justify-center overflow-hidden bg-bg">
+    <section className="sticky top-0 flex h-dvh items-center justify-center overflow-hidden bg-bg">
       <HeroVideo />
 
       {/* No vignette layer here: the footage carries its own falloff to black,
@@ -16,7 +16,9 @@ export function Hero() {
         <span className="enter-line absolute inset-y-0 right-[var(--frame-line)] w-px bg-white/12" />
       </div>
 
-      <div className="relative z-10 flex w-full flex-col items-center px-6 text-center md:px-[var(--frame-pad)]">
+      {/* The content drifts up at a fraction of the scroll speed, so the next
+          section clearly overtakes it as it slides over. */}
+      <div className="hero-parallax relative z-10 flex w-full flex-col items-center px-6 text-center md:px-[var(--frame-pad)]">
         <p className="enter-eyebrow text-eyebrow font-medium uppercase text-ink/85">
           {HERO.eyebrow}
         </p>
@@ -36,24 +38,27 @@ export function Hero() {
         />
       </div>
 
-      {/* Scroll hint: just the chevron, drifting down on a slow beat. */}
+      {/* Scroll hint: just the chevron, drifting down on a slow beat. It is the
+          first thing to go once the visitor starts scrolling. */}
       <div
         aria-hidden="true"
-        className="scroll-hint enter-chrome pointer-events-none absolute bottom-10 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center md:flex"
+        className="hero-fade pointer-events-none absolute bottom-10 left-1/2 z-10 -translate-x-1/2"
       >
-        <svg
-          width="15"
-          height="9"
-          viewBox="0 0 15 9"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.3"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="text-ink [animation:scroll-nudge_2.6s_var(--ease-soft)_infinite]"
-        >
-          <path d="M1 1.5 7.5 7.5 14 1.5" />
-        </svg>
+        <div className="scroll-hint enter-chrome hidden flex-col items-center md:flex">
+          <svg
+            width="15"
+            height="9"
+            viewBox="0 0 15 9"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-ink [animation:scroll-nudge_2.6s_var(--ease-soft)_infinite]"
+          >
+            <path d="M1 1.5 7.5 7.5 14 1.5" />
+          </svg>
+        </div>
       </div>
     </section>
   );
