@@ -35,6 +35,28 @@ export function Hero() {
           className="enter-cta mt-10 md:mt-12"
         />
       </div>
+
+      {/* Scroll hint: a hairline that fills downward and a chevron that drifts
+          after it, both on the same beat. */}
+      <div
+        aria-hidden="true"
+        className="scroll-hint enter-chrome pointer-events-none absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2.5 md:flex"
+      >
+        <span className="block h-7 w-px bg-white/70 [animation:scroll-trail_2.6s_var(--ease-soft)_infinite]" />
+        <svg
+          width="15"
+          height="9"
+          viewBox="0 0 15 9"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="text-ink [animation:scroll-nudge_2.6s_var(--ease-soft)_infinite]"
+        >
+          <path d="M1 1.5 7.5 7.5 14 1.5" />
+        </svg>
+      </div>
     </section>
   );
 }
