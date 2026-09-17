@@ -27,7 +27,7 @@
      the content arrives, one element every --enter-step.
      Retime the whole sequence from these three values. The video's own
      keyframes carry the same numbers as percentages — see `video-in-dim`. */
-  --enter-start: 4s;
+  --enter-start: 2s;
   --enter-step: 0.62s;
   --video-dim: 0.6;
 }
@@ -122,17 +122,19 @@
 
 /* The video fades up alone, holds at full strength until the content is due,
    then settles back so the type reads against it.
-   Total run is 5.8s: 1.8s in, held to 4s, dimmed by 5.8s. */
+   Total run is 3.8s: 1.2s in, held to 2s (= --enter-start), dimmed by 3.8s.
+   The percentages below are those seconds over that total — change one, change
+   the others. */
 @keyframes video-in-dim {
   0% {
     opacity: 0;
     animation-timing-function: cubic-bezier(0.33, 0, 0.22, 1);
   }
-  31% {
+  32% {
     opacity: 1;
     animation-timing-function: linear;
   }
-  69% {
+  53% {
     opacity: 1;
     animation-timing-function: cubic-bezier(0.33, 0, 0.22, 1);
   }
@@ -157,9 +159,9 @@ html:not([data-ready]) .enter-line {
 }
 
 /* Linear overall, with the easing declared per keyframe, so the hold really
-   does end at 4s instead of being pulled earlier by a global curve. */
+   does end at 2s instead of being pulled earlier by a global curve. */
 [data-ready] .enter-video {
-  animation: video-in-dim 5.8s linear both;
+  animation: video-in-dim 3.8s linear both;
 }
 
 [data-ready] .enter-line {
