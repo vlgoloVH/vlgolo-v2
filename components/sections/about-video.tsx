@@ -1,16 +1,32 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ABOUT } from "@/lib/site";
 
-/** The portrait loop. The fade into the section colour on the sides and the top
- *  is graded into the file itself, and `portrait-blend` takes the very edge to
- *  transparent on top of that. Playback only runs while the section is on
- *  screen, and `muted` is set on the element itself because React sets it as a
- *  property only, which would leave the attribute off the server-rendered
- *  markup and get autoplay blocked. */
+/** VP9 carries an alpha channel, but Safari decodes VP9 without it: it would
+ *  show the cut-out clip's black background as a solid box. So Safari, and
+ *  anything that cannot play VP9 at all, gets the graded version instead. */
+function supportsAlphaVideo() {
+  const probe = document.createElement("video");
+  if (!probe.canPlayType('video/webm; codecs="vp9"')) return false;
+  const ua = navigator.userAgent;
+  const isSafari = /Safari/.test(ua) && !/Chrome|Chromium|Edg|OPR/.test(ua);
+  return !isSafari;
+}
+
+/** The portrait loop. Playback only runs while the section is on screen, and
+ *  `muted` is set on the element itself because React sets it as a property
+ *  only, which would leave the attribute off the server-rendered markup and get
+ *  autoplay blocked. */
 export function AboutVideo() {
   const ref = useRef<HTMLVideoElement>(null);
+  // The server renders the safe version; the client upgrades on mount, long
+  // before the section is scrolled into view.
+  const [alpha, setAlpha] = useState(false);
+
+  useEffect(() => {
+    setAlpha(supportsAlphaVideo());
+  }, []);
 
   useEffect(() => {
     const video = ref.current;
@@ -33,23 +49,26 @@ export function AboutVideo() {
 
     visibility.observe(video);
     return () => visibility.disconnect();
-  }, []);
+    // Switching to the alpha clip swaps the element, so the observer and the
+    // muted flag have to be set up again on the new one.
+  }, [alpha]);
 
   return (
     <video
       ref={ref}
+      key={alpha ? "alpha" : "flat"}
       data-portrait=""
-      className="portrait-blend h-full w-full object-cover object-bottom"
-      poster={ABOUT.video.poster}
+      /* The graded clip still needs its edge taken to transparent; the cut-out
+         one has no edge to hide. */
+      className={`h-full w-full object-cover object-bottom ${alpha ? "" : "portrait-blend"}`}
+      src={alpha ? ABOUT.video.alphaWebm : ABOUT.video.mp4}
+      poster={alpha ? ABOUT.video.alphaPoster : ABOUT.video.poster}
       preload="metadata"
       playsInline
       loop
       muted
       aria-hidden="true"
       tabIndex={-1}
-    >
-      <source src={ABOUT.video.webm} type="video/webm" />
-      <source src={ABOUT.video.mp4} type="video/mp4" />
-    </video>
+    />
   );
 }

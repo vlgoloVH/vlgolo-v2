@@ -47,8 +47,13 @@ export const ABOUT = {
   body: "I'm a Product Designer with 10+ years of experience building digital products across diverse industries and markets. I help teams transform complex ideas into intuitive experiences that create meaningful value for users and measurable results for businesses…",
   cta: { label: "Learn more", href: "/about" },
   video: {
+    /** True alpha channel: the figure is cut out, so there is no clip edge at
+     *  all. VP9 carries it; Safari does not read alpha from VP9, which is what
+     *  the flat pair below is for. */
+    alphaWebm: "/about/portrait-alpha.webm",
+    alphaPoster: "/about/portrait-alpha-poster.png",
+    /** The fallback: same clip with the fade to the section colour graded in. */
     mp4: "/about/portrait.mp4",
-    webm: "/about/portrait.webm",
     poster: "/about/portrait-poster.jpg",
   },
 } as const;

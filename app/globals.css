@@ -103,20 +103,20 @@
   }
 
   /* The stroke sits above the WebGL layer, otherwise the canvas covers it.
-     Change the 2px here to retune its weight. */
+     Change the 1px here to retune its weight. */
   &::after {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 1;
     border-radius: inherit;
-    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.34);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
     transition: box-shadow 0.3s var(--ease-soft);
     pointer-events: none;
   }
 
   &:hover::after {
-    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.55);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.62);
   }
 
   /* Once the lens is rendering there is nothing to blur behind it. */
