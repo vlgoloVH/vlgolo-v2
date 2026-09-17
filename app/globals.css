@@ -188,8 +188,7 @@
   }
 }
 
-/* The scroll hint: the chevron drifts down and fades, the line above it fills
-   from the top, both on the same 2.6s beat. */
+/* The scroll hint: the chevron drifts down and fades on a 2.6s beat. */
 @keyframes scroll-nudge {
   0% {
     transform: translateY(-3px);
@@ -202,27 +201,6 @@
   100% {
     transform: translateY(-3px);
     opacity: 0.25;
-  }
-}
-
-@keyframes scroll-trail {
-  0% {
-    transform: scaleY(0);
-    transform-origin: top;
-    opacity: 0;
-  }
-  35% {
-    opacity: 1;
-  }
-  70% {
-    transform: scaleY(1);
-    transform-origin: top;
-    opacity: 0.9;
-  }
-  100% {
-    transform: scaleY(1);
-    transform-origin: bottom;
-    opacity: 0;
   }
 }
 

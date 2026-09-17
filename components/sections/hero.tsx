@@ -36,13 +36,11 @@ export function Hero() {
         />
       </div>
 
-      {/* Scroll hint: a hairline that fills downward and a chevron that drifts
-          after it, both on the same beat. */}
+      {/* Scroll hint: just the chevron, drifting down on a slow beat. */}
       <div
         aria-hidden="true"
-        className="scroll-hint enter-chrome pointer-events-none absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2.5 md:flex"
+        className="scroll-hint enter-chrome pointer-events-none absolute bottom-10 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center md:flex"
       >
-        <span className="block h-7 w-px bg-white/70 [animation:scroll-trail_2.6s_var(--ease-soft)_infinite]" />
         <svg
           width="15"
           height="9"
