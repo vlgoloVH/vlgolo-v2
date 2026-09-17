@@ -129,6 +129,73 @@
 }
 
 /* ──────────────────────────────────────────────
+   Live glass: the dispersion travels around the rim and a faint iridescent
+   bloom drifts inside. Used on the CV button; the social rail stays static so
+   the page has one moving accent, not four.
+   ────────────────────────────────────────────── */
+@property --glass-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 135deg;
+}
+
+@keyframes glass-travel {
+  to {
+    --glass-angle: 495deg;
+  }
+}
+
+@keyframes glass-drift {
+  0% {
+    transform: translate3d(-6%, -4%, 0) scale(1.05);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate3d(6%, 4%, 0) scale(1.12);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate3d(-6%, -4%, 0) scale(1.05);
+    opacity: 0.55;
+  }
+}
+
+@utility glass-live {
+  /* The rim becomes a rotating conic sweep: white where the light lands,
+     cyan and magenta trailing behind it. */
+  &::after {
+    background: conic-gradient(
+      from var(--glass-angle),
+      rgba(255, 255, 255, 0.92) 0%,
+      rgba(150, 230, 255, 0.5) 12%,
+      rgba(120, 160, 255, 0.34) 24%,
+      rgba(255, 255, 255, 0.1) 40%,
+      rgba(255, 170, 220, 0.42) 58%,
+      rgba(255, 220, 190, 0.44) 72%,
+      rgba(255, 255, 255, 0.92) 100%
+    );
+    animation: glass-travel 11s linear infinite;
+  }
+
+  /* An oil-slick bloom under the surface, kept low so it reads as a tint in
+     the glass rather than a coloured button. */
+  & > .glass-bloom {
+    position: absolute;
+    inset: -20%;
+    z-index: -1;
+    border-radius: inherit;
+    background:
+      radial-gradient(45% 60% at 28% 40%, rgba(120, 200, 255, 0.3) 0%, transparent 70%),
+      radial-gradient(40% 55% at 72% 62%, rgba(255, 150, 210, 0.26) 0%, transparent 72%),
+      radial-gradient(35% 50% at 55% 25%, rgba(190, 255, 220, 0.2) 0%, transparent 75%);
+    filter: blur(10px);
+    mix-blend-mode: screen;
+    animation: glass-drift 14s ease-in-out infinite;
+    pointer-events: none;
+  }
+}
+
+/* ──────────────────────────────────────────────
    Entrance animations.
    Only transform / opacity / filter are animated, so no layout work.
    ────────────────────────────────────────────── */
@@ -275,5 +342,11 @@ html:not([data-ready]) .enter-line {
   /* Skipping the sequence must not skip the dim, or the type loses contrast. */
   .enter-video {
     opacity: var(--video-dim);
+  }
+
+  /* The glass keeps its colour, it just stops moving. */
+  .glass-live::after,
+  .glass-live > .glass-bloom {
+    animation: none;
   }
 }
