@@ -17,6 +17,9 @@ const GLASS = {
   frost: 1.2,
   /** Splay 60 → outward stretch of the whole sample. */
   splay: 0.06,
+  /** Seconds between glare sweeps, and how long one sweep takes. */
+  sweepEvery: 6,
+  sweepTime: 1.7,
 } as const;
 
 const VERT = `
@@ -49,6 +52,8 @@ uniform float uFrost;
 uniform float uSplay;
 uniform vec2 uLight;
 uniform float uTime;
+uniform float uSweepEvery;
+uniform float uSweepTime;
 
 float sdRoundRect(vec2 p, vec2 half_, float r) {
   vec2 q = abs(p) - half_ + r;
@@ -107,11 +112,20 @@ void main() {
   float spec = pow(max(dot(n, uLight), 0.0), 6.0) * edge;
   col += spec * 0.42 * (0.86 + 0.14 * sin(uTime * 0.55));
 
-  // A soft wide highlight drifting from side to side, roughly a 28s round trip.
-  // Deliberately low contrast: it should register as life, not as a effect.
-  float travel = sin(uTime * 0.22) * 0.5 + 0.5;
-  float band = exp(-pow((vUv.x - travel) * 2.6, 2.0));
-  col += band * 0.06 * (0.55 + 0.45 * edge);
+  // A wide, very soft base sheen drifting side to side, so the glass is never
+  // completely still.
+  float drift = sin(uTime * 0.22) * 0.5 + 0.5;
+  col += exp(-pow((vUv.x - drift) * 2.6, 2.0)) * 0.04;
+
+  // And a narrow diagonal glare that crosses the pill every uSweepEvery
+  // seconds, taking uSweepTime to travel. Visible, but gone before it nags.
+  float cycle = mod(uTime, uSweepEvery);
+  float phase = clamp(cycle / uSweepTime, 0.0, 1.0);
+  float pos = mix(-0.4, 1.4, smoothstep(0.0, 1.0, phase));
+  float diag = vUv.x * 0.84 + vUv.y * 0.16;
+  float glare = exp(-pow((diag - pos) * 6.5, 2.0));
+  float fade = sin(phase * 3.14159);          // eases in and out of the sweep
+  col += glare * fade * 0.24 * (0.75 + 0.25 * edge);
 
   // The 10% white fill from the Figma style.
   col += vec3(0.10) * 0.85;
@@ -207,6 +221,8 @@ export function CvButton({ href, label, className = "" }: Props) {
       uSplay: u("uSplay"),
       uLight: u("uLight"),
       uTime: u("uTime"),
+      uSweepEvery: u("uSweepEvery"),
+      uSweepTime: u("uSweepTime"),
     };
 
     const rad = (GLASS.lightAngle * Math.PI) / 180;
@@ -216,6 +232,8 @@ export function CvButton({ href, label, className = "" }: Props) {
     gl.uniform1f(uniforms.uDisperse, GLASS.dispersion);
     gl.uniform1f(uniforms.uFrost, GLASS.frost);
     gl.uniform1f(uniforms.uSplay, GLASS.splay);
+    gl.uniform1f(uniforms.uSweepEvery, GLASS.sweepEvery);
+    gl.uniform1f(uniforms.uSweepTime, GLASS.sweepTime);
 
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
