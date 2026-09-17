@@ -15,6 +15,14 @@ export const NAV_LINKS = [
   { label: "Contacts", href: "/#contacts" },
 ] as const;
 
+export const LANGUAGES = [
+  { code: "en", label: "EN" },
+  { code: "ua", label: "UA" },
+] as const;
+
+/** Sits vertically on the left edge, opposite the social rail. */
+export const STATUS = "Available for new projects";
+
 export const SOCIAL_LINKS = [
   { label: "LinkedIn", href: "https://www.linkedin.com/in/vlgolo/" },
   { label: "Dribbble", href: "https://dribbble.com/vlgolo" },

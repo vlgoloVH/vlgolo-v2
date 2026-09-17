@@ -10,10 +10,11 @@ export function Hero() {
       {/* No vignette layer here: the footage carries its own falloff to black,
           which is also why letterboxing the full frame is invisible. */}
 
-      {/* Vertical rules that drop in from the top edge. */}
+      {/* Vertical rules on the content column: same max width and padding as
+          the block below, so they always land on the content edges. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 mx-auto w-full max-w-[1200px] px-6 md:px-0"
+        className="pointer-events-none absolute inset-0 mx-auto w-full max-w-content px-6 md:px-14"
       >
         <div className="relative h-full">
           <span className="enter-line absolute inset-y-0 left-0 w-px bg-white/12" />

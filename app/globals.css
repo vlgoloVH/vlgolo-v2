@@ -65,70 +65,6 @@
 }
 
 /* ──────────────────────────────────────────────
-   Glass surface, used by the CV button and the social rail.
-   ────────────────────────────────────────────── */
-/* Built to match the Figma glass on the CV button: light from -45° at 80%,
-   refraction 80, depth 87, dispersion 50, frost 4, splay 0.
-   CSS cannot refract, so the look is assembled from three parts:
-   a low blur (frost), a lens highlight raking from the top left (light + depth),
-   and a gradient rim that shifts cool to warm around the edge (dispersion). */
-@utility glass {
-  position: relative;
-  isolation: isolate;
-  background: rgba(255, 255, 255, 0.05);
-  /* Frost is low, so the dimming does the work: the Figma glass mutes what is
-     behind it instead of brightening it. */
-  backdrop-filter: blur(8px) brightness(0.72) saturate(112%);
-  -webkit-backdrop-filter: blur(8px) brightness(0.72) saturate(112%);
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.14),
-    inset 0 -8px 18px rgba(0, 0, 0, 0.3),
-    0 12px 34px rgba(0, 0, 0, 0.5);
-}
-
-/* The lens: a broad sheen entering from -45°, which is what reads as depth. */
-@utility glass {
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    border-radius: inherit;
-    background:
-      radial-gradient(130% 150% at 22% 8%, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.04) 38%, transparent 70%),
-      linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 45%, rgba(255, 255, 255, 0.05) 100%);
-    pointer-events: none;
-  }
-
-  /* The rim: 1px ring, bright where the light hits, with a faint cool/warm
-     split standing in for dispersion. */
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.9) 0%,
-      rgba(196, 226, 255, 0.42) 24%,
-      rgba(255, 255, 255, 0.12) 50%,
-      rgba(255, 208, 230, 0.4) 74%,
-      rgba(255, 255, 255, 0.78) 100%
-    );
-    -webkit-mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    mask-composite: exclude;
-    pointer-events: none;
-  }
-}
-
-/* ──────────────────────────────────────────────
    CV pill. Geometry and fill are the Figma values; the refraction itself is
    drawn by the WebGL layer inside (see components/ui/cv-button.tsx).
    Without WebGL this static glass is what stays on screen.
@@ -229,6 +165,19 @@
     opacity: 1;
     filter: blur(0);
     transform: translateY(0) scale(1);
+  }
+}
+
+/* The availability dot on the status rail. */
+@keyframes status-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(2.6);
+    opacity: 0;
   }
 }
 
