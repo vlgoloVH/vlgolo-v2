@@ -4,7 +4,6 @@ import "./globals.css";
 import { Preloader } from "@/components/layout/preloader";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SocialRail } from "@/components/layout/social-rail";
-import { StatusRail } from "@/components/layout/status-rail";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -41,7 +40,6 @@ export default function RootLayout({
         <Preloader />
         <SiteHeader />
         <SocialRail />
-        <StatusRail />
         <main>{children}</main>
       </body>
     </html>

@@ -1,4 +1,4 @@
-import { HERO } from "@/lib/site";
+import { HERO, SINCE, STATUS } from "@/lib/site";
 import { HeroVideo } from "@/components/sections/hero-video";
 import { CvButton } from "@/components/ui/cv-button";
 
@@ -10,19 +10,13 @@ export function Hero() {
       {/* No vignette layer here: the footage carries its own falloff to black,
           which is also why letterboxing the full frame is invisible. */}
 
-      {/* Vertical rules on the content column: same max width and padding as
-          the block below, so they always land on the content edges. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 mx-auto w-full max-w-content px-6 md:px-14"
-      >
-        <div className="relative h-full">
-          <span className="enter-line absolute inset-y-0 left-0 w-px bg-white/12" />
-          <span className="enter-line absolute inset-y-0 right-0 w-px bg-white/12" />
-        </div>
+      {/* The two rules, pinned --frame-line in from the viewport edges. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <span className="enter-line absolute inset-y-0 left-[var(--frame-line)] w-px bg-white/12" />
+        <span className="enter-line absolute inset-y-0 right-[var(--frame-line)] w-px bg-white/12" />
       </div>
 
-      <div className="relative z-10 mx-auto flex w-full max-w-content flex-col items-center px-6 text-center md:px-14">
+      <div className="relative z-10 flex w-full flex-col items-center px-6 text-center md:px-[var(--frame-pad)]">
         <p className="enter-eyebrow text-eyebrow font-medium uppercase text-ink/85">
           {HERO.eyebrow}
         </p>
@@ -40,6 +34,19 @@ export function Hero() {
           label={HERO.cta.label}
           className="enter-cta mt-10 md:mt-12"
         />
+      </div>
+
+      {/* Bottom line of the frame: availability on the left, since on the right. */}
+      <div className="enter-chrome absolute inset-x-0 bottom-6 z-10 flex items-center justify-between px-6 text-[13px] uppercase tracking-[0.15em] text-ink/85 md:bottom-12 md:px-[var(--frame-pad)]">
+        <span className="flex items-center gap-2.5">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full animate-[status-pulse_2.8s_ease-out_infinite] rounded-full bg-[#4ade80]" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#4ade80]" />
+          </span>
+          {STATUS}
+        </span>
+
+        <span>{SINCE}</span>
       </div>
     </section>
   );

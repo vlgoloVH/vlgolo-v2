@@ -20,8 +20,9 @@ export const LANGUAGES = [
   { code: "ua", label: "UA" },
 ] as const;
 
-/** Sits vertically on the left edge, opposite the social rail. */
+/** The two marks on the bottom line of the hero. */
 export const STATUS = "Available for new projects";
+export const SINCE = "Est. 2015";
 
 export const SOCIAL_LINKS = [
   { label: "LinkedIn", href: "https://www.linkedin.com/in/vlgolo/" },
@@ -30,7 +31,7 @@ export const SOCIAL_LINKS = [
 ] as const;
 
 export const HERO = {
-  eyebrow: "Senior Product Designer · Est. 2015",
+  eyebrow: "Senior Product Designer",
   headline: ["Designing products", "that drive growth"],
   cta: { label: "Download resume", href: "/resume.pdf" },
   video: {

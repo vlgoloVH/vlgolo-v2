@@ -1,7 +1,8 @@
 import { SOCIAL_LINKS } from "@/lib/site";
 
 /** Plain monoline marks, no container and no glass: the CV button is the only
- *  glass surface in the hero. */
+ *  glass surface in the hero. The rail is as wide as the margin outside the
+ *  right-hand rule, so the icons land dead centre in that strip. */
 const ICONS: Record<string, React.ReactNode> = {
   LinkedIn: (
     <>
@@ -28,7 +29,7 @@ const ICONS: Record<string, React.ReactNode> = {
 
 export function SocialRail() {
   return (
-    <div className="enter-chrome fixed right-6 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center gap-6 md:flex lg:right-10">
+    <div className="enter-chrome fixed right-0 top-1/2 z-40 hidden w-[var(--frame-line)] -translate-y-1/2 flex-col items-center gap-7 md:flex">
       {SOCIAL_LINKS.map((link) => (
         <a
           key={link.label}
@@ -40,8 +41,8 @@ export function SocialRail() {
         >
           <svg
             viewBox="0 0 22 22"
-            width="19"
-            height="19"
+            width="22"
+            height="22"
             fill="none"
             stroke="currentColor"
             strokeWidth="1.3"

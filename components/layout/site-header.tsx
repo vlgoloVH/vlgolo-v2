@@ -5,7 +5,7 @@ import { NAV_LINKS, SITE } from "@/lib/site";
 export function SiteHeader() {
   return (
     <header className="enter-chrome fixed inset-x-0 top-0 z-50">
-      <div className="mx-auto flex max-w-content items-center justify-between px-5 py-5 md:px-14 md:py-8">
+      <div className="flex items-center justify-between px-5 py-5 md:px-[var(--frame-pad)] md:py-8">
         <Link
           href="/"
           className="text-[13px] font-bold tracking-tight text-ink transition-opacity duration-300 hover:opacity-70 md:text-lg"

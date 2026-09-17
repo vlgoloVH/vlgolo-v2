@@ -26,6 +26,13 @@
 
   --container-content: 1400px;
 
+  /* The hero frame. The two vertical rules sit --frame-line in from each
+     viewport edge whatever the width; content keeps 32px clear of them, so it
+     can never climb onto a rule. At 1440 that is 104px and 136px, which is the
+     Figma frame. */
+  --frame-line: clamp(20px, 7.22vw, 160px);
+  --frame-pad: calc(var(--frame-line) + 32px);
+
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   /* Gentle in and out — no snap at the start, no crawl at the end. */
   --ease-soft: cubic-bezier(0.33, 0, 0.22, 1);

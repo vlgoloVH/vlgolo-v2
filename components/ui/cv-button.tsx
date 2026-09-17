@@ -48,6 +48,7 @@ uniform float uDisperse;
 uniform float uFrost;
 uniform float uSplay;
 uniform vec2 uLight;
+uniform float uTime;
 
 float sdRoundRect(vec2 p, vec2 half_, float r) {
   vec2 q = abs(p) - half_ + r;
@@ -101,9 +102,16 @@ void main() {
 
   col *= uDim;
 
-  // Sheen raking in from the light direction, strongest on the rim.
+  // Sheen raking in from the light direction, strongest on the rim. It breathes
+  // very slightly so the glass never looks like a still image.
   float spec = pow(max(dot(n, uLight), 0.0), 6.0) * edge;
-  col += spec * 0.42;
+  col += spec * 0.42 * (0.86 + 0.14 * sin(uTime * 0.55));
+
+  // A soft wide highlight drifting from side to side, roughly a 28s round trip.
+  // Deliberately low contrast: it should register as life, not as a effect.
+  float travel = sin(uTime * 0.22) * 0.5 + 0.5;
+  float band = exp(-pow((vUv.x - travel) * 2.6, 2.0));
+  col += band * 0.06 * (0.55 + 0.45 * edge);
 
   // The 10% white fill from the Figma style.
   col += vec3(0.10) * 0.85;
@@ -198,6 +206,7 @@ export function CvButton({ href, label, className = "" }: Props) {
       uFrost: u("uFrost"),
       uSplay: u("uSplay"),
       uLight: u("uLight"),
+      uTime: u("uTime"),
     };
 
     const rad = (GLASS.lightAngle * Math.PI) / 180;
@@ -214,6 +223,7 @@ export function CvButton({ href, label, className = "" }: Props) {
     let raf = 0;
     let sized = "";
     let started = false;
+    const t0 = performance.now();
 
     const draw = () => {
       raf = requestAnimationFrame(draw);
@@ -246,6 +256,7 @@ export function CvButton({ href, label, className = "" }: Props) {
       gl.uniform2f(uniforms.uUvSize, pill.width / drawW, pill.height / drawH);
       gl.uniform2f(uniforms.uPxToUv, 1 / drawW, 1 / drawH);
       gl.uniform1f(uniforms.uDim, parseFloat(getComputedStyle(video).opacity) || 1);
+      gl.uniform1f(uniforms.uTime, (performance.now() - t0) / 1000);
 
       gl.bindTexture(gl.TEXTURE_2D, texture);
       gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 0);
