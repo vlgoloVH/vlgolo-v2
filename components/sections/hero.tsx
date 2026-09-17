@@ -6,20 +6,8 @@ export function Hero() {
     <section className="relative flex min-h-dvh items-center justify-center overflow-hidden bg-bg">
       <HeroVideo />
 
-      {/* Three stacked gradients so the footage has no visible edges:
-          a centre-weighted vignette plus a wash on each axis. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_78%_70%_at_50%_45%,transparent_0%,transparent_32%,rgba(0,0,0,0.45)_62%,rgba(0,0,0,0.88)_86%,#000_100%)]"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#000_0%,rgba(0,0,0,0.35)_14%,transparent_30%,transparent_70%,rgba(0,0,0,0.35)_86%,#000_100%)]"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,#000_0%,rgba(0,0,0,0.4)_12%,transparent_32%,transparent_62%,rgba(0,0,0,0.45)_88%,#000_100%)]"
-      />
+      {/* No vignette layer here: the footage carries its own falloff to black,
+          which is also why letterboxing the full frame is invisible. */}
 
       {/* Vertical rules that drop in from the top edge. */}
       <div

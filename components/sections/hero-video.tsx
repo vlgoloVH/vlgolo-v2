@@ -37,9 +37,9 @@ export function HeroVideo() {
   return (
     <video
       ref={ref}
-      /* On portrait screens the frame crops hard, so it is nudged left to keep
-         the figure and the monitor in shot. */
-      className="enter-video absolute inset-0 h-full w-full object-cover object-[42%_center] md:object-center"
+      /* `contain` keeps the whole frame and its aspect ratio at every viewport
+         shape — never cropped, never stretched — and centres it. */
+      className="enter-video absolute inset-0 h-full w-full object-contain object-center"
       poster={HERO.video.poster}
       preload="metadata"
       playsInline
