@@ -51,10 +51,9 @@ export function About() {
         </div>
       </div>
 
-      {/* Standing on the floor of the section. The box carries the clip's own
-          9:16 ratio, so the feathered mask lines up with the picture instead of
-          with letterbox bars. */}
-      <div className="pointer-events-none absolute bottom-0 right-1/2 aspect-[9/16] h-[42vh] translate-x-1/2 md:right-[13%] md:h-[min(86vh,54vw)] md:translate-x-0">
+      {/* Standing on the floor of the section, at the clip's own 9:16 ratio so
+          the baked-in fade meets the section edge to edge. */}
+      <div className="pointer-events-none absolute bottom-0 right-1/2 aspect-[9/16] h-[42vh] translate-x-1/2 md:right-[15%] md:h-[min(96vh,62vw)] md:translate-x-0">
         <AboutVideo />
       </div>
     </section>

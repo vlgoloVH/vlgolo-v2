@@ -3,7 +3,9 @@
 import { useEffect, useRef } from "react";
 import { ABOUT } from "@/lib/site";
 
-/** The portrait loop. Decoding only runs while the section is on screen, and
+/** The portrait loop. The fade into the section colour on the sides and the
+ *  top is baked into the file itself, so there is no mask or blend mode to go
+ *  wrong on a given browser. Decoding only runs while the section is on screen, and
  *  `muted` is set on the element itself because React sets it as a property
  *  only, which would leave the attribute off the server-rendered markup and get
  *  autoplay blocked. */
@@ -36,10 +38,8 @@ export function AboutVideo() {
   return (
     <video
       ref={ref}
-      /* The mask feathers the top and the sides into the section colour; the
-         bottom stays solid because the portrait stands on the section floor. */
       data-portrait=""
-      className="portrait-mask h-full w-full object-cover object-bottom"
+      className="h-full w-full object-cover object-bottom"
       poster={ABOUT.video.poster}
       preload="metadata"
       playsInline

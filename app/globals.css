@@ -74,8 +74,8 @@
 }
 
 /* ──────────────────────────────────────────────
-   CV pill. Geometry and fill are the Figma values; the refraction itself is
-   drawn by the WebGL layer inside (see components/ui/cv-button.tsx).
+   Glass pill. Geometry and fill are the Figma values; the refraction itself is
+   drawn by the WebGL layer inside (see components/ui/glass-button.tsx).
    Without WebGL this static glass is what stays on screen.
    ────────────────────────────────────────────── */
 @utility glass-pill {
@@ -96,10 +96,6 @@
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(6px) brightness(0.8);
   -webkit-backdrop-filter: blur(6px) brightness(0.8);
-  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.5);
-  transition:
-    transform 0.3s var(--ease-soft),
-    box-shadow 0.3s var(--ease-soft);
 
   & > span {
     position: relative;
@@ -117,11 +113,6 @@
     box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.34);
     transition: box-shadow 0.3s var(--ease-soft);
     pointer-events: none;
-  }
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
   }
 
   &:hover::after {
@@ -170,29 +161,6 @@
   .section-slide {
     height: 100dvh;
   }
-}
-
-/* Feathers the portrait loop into the section colour: soft on the sides and
-   across the top, solid along the bottom, where it meets the section floor.
-   The two gradients are intersected, so a pixel needs both to stay opaque. */
-.portrait-mask {
-  /* `lighten` keeps only what is brighter than the section colour, so the
-     clip's own backdrop disappears instead of sitting there as a visible box;
-     the slight contrast push makes sure it falls below that threshold. */
-  mix-blend-mode: lighten;
-  filter: contrast(1.14) brightness(0.92);
-  --portrait-sides: linear-gradient(
-    to right,
-    transparent 0%,
-    #000 18%,
-    #000 82%,
-    transparent 100%
-  );
-  --portrait-top: linear-gradient(to bottom, transparent 0%, #000 26%, #000 100%);
-  mask-image: var(--portrait-sides), var(--portrait-top);
-  mask-composite: intersect;
-  -webkit-mask-image: var(--portrait-sides), var(--portrait-top);
-  -webkit-mask-composite: source-in;
 }
 
 /* ──────────────────────────────────────────────
