@@ -24,7 +24,7 @@ export const SOCIAL_LINKS = [
 export const HERO = {
   eyebrow: "Senior Product Designer · Est. 2015",
   headline: ["Designing products", "that drive growth"],
-  cta: { label: "Download CV", href: "/resume.pdf" },
+  cta: { label: "Download resume", href: "/resume.pdf" },
   video: {
     mp4: "/hero/hero.mp4",
     webm: "/hero/hero.webm",
