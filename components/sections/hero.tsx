@@ -32,7 +32,7 @@ export function Hero() {
         <CvButton
           href={HERO.cta.href}
           label={HERO.cta.label}
-          className="enter-cta mt-10 md:mt-12"
+          className="enter-cta mt-20 md:mt-24"
         />
       </div>
 
