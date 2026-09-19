@@ -19,27 +19,25 @@ const BURST_GAP = 120;
 const COOLDOWN = 200;
 
 /** Every scroll gesture moves exactly one section, eased, whatever the input.
- *  Native snapping lands in a single frame, which a trackpad hides under its
- *  own momentum but a mouse wheel does not: it reads as a cut. A touch swipe
- *  has the same problem from the other side — its momentum is what fights
- *  mandatory scroll-snap on iPad, landing just short of the next section and
- *  only catching up once that momentum fully decays. Wheel, trackpad, and
- *  touch all go through the same animation here instead, so none of them
- *  touch the browser's own scrolling mid-gesture.
+ *  This is the only thing that moves the page between sections — there's no
+ *  native `scroll-snap-type` in globals.css backing it up, deliberately: on
+ *  iOS a touch gesture's own momentum fights mandatory snap, landing short of
+ *  the next section and only catching up once that momentum fully decays.
+ *  With no native snap left to fight, that can't happen; wheel, trackpad, and
+ *  touch all just go through this same animation instead.
  *
- *  Touch has one extra rule Safari imposes: native scrolling has to be
- *  blocked from the very first touchmove of a gesture, not once a few pixels
- *  in confirm it's a scroll. Wait even one event and Safari has already
- *  committed the gesture to its own scroller; preventDefault after that does
- *  nothing. So touchmove here calls it unconditionally — this page has
- *  nothing horizontal for a gesture to be "sideways" for. */
+ *  Touch has one rule Safari imposes: native scrolling has to be blocked from
+ *  the very first touchmove of a gesture, not once a few pixels in confirm
+ *  it's a scroll. Wait even one event and Safari has already committed the
+ *  gesture to its own scroller; preventDefault after that does nothing. So
+ *  touchmove here calls it unconditionally — this page has nothing horizontal
+ *  for a gesture to be "sideways" for. */
 export function SlideScroll() {
   useEffect(() => {
     const desktop = window.matchMedia("(min-width: 768px)");
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (!desktop.matches || reduced.matches) return;
 
-    const root = document.documentElement;
     let raf = 0;
     let animating = false;
     let blockUntil = 0;
@@ -58,10 +56,7 @@ export function SlideScroll() {
       const distance = to - from;
       if (!distance) return;
 
-      // The browser's own snapping would fight the animation, so it is off for
-      // the duration and back on the moment we land.
       animating = true;
-      root.style.scrollSnapType = "none";
       const start = performance.now();
 
       const step = () => {
@@ -72,7 +67,6 @@ export function SlideScroll() {
         } else {
           raf = 0;
           animating = false;
-          root.style.removeProperty("scroll-snap-type");
         }
       };
 
@@ -165,7 +159,6 @@ export function SlideScroll() {
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("touchcancel", onTouchCancel);
-      root.style.removeProperty("scroll-snap-type");
     };
   }, []);
 
