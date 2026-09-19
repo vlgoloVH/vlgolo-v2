@@ -1,5 +1,22 @@
 @import "tailwindcss";
 
+/* iPadOS Safari reports neither `(hover: hover)` nor `(pointer: fine)` as
+   true even with a trackpad connected, so a media-query variant can't gate
+   hover styles there. HoverCapability (components/layout) watches real
+   pointer events instead and publishes `data-hover-capable` on <html>; these
+   two variants key off that rather than the media feature. */
+@custom-variant can-hover {
+  html[data-hover-capable="true"] &:hover {
+    @slot;
+  }
+}
+
+@custom-variant group-can-hover {
+  html[data-hover-capable="true"] :where(.group):hover & {
+    @slot;
+  }
+}
+
 /* ──────────────────────────────────────────────
    Design tokens. Dark only — there is no light theme.
    ────────────────────────────────────────────── */
@@ -114,13 +131,10 @@
     pointer-events: none;
   }
 
-  /* Real hover only: on iPad a tap fires pointerenter but iOS doesn't
-     reliably follow it with a pointerleave, which would leave this stroke
-     lit after every tap. */
-  @media (pointer: fine) {
-    &:hover::after {
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.62);
-    }
+  /* Real hover only — see the note on can-hover up top. A tap's own :hover
+     would otherwise leave this stroke lit after every tap. */
+  html[data-hover-capable="true"] &:hover::after {
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.62);
   }
 
   /* Once the lens is rendering there is nothing to blur behind it. */
