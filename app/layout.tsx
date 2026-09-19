@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "@fontsource-variable/inter";
 import "./globals.css";
+import { HoverCapability } from "@/components/layout/hover-capability";
 import { Preloader } from "@/components/layout/preloader";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SocialRail } from "@/components/layout/social-rail";
@@ -37,6 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans">
+        <HoverCapability />
         <Preloader />
         <SiteHeader />
         <SocialRail />
