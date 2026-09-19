@@ -37,7 +37,7 @@ export function SocialRail() {
           target="_blank"
           rel="noreferrer noopener"
           aria-label={link.label}
-          className="text-ink/55 transition-colors duration-300 hover:text-ink"
+          className="text-ink/55 transition-colors duration-300 pointer-fine:hover:text-ink"
         >
           <svg
             viewBox="0 0 22 22"
