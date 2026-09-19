@@ -156,14 +156,22 @@
    settles just short of the next section and only catches up once that
    momentum fully decays, a couple of seconds later. That fight can't happen
    if there's no native snap to have it with, so this page has none — one
-   mechanism owns the transition, not two disagreeing ones. */
+   mechanism owns the transition, not two disagreeing ones.
+   `svh`, not `dvh`, for the same family of reasons: `dvh` changes size as
+   Safari's address bar hides and shows mid-scroll, so a section's height —
+   and every later section's offset — shifts while SlideScroll is mid-glide
+   toward a target it measured before that shift. It lands short by however
+   much the bar's height was, which shows up as a gap at the top of the
+   section. `svh` is fixed to the bar-visible size regardless of what the bar
+   actually does, so offsets measured at the start of a gesture are still
+   correct when it ends. */
 .section-slide {
-  min-height: 100dvh;
+  min-height: 100svh;
 }
 
 @media (min-width: 768px) {
   .section-slide {
-    height: 100dvh;
+    height: 100svh;
   }
 }
 
