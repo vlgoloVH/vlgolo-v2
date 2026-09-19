@@ -22,7 +22,7 @@ export function LanguageSwitcher() {
             className={`text-[13px] tracking-[0.06em] transition-opacity duration-300 md:text-[15px] ${
               active === lang.code
                 ? "text-ink opacity-100"
-                : "text-ink opacity-40 pointer-fine:hover:opacity-70"
+                : "text-ink opacity-40 can-hover:opacity-70"
             }`}
           >
             {lang.label}
