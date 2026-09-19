@@ -18,10 +18,11 @@ export function ScrollState() {
     const write = () => {
       raf = 0;
       const y = window.scrollY;
+      const vh = window.visualViewport?.height ?? window.innerHeight;
       root.style.setProperty("--scroll-y", `${y}px`);
       root.style.setProperty(
         "--hero-progress",
-        String(Math.min(1, y / Math.max(window.innerHeight, 1))),
+        String(Math.min(1, y / Math.max(vh, 1))),
       );
     };
 
