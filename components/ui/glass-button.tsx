@@ -325,10 +325,24 @@ export function GlassButton({
     let hover = 0;
     let hoverTarget = 0;
     let last = performance.now();
-    const enter = () => {
+    /** Touch fires pointerenter on tap same as a mouse would, but iOS doesn't
+     *  reliably follow it with a pointerleave — left unfiltered, the glow
+     *  gets stuck on after every tap. Every pointer event carries the input
+     *  that produced it, so this checks that directly instead of a media
+     *  query: a trackpad on an iPad with a keyboard case is `pointerType
+     *  "mouse"` and still hovers normally, only an actual finger is filtered. */
+    const pointerEnter = (event: PointerEvent) => {
+      if (event.pointerType === "touch") return;
       hoverTarget = 1;
     };
-    const leave = () => {
+    const pointerLeave = (event: PointerEvent) => {
+      if (event.pointerType === "touch") return;
+      hoverTarget = 0;
+    };
+    const focusIn = () => {
+      hoverTarget = 1;
+    };
+    const focusOut = () => {
       hoverTarget = 0;
     };
     let onScreen = true;
@@ -340,10 +354,10 @@ export function GlassButton({
     );
     visibility.observe(root);
 
-    root.addEventListener("pointerenter", enter);
-    root.addEventListener("pointerleave", leave);
-    root.addEventListener("focus", enter);
-    root.addEventListener("blur", leave);
+    root.addEventListener("pointerenter", pointerEnter);
+    root.addEventListener("pointerleave", pointerLeave);
+    root.addEventListener("focus", focusIn);
+    root.addEventListener("blur", focusOut);
 
     const draw = () => {
       raf = requestAnimationFrame(draw);
@@ -429,10 +443,10 @@ export function GlassButton({
       cancelAnimationFrame(raf);
       document.removeEventListener("visibilitychange", onVisibility);
       visibility.disconnect();
-      root.removeEventListener("pointerenter", enter);
-      root.removeEventListener("pointerleave", leave);
-      root.removeEventListener("focus", enter);
-      root.removeEventListener("blur", leave);
+      root.removeEventListener("pointerenter", pointerEnter);
+      root.removeEventListener("pointerleave", pointerLeave);
+      root.removeEventListener("focus", focusIn);
+      root.removeEventListener("blur", focusOut);
       gl.deleteTexture(texture);
       gl.deleteBuffer(buffer);
       gl.deleteProgram(program);
