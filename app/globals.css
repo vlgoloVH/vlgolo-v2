@@ -156,7 +156,14 @@
   scroll-snap-align: start;
 }
 
-@media (min-width: 768px) {
+/* The snap-per-section feel is built for a mouse or trackpad — it's what
+   SlideScroll's wheel-driven glide expects. A touch device's own momentum
+   scroll fights mandatory snap instead: on iPad it settles just short of the
+   next section and only catches up once the momentum fully decays, which
+   reads as a stuck scroll. Gating on pointer precision, not just width, keeps
+   snap for mouse/trackpad and lets touch devices scroll freely, like phones
+   already do. */
+@media (min-width: 768px) and (pointer: fine) {
   html {
     scroll-snap-type: y mandatory;
   }
