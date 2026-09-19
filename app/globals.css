@@ -114,8 +114,13 @@
     pointer-events: none;
   }
 
-  &:hover::after {
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.62);
+  /* Real hover only: on iPad a tap fires pointerenter but iOS doesn't
+     reliably follow it with a pointerleave, which would leave this stroke
+     lit after every tap. */
+  @media (pointer: fine) {
+    &:hover::after {
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.62);
+    }
   }
 
   /* Once the lens is rendering there is nothing to blur behind it. */
