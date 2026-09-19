@@ -19,20 +19,12 @@ const COOLDOWN = 200;
 /** Every scroll gesture moves exactly one section, eased, whatever the input.
  *  Native snapping lands in a single frame, which a trackpad hides under its
  *  own momentum but a mouse wheel does not: it reads as a cut. Both go through
- *  the same animation here, so they feel the same.
- *
- *  Wheel events only exist for a mouse or trackpad, so this never fires on
- *  touch. That's deliberate: it matches the CSS gate in globals.css
- *  (`pointer: fine`) that keeps mandatory scroll-snap off tablets and
- *  phones, where it would fight touch's own momentum instead of riding
- *  along with it. */
+ *  the same animation here, so they feel the same. */
 export function SlideScroll() {
   useEffect(() => {
-    const preciseInput = window.matchMedia(
-      "(min-width: 768px) and (pointer: fine)",
-    );
+    const desktop = window.matchMedia("(min-width: 768px)");
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (!preciseInput.matches || reduced.matches) return;
+    if (!desktop.matches || reduced.matches) return;
 
     const root = document.documentElement;
     let raf = 0;
