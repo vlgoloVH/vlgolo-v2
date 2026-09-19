@@ -9,7 +9,7 @@ export function SiteHeader() {
         <div className="flex items-center gap-4 md:gap-7">
           <Link
             href="/"
-            className="text-[13px] font-bold tracking-tight text-ink transition-opacity duration-300 hover:opacity-70 md:text-lg"
+            className="text-[13px] font-bold tracking-tight text-ink transition-opacity duration-300 pointer-fine:hover:opacity-70 md:text-lg"
           >
             {SITE.wordmark}
           </Link>
@@ -34,10 +34,10 @@ export function SiteHeader() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="group relative text-[13px] text-ink/85 transition-colors duration-300 hover:text-ink md:text-[15px]"
+                    className="group relative text-[13px] text-ink/85 transition-colors duration-300 pointer-fine:hover:text-ink md:text-[15px]"
                   >
                     {link.label}
-                    <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-ink/70 transition-transform duration-300 ease-out-quart group-hover:scale-x-100" />
+                    <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-ink/70 transition-transform duration-300 ease-out-quart pointer-fine:group-hover:scale-x-100" />
                   </Link>
                 </li>
               ))}
