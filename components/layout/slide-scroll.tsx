@@ -51,6 +51,29 @@ export function SlideScroll() {
         .map((el) => el.offsetTop)
         .sort((a, b) => a - b);
 
+    /** Index of whichever position sits closest to y. */
+    const nearestIndex = (positions: number[], y: number) =>
+      positions.reduce(
+        (best, top, i) =>
+          Math.abs(top - y) < Math.abs(positions[best] - y) ? i : best,
+        0,
+      );
+
+    /** iPad's Safari can still be folding its toolbar in or out as a glide
+     *  lands, and a `.section-slide`'s `svh` height does not always keep pace
+     *  with that — the page can settle a few pixels short of where the
+     *  section it just glided to actually starts. One frame after the glide
+     *  ends, this re-measures from scratch and corrects the drift instantly,
+     *  no second animation. */
+    const settle = () => {
+      requestAnimationFrame(() => {
+        const positions = tops();
+        const y = window.scrollY;
+        const target = positions[nearestIndex(positions, y)];
+        if (target !== undefined && target !== y) window.scrollTo(0, target);
+      });
+    };
+
     const glide = (to: number) => {
       const from = window.scrollY;
       const distance = to - from;
@@ -67,6 +90,7 @@ export function SlideScroll() {
         } else {
           raf = 0;
           animating = false;
+          settle();
         }
       };
 
@@ -80,11 +104,7 @@ export function SlideScroll() {
       if (animating || now < blockUntil) return;
       const positions = tops();
       const y = window.scrollY;
-      const current = positions.reduce(
-        (best, top, i) =>
-          Math.abs(top - y) < Math.abs(positions[best] - y) ? i : best,
-        0,
-      );
+      const current = nearestIndex(positions, y);
       const next = current + direction;
       if (next < 0 || next >= positions.length) return;
       blockUntil = now + DURATION + COOLDOWN;
@@ -146,11 +166,26 @@ export function SlideScroll() {
       tracking = false;
     };
 
+    /** The same drift `settle()` corrects after a glide can also show up
+     *  mid-rest: iPad's toolbar folding away from a gesture on another tab, an
+     *  external keyboard dismissing, anything that resizes the visible area
+     *  without a scroll of its own. Only outside a gesture or its own glide —
+     *  `tracking`/`animating` both mean the page is already mid-move and
+     *  about to correct itself anyway. */
+    const onViewportResize = () => {
+      if (animating || tracking) return;
+      const positions = tops();
+      const y = window.scrollY;
+      const target = positions[nearestIndex(positions, y)];
+      if (target !== undefined && target !== y) window.scrollTo(0, target);
+    };
+
     window.addEventListener("wheel", onWheel, { passive: false });
     window.addEventListener("touchstart", onTouchStart, { passive: true });
     window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("touchend", onTouchEnd, { passive: true });
     window.addEventListener("touchcancel", onTouchCancel, { passive: true });
+    window.visualViewport?.addEventListener("resize", onViewportResize);
 
     return () => {
       cancelAnimationFrame(raf);
@@ -159,6 +194,7 @@ export function SlideScroll() {
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("touchcancel", onTouchCancel);
+      window.visualViewport?.removeEventListener("resize", onViewportResize);
     };
   }, []);
 
