@@ -148,19 +148,20 @@
   opacity: calc(1 - var(--hero-progress, 0) * 2.2);
 }
 
-/* Every section is one screen tall and snaps into place. Nothing is pinned any
-   more, so each section's snap position is fixed and mandatory snapping behaves
-   in both directions. */
+/* Every section is one screen tall. SlideScroll (components/layout) owns the
+   section-to-section transition itself, for every input — wheel, trackpad,
+   and touch alike — so there is deliberately no `scroll-snap-type` here.
+   Native mandatory snap used to sit alongside it as a fallback, but on iOS
+   Safari mandatory snap fights a touch gesture's own momentum: the page
+   settles just short of the next section and only catches up once that
+   momentum fully decays, a couple of seconds later. That fight can't happen
+   if there's no native snap to have it with, so this page has none — one
+   mechanism owns the transition, not two disagreeing ones. */
 .section-slide {
   min-height: 100dvh;
-  scroll-snap-align: start;
 }
 
 @media (min-width: 768px) {
-  html {
-    scroll-snap-type: y mandatory;
-  }
-
   .section-slide {
     height: 100dvh;
   }
