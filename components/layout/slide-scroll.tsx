@@ -17,10 +17,6 @@ const THRESHOLD = 60;
 const BURST_GAP = 120;
 /** Quiet time after a slide lands, on top of the animation itself. */
 const COOLDOWN = 200;
-/** Below this many pixels of movement, a touch could still be a tap. Past it,
- *  the gesture is committed to being a scroll (or, if mostly sideways, left
- *  alone for whatever else on the page wants it). */
-const TOUCH_COMMIT = 10;
 
 /** Every scroll gesture moves exactly one section, eased, whatever the input.
  *  Native snapping lands in a single frame, which a trackpad hides under its
@@ -29,7 +25,14 @@ const TOUCH_COMMIT = 10;
  *  mandatory scroll-snap on iPad, landing just short of the next section and
  *  only catching up once that momentum fully decays. Wheel, trackpad, and
  *  touch all go through the same animation here instead, so none of them
- *  touch the browser's own scrolling mid-gesture. */
+ *  touch the browser's own scrolling mid-gesture.
+ *
+ *  Touch has one extra rule Safari imposes: native scrolling has to be
+ *  blocked from the very first touchmove of a gesture, not once a few pixels
+ *  in confirm it's a scroll. Wait even one event and Safari has already
+ *  committed the gesture to its own scroller; preventDefault after that does
+ *  nothing. So touchmove here calls it unconditionally — this page has
+ *  nothing horizontal for a gesture to be "sideways" for. */
 export function SlideScroll() {
   useEffect(() => {
     const desktop = window.matchMedia("(min-width: 768px)");
@@ -120,39 +123,23 @@ export function SlideScroll() {
 
     /** A touch gesture is one clean start-to-end move, so it needs none of the
      *  wheel's burst accounting — just where it started and where it ended. */
-    let touchStartX = 0;
     let touchStartY = 0;
-    /** True once a touch has moved enough to tell a scroll from a tap. */
-    let deciding = false;
-    /** True once that movement has been read as vertical, not sideways. From
-     *  here the gesture is ours: no native scroll for the rest of it. */
+    /** Guards against a stray touchmove/touchend with no matching start, e.g.
+     *  a second finger joining mid-gesture. */
     let tracking = false;
 
     const onTouchStart = (event: TouchEvent) => {
-      if (event.touches.length !== 1 || animating) return;
-      touchStartX = event.touches[0].clientX;
-      touchStartY = event.touches[0].clientY;
-      deciding = true;
-      tracking = false;
+      tracking = event.touches.length === 1 && !animating;
+      if (tracking) touchStartY = event.touches[0].clientY;
     };
 
     const onTouchMove = (event: TouchEvent) => {
-      if (event.touches.length !== 1) return;
-
-      if (deciding) {
-        const dx = event.touches[0].clientX - touchStartX;
-        const dy = event.touches[0].clientY - touchStartY;
-        if (Math.hypot(dx, dy) < TOUCH_COMMIT) return;
-        deciding = false;
-        if (Math.abs(dy) <= Math.abs(dx)) return; // sideways: not ours
-        tracking = true;
-      }
-
-      if (tracking) event.preventDefault();
+      if (!tracking || event.touches.length !== 1) return;
+      // Must run on every touchmove from the first one — see the note above.
+      event.preventDefault();
     };
 
     const onTouchEnd = (event: TouchEvent) => {
-      deciding = false;
       if (!tracking) return;
       tracking = false;
 
@@ -162,7 +149,6 @@ export function SlideScroll() {
     };
 
     const onTouchCancel = () => {
-      deciding = false;
       tracking = false;
     };
 
