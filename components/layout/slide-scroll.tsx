@@ -26,6 +26,12 @@ const COOLDOWN = 200;
  *  deltas re-accumulate into an unwanted second advance, too long and a
  *  genuine next gesture finds the lock still held. */
 const MOMENTUM_FADE = 3;
+/** One faded-looking delta isn't enough proof on its own — event coalescing
+ *  can hand back an artificially tiny delta for a single frame in the middle
+ *  of an otherwise-strong tail, and treating that as "spent" reopens the
+ *  door to the very re-accumulation MOMENTUM_FADE exists to stop. Requiring
+ *  this many in a row filters that out. */
+const FADE_STREAK = 2;
 /** Backstop for the rare case where neither a pause nor a faded delta ever
  *  arrives — bounds how long a consumed burst can hold the lock at all, so
  *  it can never get stuck open-ended. */
@@ -160,6 +166,7 @@ export function SlideScroll() {
      *  pause, or — failing both — once `consumedUntil` runs out. */
     let burstConsumed = false;
     let consumedUntil = 0;
+    let fadeStreak = 0;
 
     const onWheel = (event: WheelEvent) => {
       if (event.ctrlKey) return; // pinch zoom
@@ -169,13 +176,28 @@ export function SlideScroll() {
       if (now - lastEvent > BURST_GAP) {
         accumulated = 0;
         burstConsumed = false;
+        fadeStreak = 0;
       }
       lastEvent = now;
 
       if (burstConsumed) {
-        if (Math.abs(event.deltaY) > MOMENTUM_FADE && now < consumedUntil) return;
-        accumulated = 0;
+        // Nothing to evaluate yet — the block below already rejects this,
+        // and counting mid-animation samples toward the fade streak is
+        // exactly the jitter FADE_STREAK is meant to filter out.
+        if (now < blockUntil) return;
+
+        if (now < consumedUntil) {
+          if (Math.abs(event.deltaY) > MOMENTUM_FADE) {
+            fadeStreak = 0;
+            return;
+          }
+          fadeStreak += 1;
+          if (fadeStreak < FADE_STREAK) return;
+        }
+
         burstConsumed = false;
+        accumulated = 0;
+        fadeStreak = 0;
       }
 
       if (animating || now < blockUntil) {
@@ -195,6 +217,7 @@ export function SlideScroll() {
       const direction = accumulated > 0 ? 1 : -1;
       accumulated = 0;
       burstConsumed = true;
+      fadeStreak = 0;
       consumedUntil = now + DURATION + COOLDOWN + MOMENTUM_TAIL;
       advance(direction, now);
     };
