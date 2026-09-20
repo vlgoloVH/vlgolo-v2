@@ -19,9 +19,19 @@ export function ViewportHeight() {
     const root = document.documentElement;
     const viewport = window.visualViewport;
 
+    /** Safari's address bar collapsing and expanding changes visualViewport by
+     *  a few dozen pixels *while a scroll is running*. Writing that straight
+     *  through re-lays out every full-screen section mid-gesture, which is felt
+     *  as the whole page stuttering. Only a real change — a rotation, a window
+     *  resize, a split view — moves it. */
+    const SIGNIFICANT = 90;
+    let current = 0;
+
     const write = () => {
-      const height = viewport?.height ?? window.innerHeight;
-      root.style.setProperty("--app-vh", `${Math.round(height)}px`);
+      const height = Math.round(viewport?.height ?? window.innerHeight);
+      if (Math.abs(height - current) < SIGNIFICANT) return;
+      current = height;
+      root.style.setProperty("--app-vh", `${height}px`);
     };
 
     write();

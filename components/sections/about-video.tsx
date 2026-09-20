@@ -118,15 +118,28 @@ export function AboutVideo() {
     let raf = 0;
     let sized = "";
     let started = false;
+    let lastDraw = 0;
+
+    /** The clip runs at 24fps: drawing faster than that re-uploads the same
+     *  frame to the GPU for nothing, and that upload is the heaviest thing on
+     *  this page for a tablet. */
+    const FRAME = 1000 / 24;
 
     const draw = () => {
       raf = requestAnimationFrame(draw);
       if (!onScreen || video.readyState < 2) return;
 
+      const now = performance.now();
+      if (now - lastDraw < FRAME) return;
+      lastDraw = now;
+
       const box = canvas.getBoundingClientRect();
       if (!box.width) return;
 
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // Capped at 1.5 rather than 2: the portrait is a soft, dark photograph,
+      // where the last half-step of sharpness costs a lot of fill rate and is
+      // not visible.
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       const key = `${Math.round(box.width)}x${Math.round(box.height)}x${dpr}`;
       if (key !== sized) {
         canvas.width = Math.round(box.width * dpr);
