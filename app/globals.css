@@ -80,14 +80,24 @@
 
   /* Section-to-section scrolling is native CSS scroll snap: the browser
      owns wheel, trackpad and touch momentum itself, on every platform,
-     rather than a hand-rolled engine trying to reconstruct it. `mandatory`
-     is what makes it read as a deck of slides — any scroll at all settles
-     onto the next or previous section, not just ones that land close to a
-     boundary already. Off entirely under reduced motion, matching every
-     other animation on the page. */
+     rather than a hand-rolled engine trying to reconstruct it.
+     `scroll-behavior: smooth` is required here, not optional — without it
+     the snap still happens but as an instant jump-cut with no animation,
+     which is what actually broke on real hardware: no glide, just a jarring
+     splice from wherever the gesture left off straight to the section
+     boundary.
+     `proximity`, not `mandatory`: `mandatory` snap fights a scroll that's
+     trying to leave a section it's already sitting in — reported on a real
+     iPad as the page refusing to budge for a couple of seconds at the very
+     start of a scroll off Works. `proximity` still settles onto a section
+     the moment a scroll ends anywhere near one, which in a page that's
+     nothing but full-screen sections reads the same as slides for normal
+     scrolling, without that fight. Off entirely under reduced motion,
+     matching every other animation on the page. */
   @media (prefers-reduced-motion: no-preference) {
     html {
-      scroll-snap-type: y mandatory;
+      scroll-snap-type: y proximity;
+      scroll-behavior: smooth;
     }
   }
 
