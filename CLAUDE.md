@@ -5,10 +5,11 @@
 - `vlgolo-v2` is my NEW portfolio redesign and the primary working repository.
 - All code edits, commits, and pushes must happen only in `vlgolo-v2`.
 
-- `vlad-holoborodko-portfolio` is my OLD portfolio and current live production website.
-- The old repository is REFERENCE-ONLY.
-- You may read from it when I explicitly ask you to use content, information, assets, or implementation details from my old/current website.
-- Never edit, commit, push, change branches, change configuration, or perform destructive operations in `vlad-holoborodko-portfolio`.
+- `vlad-holoborodko-portfolio` is my OLD portfolio and current live production website — a reference source only.
+- Use it when I explicitly ask to reference the current/old/live site, or when the task specifically requires existing content, copy, assets, structure, behavior, or implementation from the current site.
+- Do not inspect or search it for normal redesign tasks that can be completed entirely within `vlgolo-v2`.
+- When using it, inspect only the files relevant to the requested information — do not scan the entire old repository.
+- It must always remain read-only: never modify, commit, push, change branches, install dependencies, or perform destructive operations in it.
 
 ## Git Workflow
 
