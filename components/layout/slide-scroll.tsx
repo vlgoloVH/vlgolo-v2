@@ -17,6 +17,15 @@ const THRESHOLD = 60;
 const BURST_GAP = 120;
 /** Quiet time after a slide lands, on top of the animation itself. */
 const COOLDOWN = 200;
+/** Backstop for a burst that never pauses long enough to hit BURST_GAP. Some
+ *  trackpads (iPad's included) keep a flick's momentum feeding wheel events
+ *  with no gap over 120ms for well over a second, so a burst that only clears
+ *  on silence can stay "consumed" indefinitely — the next real gesture, and
+ *  any horizontal one inside Works, then does nothing until the pointer
+ *  physically moves and interrupts the feed. This deadline forces it to
+ *  release once the animation, cooldown, and a generous decay margin have all
+ *  had time to pass, whether or not the tail ever actually goes quiet. */
+const MOMENTUM_TAIL = 700;
 
 /** Every scroll gesture moves exactly one section, eased, whatever the input.
  *  This is the only thing that moves the page between sections — there's no
@@ -142,16 +151,19 @@ export function SlideScroll() {
     let lastEvent = 0;
     /** Once a burst has advanced a section, the rest of its momentum tail is
      *  spent — a flick moves exactly one section, however long the trackpad
-     *  keeps feeding events after `blockUntil` expires. Only a genuine pause
-     *  (a fresh burst) can arm the next advance. */
+     *  keeps feeding events after `blockUntil` expires. A genuine pause (a
+     *  fresh burst) arms the next advance early; `consumedUntil` is the
+     *  backstop that arms it regardless, once the tail has had a fair chance
+     *  to finish. */
     let burstConsumed = false;
+    let consumedUntil = 0;
 
     const onWheel = (event: WheelEvent) => {
       if (event.ctrlKey) return; // pinch zoom
       event.preventDefault();
 
       const now = performance.now();
-      if (now - lastEvent > BURST_GAP) {
+      if (now - lastEvent > BURST_GAP || now >= consumedUntil) {
         accumulated = 0;
         burstConsumed = false;
       }
@@ -176,6 +188,7 @@ export function SlideScroll() {
       const direction = accumulated > 0 ? 1 : -1;
       accumulated = 0;
       burstConsumed = true;
+      consumedUntil = now + DURATION + COOLDOWN + MOMENTUM_TAIL;
       advance(direction, now);
     };
 
