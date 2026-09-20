@@ -13,8 +13,10 @@
 
 ## Git Workflow
 
-- For normal UI/UX implementation tasks, after completing the requested change, create a concise git commit and push it to main so Vercel can deploy it for visual review.
-- Do not ask for separate confirmation before commit/push when I have explicitly asked you to implement a change.
+- Who commits and pushes depends on which device I am working from. Check it: if the session can reach my MacBook (the remote-device tools respond), I am at the Mac. If it cannot, I am on the iPad.
+- At the Mac: make the change in the local repo folder only. Do not commit and do not push. Write out the commit message for me, and I commit and push it myself in GitHub Desktop.
+- On the iPad: there is no local folder, so work in the repo through GitHub directly and push to main yourself after completing the requested change.
+- Either way, Vercel deploys from main for visual review.
 - If I explicitly say "don't push", "no push", "local only", or similar, do not commit or push.
 - Never commit or push changes to `vlad-holoborodko-portfolio`; it remains reference-only.
 - After pushing to main, switch back to the current Claude session branch and fast-forward it to origin/main using `--ff-only`. If the fast-forward isn't possible, stop and report the divergence — never reset, force, discard, or overwrite.
