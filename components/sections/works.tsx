@@ -44,7 +44,7 @@ export function Works() {
             reinventing it, so nothing here has to know which one is driving. */}
         <div
           data-h-track
-          className="hide-scrollbar flex snap-x snap-proximity gap-6 overflow-x-auto overscroll-x-contain px-6 md:snap-none md:gap-10 md:px-0 md:pl-[clamp(var(--frame-pad),22vw,470px)] md:pr-[var(--frame-pad)]"
+          className="hide-scrollbar flex snap-x snap-proximity gap-6 overflow-x-auto overscroll-x-none px-6 md:snap-none md:gap-10 md:px-0 md:pl-[clamp(var(--frame-pad),22vw,470px)] md:pr-[var(--frame-pad)]"
         >
           {WORKS.cases.map((item, index) => (
             <article

@@ -70,6 +70,13 @@
   html {
     color-scheme: dark;
     overflow-x: clip;
+    /* SlideScroll owns every scroll gesture and always calls preventDefault,
+       so the page itself never rubber-bands. Without this, Safari/Chrome's
+       trackpad gesture recognizer still latches onto that elastic-bounce
+       affordance at each section boundary; once a gesture ends there, it
+       won't dispatch the next one until the pointer physically moves and
+       forces a fresh hit-test — which reads as "scroll stops working". */
+    overscroll-behavior-y: none;
   }
 
   body {
