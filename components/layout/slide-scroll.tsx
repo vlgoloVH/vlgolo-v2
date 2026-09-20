@@ -1,289 +1,90 @@
 "use client";
 
 import { useEffect } from "react";
+import Lenis from "lenis";
+import Snap from "lenis/snap";
 
-/** How long one slide takes, and the curve it travels on. */
-const DURATION = 780;
-const ease = (t: number) =>
-  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-
-/** How much wheel movement, or how far a swipe travels, counts as "go to the
- *  next slide". */
-const THRESHOLD = 60;
-/** A pause this long starts a fresh burst. A trackpad's momentum tail thins out
- *  into sparse little deltas, so each one lands in its own burst and never adds
- *  up to a move of its own. Wheel-only: a touch gesture is already one clean
- *  start-to-end move, nothing to burst-detect. */
-const BURST_GAP = 120;
-/** Quiet time after a slide lands, on top of the animation itself. */
-const COOLDOWN = 200;
-/** Backstop only — how long a consumed burst can hold the lock at most, in
- *  case a genuine BURST_GAP pause never arrives. Deliberately generous:
- *  Apple trackpads can keep a decaying-but-not-tiny momentum tail flowing at
- *  well under BURST_GAP between events for over a second, and any earlier
- *  cutoff that tries to guess "spent" from how small a delta looks reopens
- *  exactly what this exists to prevent — that same still-sizeable tail
- *  re-accumulating past THRESHOLD into a second, unrequested advance. A long
- *  flat cap never makes that mistake; the only cost is a slightly later
- *  unlock in the rare case the cap is what ends up firing. */
-const BURST_LOCK_MAX = 2200;
-
-/** Every scroll gesture moves exactly one section, eased, whatever the input.
- *  This is the only thing that moves the page between sections — there's no
- *  native `scroll-snap-type` in globals.css backing it up, deliberately: on
- *  iOS a touch gesture's own momentum fights mandatory snap, landing short of
- *  the next section and only catching up once that momentum fully decays.
- *  With no native snap left to fight, that can't happen; wheel, trackpad, and
- *  touch all just go through this same animation instead.
+/** One wheel/trackpad/touch input smooths into a single scroll position via
+ *  Lenis, and lenis/snap eases that position to the nearest full-screen
+ *  section once it settles — both are Lenis's own official pieces, built by
+ *  the library's authors for exactly this "deck of full-screen slides"
+ *  layout, so nothing here is guessing where one gesture ends and the next
+ *  begins from wheel-event timing. That guesswork is what the previous,
+ *  hand-rolled version of this file did, and it kept producing new bugs:
+ *  real trackpad momentum can keep firing sub-120ms events for well over a
+ *  second, which is indistinguishable, on timing alone, from a second
+ *  deliberate gesture arriving that soon after landing. Lenis's own
+ *  velocity, computed from the actual eased scroll curve rather than raw
+ *  event deltas, doesn't have that ambiguity — snapping only fires once
+ *  that velocity has genuinely settled.
  *
- *  Touch has one rule Safari imposes: native scrolling has to be blocked from
- *  the very first touchmove of a gesture, not once a few pixels in confirm
- *  it's a scroll. Wait even one event and Safari has already committed the
- *  gesture to its own scroller; preventDefault after that does nothing. So
- *  touchmove here calls it unconditionally — this page has nothing horizontal
- *  for a gesture to be "sideways" for. */
+ *  Touch stays native: `syncTouch` is left off, so iOS/iPadOS's own
+ *  momentum scrolling drives it untouched, and Lenis still reads its
+ *  velocity from the resulting native scroll events, so lenis/snap catches
+ *  a touch gesture's rest the same way it does a wheel gesture's. */
 export function SlideScroll() {
   useEffect(() => {
     const desktop = window.matchMedia("(min-width: 768px)");
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (!desktop.matches || reduced.matches) return;
 
+    const lenis = new Lenis({ syncTouch: false });
+
+    const snap = new Snap(lenis, { type: "mandatory" });
+    const removeSnapElements = snap.addElements(
+      [...document.querySelectorAll<HTMLElement>(".section-slide")],
+      { align: "start" },
+    );
+
     let raf = 0;
-    let animating = false;
-    let blockUntil = 0;
-    /** Nothing is accepted until this moment: the animation plus a little quiet
-     *  after it. Deliberately a deadline rather than a flag — a flag that waits
-     *  to be cleared can get stuck behind a long momentum tail, and then the
-     *  next gesture does nothing at all. */
-
-    const tops = () =>
-      [...document.querySelectorAll<HTMLElement>(".section-slide")]
-        .map((el) => el.offsetTop)
-        .sort((a, b) => a - b);
-
-    /** Index of whichever position sits closest to y. */
-    const nearestIndex = (positions: number[], y: number) =>
-      positions.reduce(
-        (best, top, i) =>
-          Math.abs(top - y) < Math.abs(positions[best] - y) ? i : best,
-        0,
-      );
-
-    /** The section a gesture would currently land on or leave from — same
-     *  "nearest" logic as the vertical advance, just resolved to its element. */
-    const activeSection = (): HTMLElement | undefined => {
-      const sections = [...document.querySelectorAll<HTMLElement>(".section-slide")].sort(
-        (a, b) => a.offsetTop - b.offsetTop,
-      );
-      return sections[nearestIndex(sections.map((el) => el.offsetTop), window.scrollY)];
+    const tick = (time: number) => {
+      lenis.raf(time);
+      raf = requestAnimationFrame(tick);
     };
+    raf = requestAnimationFrame(tick);
 
-    /** A section can carry one horizontal case track (see Works). Its own
-     *  scrollLeft is the single source of truth for how far through it the
-     *  visitor is — nothing here duplicates that as separate state. */
-    const activeTrack = () =>
-      activeSection()?.querySelector<HTMLElement>("[data-h-track]") ?? null;
-
-    /** Feeds a vertical gesture's delta into the track's horizontal scroll
-     *  instead, as long as the gesture's direction still has room to run
-     *  there. Returns false once the track is exhausted in that direction, so
-     *  the caller falls through to the normal section-to-section advance. */
-    const tryHorizontal = (track: HTMLElement, dy: number) => {
-      const max = track.scrollWidth - track.clientWidth;
-      if (dy > 0 && track.scrollLeft >= max - 1) return false;
-      if (dy < 0 && track.scrollLeft <= 0) return false;
-      track.scrollLeft = Math.min(Math.max(track.scrollLeft + dy, 0), max);
-      return true;
-    };
-
-    /** iPad's Safari can still be folding its toolbar in or out as a glide
-     *  lands, and a `.section-slide`'s `svh` height does not always keep pace
-     *  with that — the page can settle a few pixels short of where the
-     *  section it just glided to actually starts. One frame after the glide
-     *  ends, this re-measures from scratch and corrects the drift instantly,
-     *  no second animation. */
-    const settle = () => {
-      requestAnimationFrame(() => {
-        const positions = tops();
-        const y = window.scrollY;
-        const target = positions[nearestIndex(positions, y)];
-        if (target !== undefined && target !== y) window.scrollTo(0, target);
-      });
-    };
-
-    const glide = (to: number) => {
-      const from = window.scrollY;
-      const distance = to - from;
-      if (!distance) return;
-
-      animating = true;
-      const start = performance.now();
-
-      const step = () => {
-        const t = Math.min((performance.now() - start) / DURATION, 1);
-        window.scrollTo(0, Math.round(from + distance * ease(t)));
-        if (t < 1) {
-          raf = requestAnimationFrame(step);
-        } else {
-          raf = 0;
-          animating = false;
-          settle();
+    /** A section can carry one horizontal case track (see Works). Wheel
+     *  input over whichever section currently fills the viewport pans that
+     *  track sideways instead of the page — read fresh off geometry on
+     *  every event rather than tracked as state, and given first refusal
+     *  ahead of Lenis (capture phase fires before Lenis's own bubble-phase
+     *  listener on window, whatever order the two were registered in) so a
+     *  pan is never also read as page-scroll input. Once the track runs out
+     *  of room, the event is left untouched and falls through to Lenis,
+     *  which carries the page on to the next section exactly like normal
+     *  wheel input. */
+    const activeTrack = (): HTMLElement | null => {
+      const mid = window.innerHeight / 2;
+      for (const section of document.querySelectorAll<HTMLElement>(".section-slide")) {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= mid && rect.bottom >= mid) {
+          return section.querySelector<HTMLElement>("[data-h-track]");
         }
-      };
-
-      raf = requestAnimationFrame(step);
+      }
+      return null;
     };
-
-    /** Shared by wheel and touch: given a direction, glide to the next section
-     *  from wherever the page currently sits, unless one is already landing or
-     *  the last one only just did. */
-    const advance = (direction: 1 | -1, now: number) => {
-      if (animating || now < blockUntil) return;
-      const positions = tops();
-      const y = window.scrollY;
-      const current = nearestIndex(positions, y);
-      const next = current + direction;
-      if (next < 0 || next >= positions.length) return;
-      blockUntil = now + DURATION + COOLDOWN;
-      glide(positions[next]);
-    };
-
-    let accumulated = 0;
-    let lastEvent = 0;
-    /** Once a burst has advanced a section, the rest of its momentum tail is
-     *  spent — a flick moves exactly one section, however long the trackpad
-     *  keeps feeding events afterward. Cleared only by a genuine pause (a
-     *  real BURST_GAP with no events at all) or, failing that, once
-     *  `burstLockUntil` runs out — never by guessing by delta size, which is
-     *  what let a still-flowing tail sneak past as a "new" gesture before. */
-    let burstConsumed = false;
-    let burstLockUntil = 0;
 
     const onWheel = (event: WheelEvent) => {
-      if (event.ctrlKey) return; // pinch zoom
-      event.preventDefault();
-
-      const now = performance.now();
-      if (now - lastEvent > BURST_GAP) {
-        accumulated = 0;
-        burstConsumed = false;
-      }
-      lastEvent = now;
-
-      if (burstConsumed && now >= burstLockUntil) burstConsumed = false;
-
-      // A gesture that carries the visitor onto a section with its own
-      // horizontal track hands off to it immediately, leftover momentum and
-      // all: that tail is exactly what should keep the cases moving, not
-      // get read as vertical-advance overrun and swallowed by the burst
-      // guard below before it ever reaches the track. Skipped mid-glide,
-      // same as the guard itself — there's nothing to hand off to until the
-      // section that owns the track is actually the one on screen.
-      if (!animating) {
-        const track = activeTrack();
-        if (track && tryHorizontal(track, event.deltaY)) {
-          accumulated = 0;
-          burstConsumed = false;
-          return;
-        }
-      }
-
-      if (burstConsumed || animating || now < blockUntil) {
-        accumulated = 0;
-        return;
-      }
-
-      accumulated += event.deltaY;
-      if (Math.abs(accumulated) < THRESHOLD) return;
-
-      const direction = accumulated > 0 ? 1 : -1;
-      accumulated = 0;
-      burstConsumed = true;
-      burstLockUntil = now + BURST_LOCK_MAX;
-      advance(direction, now);
-    };
-
-    /** A touch gesture is one clean start-to-end move, so it needs none of the
-     *  wheel's burst accounting — just where it started and where it ended. */
-    let touchStartY = 0;
-    /** Updated every touchmove, so a track can be panned by the frame's own
-     *  delta instead of the gesture's total distance. */
-    let touchLastY = 0;
-    /** Guards against a stray touchmove/touchend with no matching start, e.g.
-     *  a second finger joining mid-gesture. */
-    let tracking = false;
-
-    const onTouchStart = (event: TouchEvent) => {
-      tracking = event.touches.length === 1 && !animating;
-      if (tracking) touchStartY = touchLastY = event.touches[0].clientY;
-    };
-
-    const onTouchMove = (event: TouchEvent) => {
-      if (!tracking || event.touches.length !== 1) return;
-      // Must run on every touchmove from the first one — see the note above.
-      event.preventDefault();
-
-      const y = event.touches[0].clientY;
-      const dy = touchLastY - y;
-      touchLastY = y;
-
       const track = activeTrack();
-      if (track) tryHorizontal(track, dy);
+      if (!track) return;
+
+      const max = track.scrollWidth - track.clientWidth;
+      const forward = event.deltaY > 0;
+      if (forward && track.scrollLeft >= max - 1) return;
+      if (!forward && track.scrollLeft <= 0) return;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      track.scrollLeft = Math.min(Math.max(track.scrollLeft + event.deltaY, 0), max);
     };
-
-    const onTouchEnd = (event: TouchEvent) => {
-      if (!tracking) return;
-      tracking = false;
-
-      const dy = touchStartY - event.changedTouches[0].clientY;
-      if (Math.abs(dy) < THRESHOLD) return;
-
-      // touchmove already panned any track along the way; only carry the
-      // gesture on to the next section once that track has run out of room
-      // in the swiped direction.
-      const track = activeTrack();
-      if (track) {
-        const max = track.scrollWidth - track.clientWidth;
-        if (dy > 0 && track.scrollLeft < max - 1) return;
-        if (dy < 0 && track.scrollLeft > 0) return;
-      }
-
-      advance(dy > 0 ? 1 : -1, performance.now());
-    };
-
-    const onTouchCancel = () => {
-      tracking = false;
-    };
-
-    /** The same drift `settle()` corrects after a glide can also show up
-     *  mid-rest: iPad's toolbar folding away from a gesture on another tab, an
-     *  external keyboard dismissing, anything that resizes the visible area
-     *  without a scroll of its own. Only outside a gesture or its own glide —
-     *  `tracking`/`animating` both mean the page is already mid-move and
-     *  about to correct itself anyway. */
-    const onViewportResize = () => {
-      if (animating || tracking) return;
-      const positions = tops();
-      const y = window.scrollY;
-      const target = positions[nearestIndex(positions, y)];
-      if (target !== undefined && target !== y) window.scrollTo(0, target);
-    };
-
-    window.addEventListener("wheel", onWheel, { passive: false });
-    window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: false });
-    window.addEventListener("touchend", onTouchEnd, { passive: true });
-    window.addEventListener("touchcancel", onTouchCancel, { passive: true });
-    window.visualViewport?.addEventListener("resize", onViewportResize);
+    window.addEventListener("wheel", onWheel, { capture: true, passive: false });
 
     return () => {
+      window.removeEventListener("wheel", onWheel, { capture: true });
       cancelAnimationFrame(raf);
-      window.removeEventListener("wheel", onWheel);
-      window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchmove", onTouchMove);
-      window.removeEventListener("touchend", onTouchEnd);
-      window.removeEventListener("touchcancel", onTouchCancel);
-      window.visualViewport?.removeEventListener("resize", onViewportResize);
+      removeSnapElements();
+      snap.destroy();
+      lenis.destroy();
     };
   }, []);
 
