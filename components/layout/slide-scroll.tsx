@@ -140,14 +140,24 @@ export function SlideScroll() {
 
     let accumulated = 0;
     let lastEvent = 0;
+    /** Once a burst has advanced a section, the rest of its momentum tail is
+     *  spent — a flick moves exactly one section, however long the trackpad
+     *  keeps feeding events after `blockUntil` expires. Only a genuine pause
+     *  (a fresh burst) can arm the next advance. */
+    let burstConsumed = false;
 
     const onWheel = (event: WheelEvent) => {
       if (event.ctrlKey) return; // pinch zoom
       event.preventDefault();
 
       const now = performance.now();
-      if (now - lastEvent > BURST_GAP) accumulated = 0;
+      if (now - lastEvent > BURST_GAP) {
+        accumulated = 0;
+        burstConsumed = false;
+      }
       lastEvent = now;
+
+      if (burstConsumed) return;
 
       if (animating || now < blockUntil) {
         accumulated = 0;
@@ -165,6 +175,7 @@ export function SlideScroll() {
 
       const direction = accumulated > 0 ? 1 : -1;
       accumulated = 0;
+      burstConsumed = true;
       advance(direction, now);
     };
 
