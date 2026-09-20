@@ -16,6 +16,7 @@
 - Do not ask for separate confirmation before commit/push when I have explicitly asked you to implement a change.
 - If I explicitly say "don't push", "no push", "local only", or similar, do not commit or push.
 - Never commit or push changes to `vlad-holoborodko-portfolio`; it remains reference-only.
+- After pushing to main, switch back to the current Claude session branch and fast-forward it to origin/main using `--ff-only`. If the fast-forward isn't possible, stop and report the divergence — never reset, force, discard, or overwrite.
 
 ## Working Style
 
