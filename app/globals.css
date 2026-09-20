@@ -70,13 +70,25 @@
   html {
     color-scheme: dark;
     overflow-x: clip;
-    /* SlideScroll owns every scroll gesture and always calls preventDefault,
-       so the page itself never rubber-bands. Without this, Safari/Chrome's
-       trackpad gesture recognizer still latches onto that elastic-bounce
-       affordance at each section boundary; once a gesture ends there, it
-       won't dispatch the next one until the pointer physically moves and
-       forces a fresh hit-test — which reads as "scroll stops working". */
+    /* Without this, Safari/Chrome's trackpad gesture recognizer still
+       latches onto the elastic-bounce affordance at the very top/bottom of
+       the page; once a gesture ends there, it won't dispatch the next one
+       until the pointer physically moves and forces a fresh hit-test —
+       which reads as "scroll stops working". */
     overscroll-behavior-y: none;
+  }
+
+  /* Section-to-section scrolling is native CSS scroll snap: the browser
+     owns wheel, trackpad and touch momentum itself, on every platform,
+     rather than a hand-rolled engine trying to reconstruct it. `mandatory`
+     is what makes it read as a deck of slides — any scroll at all settles
+     onto the next or previous section, not just ones that land close to a
+     boundary already. Off entirely under reduced motion, matching every
+     other animation on the page. */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-snap-type: y mandatory;
+    }
   }
 
   body {
@@ -187,27 +199,22 @@
   opacity: calc(1 - var(--hero-progress, 0) * 2.2);
 }
 
-/* Every section is one screen tall. SlideScroll (components/layout) owns the
-   section-to-section transition itself, for every input — wheel, trackpad,
-   and touch alike — so there is deliberately no `scroll-snap-type` here.
-   Native mandatory snap used to sit alongside it as a fallback, but on iOS
-   Safari mandatory snap fights a touch gesture's own momentum: the page
-   settles just short of the next section and only catches up once that
-   momentum fully decays, a couple of seconds later. That fight can't happen
-   if there's no native snap to have it with, so this page has none — one
-   mechanism owns the transition, not two disagreeing ones.
-   `svh`, not `dvh`, for the same family of reasons: `dvh` changes size as
-   Safari's address bar hides and shows mid-scroll, so a section's height —
-   and every later section's offset — shifts while SlideScroll is mid-glide
-   toward a target it measured before that shift. It lands short by however
-   much the bar's height was, which shows up as a gap at the top of the
-   section. `svh` is meant to be fixed to the bar-visible size regardless of
-   what the bar actually does — in practice iPad Safari does not reliably
-   hold to that, so `--app-vh` (see ViewportHeight) overrides it with a
-   value measured straight from `visualViewport`, which is. `100svh` only
-   stands as the fallback for the instant before that JS runs. */
+/* Each section is a snap point (see `scroll-snap-type` on html, above) that
+   the browser lands the top of at the top of the viewport — `start` works
+   fine even where a section needs more than one screen of its own content,
+   which is why this is `min-height`, not a fixed `height`: the visitor can
+   still scroll further within a tall section before the next snap point
+   takes over.
+   `svh`, not `dvh`: `dvh` changes size as Safari's address bar hides and
+   shows mid-scroll, which would shift a section's height mid-gesture. `svh`
+   is meant to be fixed to the bar-visible size regardless of what the bar
+   actually does — in practice iPad Safari does not reliably hold to that,
+   so `--app-vh` (see ViewportHeight) overrides it with a value measured
+   straight from `visualViewport`, which is. `100svh` only stands as the
+   fallback for the instant before that JS runs. */
 .section-slide {
   min-height: var(--app-vh, 100svh);
+  scroll-snap-align: start;
 }
 
 @media (min-width: 768px) {
