@@ -43,8 +43,6 @@ export const HERO = {
 export const WORKS = {
   /** Set vertically in the left margin, the same as ABOUT.rail. */
   rail: "Works",
-  eyebrow: "Featured projects",
-  count: "( 06 )",
   cases: [
     {
       slug: "smartcrowd",
@@ -81,24 +79,6 @@ export const WORKS = {
         "A global marine supplier that sources and delivers technical spare parts for ship equipment anywhere in the world.",
       cover: "/works/DanMon_preview.jpg",
       tags: ["Enterprise", "CRM"],
-    },
-    {
-      slug: "fozzy-group",
-      title: "Fozzy Group",
-      year: "2025",
-      description:
-        "Silpo, the flagship supermarket chain of Fozzy Group, one of Ukraine's largest retailers with hundreds of stores nationwide.",
-      cover: "/works/FozzyGroup_preview.jpg",
-      tags: ["Retail", "Design System"],
-    },
-    {
-      slug: "bitterbrains",
-      title: "BitterBrains",
-      year: "2018–2023",
-      description:
-        "A developer education company building online learning platforms, skill certifications, and global conferences for software engineers.",
-      cover: "/works/BitterBrail_preview.jpg",
-      tags: ["EdTech", "SaaS"],
     },
   ],
 } as const;
