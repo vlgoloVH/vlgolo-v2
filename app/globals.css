@@ -78,26 +78,20 @@
     overscroll-behavior-y: none;
   }
 
-  /* Section-to-section scrolling is native CSS scroll snap: the browser
-     owns wheel, trackpad and touch momentum itself, on every platform,
-     rather than a hand-rolled engine trying to reconstruct it.
-     `scroll-behavior: smooth` is required here, not optional — without it
-     the snap still happens but as an instant jump-cut with no animation,
-     which is what actually broke on real hardware: no glide, just a jarring
-     splice from wherever the gesture left off straight to the section
-     boundary.
-     `proximity`, not `mandatory`: `mandatory` snap fights a scroll that's
-     trying to leave a section it's already sitting in — reported on a real
-     iPad as the page refusing to budge for a couple of seconds at the very
-     start of a scroll off Works. `proximity` still settles onto a section
-     the moment a scroll ends anywhere near one, which in a page that's
-     nothing but full-screen sections reads the same as slides for normal
-     scrolling, without that fight. Off entirely under reduced motion,
-     matching every other animation on the page. */
-  @media (prefers-reduced-motion: no-preference) {
+  /* CSS snap is for a real pointer only. On a touch screen it is what made the
+     About section jump straight through to the next one: an iPad's own momentum
+     keeps running after a swipe has visually landed, and `proximity` then picks
+     whichever boundary that momentum is closest to — which, a moment after
+     landing, is already the *next* section. Reported exactly that way, in both
+     directions. A finger swipe now simply scrolls, and stops where it stopped.
+     Wheel and trackpad gestures, which iPadOS reports as a coarse pointer too,
+     are answered by SlideScroll instead: one gesture, one eased slide.
+     No `scroll-behavior: smooth` anywhere — it animates every scroll the page
+     makes, including SlideScroll's own, and the two then pull at the same
+     position. */
+  @media (prefers-reduced-motion: no-preference) and (pointer: fine) {
     html {
       scroll-snap-type: y proximity;
-      scroll-behavior: smooth;
     }
   }
 
@@ -223,13 +217,16 @@
    straight from `visualViewport`, which is. `100svh` only stands as the
    fallback for the instant before that JS runs. */
 .section-slide {
-  min-height: var(--app-vh, 100svh);
+  /* Whichever of the two measurements is smaller: a section taller than what is
+     actually on screen leaves the top of the next one already showing, which is
+     both visible and enough for a snap to latch onto. */
+  min-height: min(100svh, var(--app-vh, 100svh));
   scroll-snap-align: start;
 }
 
 @media (min-width: 768px) {
   .section-slide {
-    height: var(--app-vh, 100svh);
+    height: min(100svh, var(--app-vh, 100svh));
   }
 }
 

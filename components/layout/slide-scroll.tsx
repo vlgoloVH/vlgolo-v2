@@ -31,8 +31,9 @@ const COOLDOWN = 180;
  *  not fight the gesture.
  *
  *  While the Works section fills the screen, the same wheel gesture pans its
- *  horizontal case track instead, and only moves on to the next section once
- *  the track has run out of room. */
+ *  horizontal case track instead — plainly, as far as the gesture goes, with
+ *  nothing pulling the cases into place — and only moves on to the next section
+ *  once the track has run out of room. */
 export function SlideScroll() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -74,11 +75,9 @@ export function SlideScroll() {
       return null;
     };
 
-    /** One eased move, either the page down to a section or the case track
-     *  sideways to the next case. Both are the same gesture to the visitor, so
-     *  they are the same animation here. */
-    const glide = (to: number, track?: HTMLElement) => {
-      const from = track ? track.scrollLeft : window.scrollY;
+    /** One eased move down to a section. */
+    const glide = (to: number) => {
+      const from = window.scrollY;
       const distance = to - from;
       if (!distance) return;
 
@@ -90,12 +89,7 @@ export function SlideScroll() {
 
       const step = () => {
         const t = Math.min((performance.now() - start) / DURATION, 1);
-        const at = Math.round(from + distance * ease(t));
-        if (track) {
-          track.scrollLeft = at;
-        } else {
-          window.scrollTo(0, at);
-        }
+        window.scrollTo(0, Math.round(from + distance * ease(t)));
         if (t < 1) {
           raf = requestAnimationFrame(step);
         } else {
@@ -121,6 +115,26 @@ export function SlideScroll() {
         return;
       }
 
+      // The horizontal track gets first refusal, and unlike the sections it
+      // scrolls plainly: the wheel moves the cases as far as the gesture moved,
+      // with nothing pulling them into place afterwards. Only once the track is
+      // out of room does the gesture become a section move.
+      const track = activeTrack();
+      if (track) {
+        const max = track.scrollWidth - track.clientWidth;
+        const hasRoom =
+          event.deltaY > 0 ? track.scrollLeft < max - 1 : track.scrollLeft > 0;
+        if (hasRoom) {
+          event.preventDefault();
+          accumulated = 0;
+          track.scrollLeft = Math.min(
+            Math.max(track.scrollLeft + event.deltaY, 0),
+            max,
+          );
+          return;
+        }
+      }
+
       accumulated += event.deltaY;
       if (Math.abs(accumulated) < THRESHOLD) {
         event.preventDefault();
@@ -128,25 +142,6 @@ export function SlideScroll() {
       }
 
       const forward = accumulated > 0;
-
-      // The horizontal track gets first refusal: while it still has room, the
-      // gesture moves the cases along rather than leaving the section. One
-      // gesture, one case, same as one gesture, one section.
-      const track = activeTrack();
-      if (track) {
-        const step = track.clientWidth || 1;
-        const max = track.scrollWidth - track.clientWidth;
-        const hasRoom = forward ? track.scrollLeft < max - 1 : track.scrollLeft > 0;
-        if (hasRoom) {
-          const index = Math.round(track.scrollLeft / step) + (forward ? 1 : -1);
-          const target = Math.min(Math.max(index * step, 0), max);
-          accumulated = 0;
-          event.preventDefault();
-          blockUntil = now + DURATION + COOLDOWN;
-          glide(target, track);
-          return;
-        }
-      }
 
       const tops = sections().map((el) => el.offsetTop);
       const y = window.scrollY;

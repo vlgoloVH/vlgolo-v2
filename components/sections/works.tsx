@@ -30,15 +30,17 @@ export function Works() {
 
       {/* Native overflow-x is the source of truth for horizontal position: on
           mobile it is a plain touch-swipe carousel, and on desktop SlideScroll
-          drives this same scrollLeft instead of reinventing it. */}
+          feeds the wheel into this same scrollLeft instead of reinventing it.
+          No snapping of its own: unlike the sections, the cases scroll freely,
+          so a gesture leaves them wherever it leaves them. */}
       <div
         data-h-track
-        className="hide-scrollbar reveal [--reveal-i:2] absolute inset-y-0 left-[var(--frame-line)] right-[var(--frame-line)] flex snap-x snap-proximity overflow-x-auto overscroll-x-none md:snap-none"
+        className="hide-scrollbar reveal [--reveal-i:2] absolute inset-y-0 left-[var(--frame-line)] right-[var(--frame-line)] flex overflow-x-auto overscroll-x-none"
       >
         {WORKS.cases.map((item, index) => (
           <article
             key={item.slug}
-            className="relative h-full w-full shrink-0 snap-start bg-white/5"
+            className="relative h-full w-full shrink-0 bg-white/5"
           >
             {/* Placeholder stand-in for the case's cover image. */}
             <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
