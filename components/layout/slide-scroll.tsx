@@ -180,6 +180,23 @@ export function SlideScroll() {
       }
       lastEvent = now;
 
+      // A gesture that carries the visitor onto a section with its own
+      // horizontal track hands off to it immediately, leftover momentum and
+      // all: that tail is exactly what should keep the cases moving, not
+      // get read as vertical-advance overrun and swallowed by the burst
+      // guard below before it ever reaches the track. Skipped mid-glide,
+      // same as the guard itself — there's nothing to hand off to until the
+      // section that owns the track is actually the one on screen.
+      if (!animating) {
+        const track = activeTrack();
+        if (track && tryHorizontal(track, event.deltaY)) {
+          accumulated = 0;
+          burstConsumed = false;
+          fadeStreak = 0;
+          return;
+        }
+      }
+
       if (burstConsumed) {
         // Nothing to evaluate yet — the block below already rejects this,
         // and counting mid-animation samples toward the fade streak is
@@ -201,12 +218,6 @@ export function SlideScroll() {
       }
 
       if (animating || now < blockUntil) {
-        accumulated = 0;
-        return;
-      }
-
-      const track = activeTrack();
-      if (track && tryHorizontal(track, event.deltaY)) {
         accumulated = 0;
         return;
       }
