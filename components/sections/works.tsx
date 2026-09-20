@@ -33,7 +33,7 @@ export function Works() {
           drives this same scrollLeft instead of reinventing it. */}
       <div
         data-h-track
-        className="hide-scrollbar reveal [--reveal-i:2] absolute inset-y-0 left-[var(--frame-line)] right-[var(--frame-line)] flex snap-x snap-proximity overflow-x-auto overscroll-x-contain md:snap-none"
+        className="hide-scrollbar reveal [--reveal-i:2] absolute inset-y-0 left-[var(--frame-line)] right-[var(--frame-line)] flex snap-x snap-proximity overflow-x-auto overscroll-x-none md:snap-none"
       >
         {WORKS.cases.map((item, index) => (
           <article
