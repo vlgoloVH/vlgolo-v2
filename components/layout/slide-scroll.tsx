@@ -17,25 +17,16 @@ const THRESHOLD = 60;
 const BURST_GAP = 120;
 /** Quiet time after a slide lands, on top of the animation itself. */
 const COOLDOWN = 200;
-/** A delta this small means a flick's momentum has faded to nothing, whether
- *  or not the events themselves ever stop long enough to hit BURST_GAP —
- *  some trackpads (iPad's included) keep feeding tiny deltas with no real
- *  gap for well over a second. This is what actually ends a consumed burst;
- *  a fixed timer can't, since how long momentum takes to fade varies with
- *  how hard the flick was — too short and the tail's last, still-sizeable
- *  deltas re-accumulate into an unwanted second advance, too long and a
- *  genuine next gesture finds the lock still held. */
-const MOMENTUM_FADE = 3;
-/** One faded-looking delta isn't enough proof on its own — event coalescing
- *  can hand back an artificially tiny delta for a single frame in the middle
- *  of an otherwise-strong tail, and treating that as "spent" reopens the
- *  door to the very re-accumulation MOMENTUM_FADE exists to stop. Requiring
- *  this many in a row filters that out. */
-const FADE_STREAK = 2;
-/** Backstop for the rare case where neither a pause nor a faded delta ever
- *  arrives — bounds how long a consumed burst can hold the lock at all, so
- *  it can never get stuck open-ended. */
-const MOMENTUM_TAIL = 2000;
+/** Backstop only — how long a consumed burst can hold the lock at most, in
+ *  case a genuine BURST_GAP pause never arrives. Deliberately generous:
+ *  Apple trackpads can keep a decaying-but-not-tiny momentum tail flowing at
+ *  well under BURST_GAP between events for over a second, and any earlier
+ *  cutoff that tries to guess "spent" from how small a delta looks reopens
+ *  exactly what this exists to prevent — that same still-sizeable tail
+ *  re-accumulating past THRESHOLD into a second, unrequested advance. A long
+ *  flat cap never makes that mistake; the only cost is a slightly later
+ *  unlock in the rare case the cap is what ends up firing. */
+const BURST_LOCK_MAX = 2200;
 
 /** Every scroll gesture moves exactly one section, eased, whatever the input.
  *  This is the only thing that moves the page between sections — there's no
@@ -161,12 +152,12 @@ export function SlideScroll() {
     let lastEvent = 0;
     /** Once a burst has advanced a section, the rest of its momentum tail is
      *  spent — a flick moves exactly one section, however long the trackpad
-     *  keeps feeding events after `blockUntil` expires. Cleared as soon as
-     *  the tail's own deltas fade out (see MOMENTUM_FADE), or by a genuine
-     *  pause, or — failing both — once `consumedUntil` runs out. */
+     *  keeps feeding events afterward. Cleared only by a genuine pause (a
+     *  real BURST_GAP with no events at all) or, failing that, once
+     *  `burstLockUntil` runs out — never by guessing by delta size, which is
+     *  what let a still-flowing tail sneak past as a "new" gesture before. */
     let burstConsumed = false;
-    let consumedUntil = 0;
-    let fadeStreak = 0;
+    let burstLockUntil = 0;
 
     const onWheel = (event: WheelEvent) => {
       if (event.ctrlKey) return; // pinch zoom
@@ -176,9 +167,10 @@ export function SlideScroll() {
       if (now - lastEvent > BURST_GAP) {
         accumulated = 0;
         burstConsumed = false;
-        fadeStreak = 0;
       }
       lastEvent = now;
+
+      if (burstConsumed && now >= burstLockUntil) burstConsumed = false;
 
       // A gesture that carries the visitor onto a section with its own
       // horizontal track hands off to it immediately, leftover momentum and
@@ -192,32 +184,11 @@ export function SlideScroll() {
         if (track && tryHorizontal(track, event.deltaY)) {
           accumulated = 0;
           burstConsumed = false;
-          fadeStreak = 0;
           return;
         }
       }
 
-      if (burstConsumed) {
-        // Nothing to evaluate yet — the block below already rejects this,
-        // and counting mid-animation samples toward the fade streak is
-        // exactly the jitter FADE_STREAK is meant to filter out.
-        if (now < blockUntil) return;
-
-        if (now < consumedUntil) {
-          if (Math.abs(event.deltaY) > MOMENTUM_FADE) {
-            fadeStreak = 0;
-            return;
-          }
-          fadeStreak += 1;
-          if (fadeStreak < FADE_STREAK) return;
-        }
-
-        burstConsumed = false;
-        accumulated = 0;
-        fadeStreak = 0;
-      }
-
-      if (animating || now < blockUntil) {
+      if (burstConsumed || animating || now < blockUntil) {
         accumulated = 0;
         return;
       }
@@ -228,8 +199,7 @@ export function SlideScroll() {
       const direction = accumulated > 0 ? 1 : -1;
       accumulated = 0;
       burstConsumed = true;
-      fadeStreak = 0;
-      consumedUntil = now + DURATION + COOLDOWN + MOMENTUM_TAIL;
+      burstLockUntil = now + BURST_LOCK_MAX;
       advance(direction, now);
     };
 
