@@ -10,6 +10,13 @@
 - You may read from it when I explicitly ask you to use content, information, assets, or implementation details from my old/current website.
 - Never edit, commit, push, change branches, change configuration, or perform destructive operations in `vlad-holoborodko-portfolio`.
 
+## Git Workflow
+
+- For normal UI/UX implementation tasks, after completing the requested change, create a concise git commit and push it to main so Vercel can deploy it for visual review.
+- Do not ask for separate confirmation before commit/push when I have explicitly asked you to implement a change.
+- If I explicitly say "don't push", "no push", "local only", or similar, do not commit or push.
+- Never commit or push changes to `vlad-holoborodko-portfolio`; it remains reference-only.
+
 ## Working Style
 
 - I am a Product Designer, not a developer.
