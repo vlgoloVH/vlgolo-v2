@@ -9,10 +9,17 @@ const ease = (t: number) =>
 
 /** How much wheel movement counts as "go to the next slide". */
 const THRESHOLD = 60;
-/** Silence this long means the visitor has actually let go: it is the one thing
- *  that ends a gesture and allows the next one. A trackpad's momentum keeps
- *  firing well under this for seconds after the fingers have lifted. */
+/** Silence this long means the visitor has actually let go. A trackpad's
+ *  momentum keeps firing well under this for seconds after the fingers lift, so
+ *  silence alone cannot be the only way a gesture ends — see PUSH below. */
 const BURST_GAP = 200;
+/** Momentum only ever decays. So a delta that jumps back up, by this much over
+ *  the quietest the tail has got and above the floor, is not the tail any more:
+ *  it is fingers back on the trackpad. Two in a row are required, because event
+ *  coalescing can hand back one artificially large sample mid-tail. */
+const PUSH_RATIO = 3;
+const PUSH_FLOOR = 14;
+const PUSH_STREAK = 2;
 /** Quiet time after a slide lands, on top of the animation itself. */
 const COOLDOWN = 180;
 
@@ -58,6 +65,10 @@ export function SlideScroll() {
      *  new instruction, so it must not be able to trigger a second slide just
      *  because the cooldown happened to expire while it was still running. */
     let tail = false;
+    /** The quietest the current tail has got, and how many samples in a row have
+     *  come back above it. Both reset whenever a tail starts. */
+    let tailFloor = Infinity;
+    let pushes = 0;
     /** Nothing is accepted until this moment: the animation plus a little quiet
      *  after it. A deadline rather than a flag, because a flag waiting to be
      *  cleared can get stuck behind a long momentum tail and then the next
@@ -128,16 +139,37 @@ export function SlideScroll() {
       // what a trackpad does, because its momentum keeps events coming for
       // seconds with no gap long enough to look like a pause.
       if (animating || now < blockUntil) {
-        tail = true;
+        if (!tail) {
+          tail = true;
+          tailFloor = Infinity;
+          pushes = 0;
+        }
         accumulated = 0;
         event.preventDefault();
         return;
       }
 
       if (tail) {
+        const size = Math.abs(event.deltaY);
+        if (size > Math.max(tailFloor * PUSH_RATIO, PUSH_FLOOR)) {
+          pushes += 1;
+        } else {
+          pushes = 0;
+          tailFloor = Math.min(tailFloor, size);
+        }
+
+        if (pushes < PUSH_STREAK) {
+          accumulated = 0;
+          event.preventDefault();
+          return;
+        }
+
+        // Fingers are back on the trackpad: this is a new gesture, and it starts
+        // here rather than waiting for the old one's momentum to finish dying.
+        tail = false;
+        pushes = 0;
+        tailFloor = Infinity;
         accumulated = 0;
-        event.preventDefault();
-        return;
       }
 
       // The horizontal track gets first refusal, and unlike the sections it
