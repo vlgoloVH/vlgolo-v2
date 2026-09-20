@@ -15,15 +15,22 @@ export function ScrollState() {
     const root = document.documentElement;
     let raf = 0;
 
+    /** Only the hero reads these, so past the hero there is nothing left to
+     *  update. Setting a custom property on <html> invalidates style for the
+     *  whole document, and doing that on every frame of every scroll is exactly
+     *  the sort of cost that shows up as stutter on a tablet. */
+    let idle = false;
+
     const write = () => {
       raf = 0;
       const y = window.scrollY;
-      const vh = window.visualViewport?.height ?? window.innerHeight;
+      const vh = Math.max(window.visualViewport?.height ?? window.innerHeight, 1);
+      const past = y > vh * 1.2;
+      if (past && idle) return;
+      idle = past;
+
       root.style.setProperty("--scroll-y", `${y}px`);
-      root.style.setProperty(
-        "--hero-progress",
-        String(Math.min(1, y / Math.max(vh, 1))),
-      );
+      root.style.setProperty("--hero-progress", String(Math.min(1, y / vh)));
     };
 
     const onScroll = () => {
