@@ -145,6 +145,19 @@
   }
 }
 
+/* The Works track: SlideScroll drives its scrollLeft directly on desktop, so
+   the browser's own scrollbar would just be a second, conflicting handle on
+   the same position. Touch and trackpad scrolling both still work — this
+   only hides the bar. */
+@utility hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* ──────────────────────────────────────────────
    Slides. Each section is its own screen; the one after the hero is opaque and
    sits above it, and the hero's content lags behind the scroll, so that section

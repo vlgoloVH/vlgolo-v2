@@ -3,6 +3,7 @@ import { SlideScroll } from "@/components/layout/slide-scroll";
 import { ViewportHeight } from "@/components/layout/viewport-height";
 import { Hero } from "@/components/sections/hero";
 import { About } from "@/components/sections/about";
+import { Works } from "@/components/sections/works";
 
 /** The home page is a stack of full-height slides: each section is one screen,
  *  the hero's content lags behind the scroll, and the section after it is opaque
@@ -15,6 +16,7 @@ export default function HomePage() {
       <SlideScroll />
       <Hero />
       <About />
+      <Works />
     </>
   );
 }

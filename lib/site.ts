@@ -40,6 +40,69 @@ export const HERO = {
   },
 } as const;
 
+export const WORKS = {
+  /** Set vertically in the left margin, the same as ABOUT.rail. */
+  rail: "Works",
+  eyebrow: "Featured projects",
+  count: "( 06 )",
+  cases: [
+    {
+      slug: "smartcrowd",
+      title: "SmartCrowd",
+      year: "2025–2026",
+      description:
+        "A UAE real estate investment platform where people can invest in property and manage their portfolio in one place.",
+      cover: "/works/SmartCrowd_preview.jpg",
+      tags: ["Fintech", "Proptech"],
+    },
+    {
+      slug: "notary-hub",
+      title: "Notary HUB",
+      year: "2018–2019",
+      description:
+        "A US platform for Remote Online Notarization, letting notaries, companies, and clients sign and handle legal documents fully online.",
+      cover: "/works/NotaryHUB_preview.jpg",
+      tags: ["LegalTech", "SaaS"],
+    },
+    {
+      slug: "space-needle",
+      title: "Space Needle",
+      year: "2024–2025",
+      description:
+        "The ticketing and digital experience for Space Needle, one of Seattle's most iconic landmarks, visited by millions each year.",
+      cover: "/works/SpaceNeedle_preview.jpg",
+      tags: ["B2C", "Enterprise"],
+    },
+    {
+      slug: "dan-mon-fairwind",
+      title: "Dan-Mon Fairwind",
+      year: "2022–2023",
+      description:
+        "A global marine supplier that sources and delivers technical spare parts for ship equipment anywhere in the world.",
+      cover: "/works/DanMon_preview.jpg",
+      tags: ["Enterprise", "CRM"],
+    },
+    {
+      slug: "fozzy-group",
+      title: "Fozzy Group",
+      year: "2025",
+      description:
+        "Silpo, the flagship supermarket chain of Fozzy Group, one of Ukraine's largest retailers with hundreds of stores nationwide.",
+      cover: "/works/FozzyGroup_preview.jpg",
+      tags: ["Retail", "Design System"],
+    },
+    {
+      slug: "bitterbrains",
+      title: "BitterBrains",
+      year: "2018–2023",
+      description:
+        "A developer education company building online learning platforms, skill certifications, and global conferences for software engineers.",
+      cover: "/works/BitterBrail_preview.jpg",
+      tags: ["EdTech", "SaaS"],
+    },
+  ],
+} as const;
+
 export const ABOUT = {
   /** Set vertically in the left margin, the way the hero rules frame the page. */
   rail: "About",

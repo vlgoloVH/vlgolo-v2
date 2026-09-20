@@ -59,6 +59,33 @@ export function SlideScroll() {
         0,
       );
 
+    /** The section a gesture would currently land on or leave from — same
+     *  "nearest" logic as the vertical advance, just resolved to its element. */
+    const activeSection = (): HTMLElement | undefined => {
+      const sections = [...document.querySelectorAll<HTMLElement>(".section-slide")].sort(
+        (a, b) => a.offsetTop - b.offsetTop,
+      );
+      return sections[nearestIndex(sections.map((el) => el.offsetTop), window.scrollY)];
+    };
+
+    /** A section can carry one horizontal case track (see Works). Its own
+     *  scrollLeft is the single source of truth for how far through it the
+     *  visitor is — nothing here duplicates that as separate state. */
+    const activeTrack = () =>
+      activeSection()?.querySelector<HTMLElement>("[data-h-track]") ?? null;
+
+    /** Feeds a vertical gesture's delta into the track's horizontal scroll
+     *  instead, as long as the gesture's direction still has room to run
+     *  there. Returns false once the track is exhausted in that direction, so
+     *  the caller falls through to the normal section-to-section advance. */
+    const tryHorizontal = (track: HTMLElement, dy: number) => {
+      const max = track.scrollWidth - track.clientWidth;
+      if (dy > 0 && track.scrollLeft >= max - 1) return false;
+      if (dy < 0 && track.scrollLeft <= 0) return false;
+      track.scrollLeft = Math.min(Math.max(track.scrollLeft + dy, 0), max);
+      return true;
+    };
+
     /** iPad's Safari can still be folding its toolbar in or out as a glide
      *  lands, and a `.section-slide`'s `svh` height does not always keep pace
      *  with that — the page can settle a few pixels short of where the
@@ -127,6 +154,12 @@ export function SlideScroll() {
         return;
       }
 
+      const track = activeTrack();
+      if (track && tryHorizontal(track, event.deltaY)) {
+        accumulated = 0;
+        return;
+      }
+
       accumulated += event.deltaY;
       if (Math.abs(accumulated) < THRESHOLD) return;
 
@@ -138,19 +171,29 @@ export function SlideScroll() {
     /** A touch gesture is one clean start-to-end move, so it needs none of the
      *  wheel's burst accounting — just where it started and where it ended. */
     let touchStartY = 0;
+    /** Updated every touchmove, so a track can be panned by the frame's own
+     *  delta instead of the gesture's total distance. */
+    let touchLastY = 0;
     /** Guards against a stray touchmove/touchend with no matching start, e.g.
      *  a second finger joining mid-gesture. */
     let tracking = false;
 
     const onTouchStart = (event: TouchEvent) => {
       tracking = event.touches.length === 1 && !animating;
-      if (tracking) touchStartY = event.touches[0].clientY;
+      if (tracking) touchStartY = touchLastY = event.touches[0].clientY;
     };
 
     const onTouchMove = (event: TouchEvent) => {
       if (!tracking || event.touches.length !== 1) return;
       // Must run on every touchmove from the first one — see the note above.
       event.preventDefault();
+
+      const y = event.touches[0].clientY;
+      const dy = touchLastY - y;
+      touchLastY = y;
+
+      const track = activeTrack();
+      if (track) tryHorizontal(track, dy);
     };
 
     const onTouchEnd = (event: TouchEvent) => {
@@ -159,6 +202,17 @@ export function SlideScroll() {
 
       const dy = touchStartY - event.changedTouches[0].clientY;
       if (Math.abs(dy) < THRESHOLD) return;
+
+      // touchmove already panned any track along the way; only carry the
+      // gesture on to the next section once that track has run out of room
+      // in the swiped direction.
+      const track = activeTrack();
+      if (track) {
+        const max = track.scrollWidth - track.clientWidth;
+        if (dy > 0 && track.scrollLeft < max - 1) return;
+        if (dy < 0 && track.scrollLeft > 0) return;
+      }
+
       advance(dy > 0 ? 1 : -1, performance.now());
     };
 
