@@ -9,9 +9,10 @@ const ease = (t: number) =>
 
 /** How much wheel movement counts as "go to the next slide". */
 const THRESHOLD = 60;
-/** A pause this long starts a fresh burst, so a trackpad's momentum tail lands
- *  in bursts of its own and never adds up to a move. */
-const BURST_GAP = 120;
+/** Silence this long means the visitor has actually let go: it is the one thing
+ *  that ends a gesture and allows the next one. A trackpad's momentum keeps
+ *  firing well under this for seconds after the fingers have lifted. */
+const BURST_GAP = 200;
 /** Quiet time after a slide lands, on top of the animation itself. */
 const COOLDOWN = 180;
 
@@ -113,17 +114,29 @@ export function SlideScroll() {
 
       const now = performance.now();
 
-      // A real pause is the only thing that starts a new gesture. Everything
-      // that keeps arriving without one belongs to the gesture already running.
+      // A real pause, and only a real pause, ends a gesture.
       if (now - lastEvent > BURST_GAP) {
         accumulated = 0;
-        tail = animating || now < blockUntil;
+        tail = false;
       }
       lastEvent = now;
 
-      if (animating || now < blockUntil || tail) {
-        event.preventDefault();
+      // Anything arriving during a slide or its cooldown is that slide's own
+      // momentum, so the rest of it is marked as tail here and stays marked
+      // until the input actually goes quiet. Without this the tail simply waits
+      // out the cooldown and then fires a second slide on its own — which is
+      // what a trackpad does, because its momentum keeps events coming for
+      // seconds with no gap long enough to look like a pause.
+      if (animating || now < blockUntil) {
+        tail = true;
         accumulated = 0;
+        event.preventDefault();
+        return;
+      }
+
+      if (tail) {
+        accumulated = 0;
+        event.preventDefault();
         return;
       }
 
