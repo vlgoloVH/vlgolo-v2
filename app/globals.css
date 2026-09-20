@@ -222,24 +222,20 @@
    which is why this is `min-height`, not a fixed `height`: the visitor can
    still scroll further within a tall section before the next snap point
    takes over.
-   `svh`, not `dvh`: `dvh` changes size as Safari's address bar hides and
-   shows mid-scroll, which would shift a section's height mid-gesture. `svh`
-   is meant to be fixed to the bar-visible size regardless of what the bar
-   actually does — in practice iPad Safari does not reliably hold to that,
-   so `--app-vh` (see ViewportHeight) overrides it with a value measured
-   straight from `visualViewport`, which is. `100svh` only stands as the
-   fallback for the instant before that JS runs. */
+   A section is exactly the window: `--app-vh` (see ViewportHeight) is
+   measured straight from `visualViewport`, which is the only thing that
+   stays true as Safari's tab bar collapses and comes back. It is only ever
+   rewritten once the scroll has settled, so the height never changes under a
+   running gesture. `100svh` stands as the fallback for the instant before
+   that JS runs. */
 .section-slide {
-  /* Whichever of the two measurements is smaller: a section taller than what is
-     actually on screen leaves the top of the next one already showing, which is
-     both visible and enough for a snap to latch onto. */
-  min-height: min(100svh, var(--app-vh, 100svh));
+  min-height: var(--app-vh, 100svh);
   scroll-snap-align: start;
 }
 
 @media (min-width: 768px) {
   .section-slide {
-    height: min(100svh, var(--app-vh, 100svh));
+    height: var(--app-vh, 100svh);
   }
 }
 
