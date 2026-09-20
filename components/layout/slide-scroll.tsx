@@ -17,15 +17,19 @@ const THRESHOLD = 60;
 const BURST_GAP = 120;
 /** Quiet time after a slide lands, on top of the animation itself. */
 const COOLDOWN = 200;
-/** Backstop for a burst that never pauses long enough to hit BURST_GAP. Some
- *  trackpads (iPad's included) keep a flick's momentum feeding wheel events
- *  with no gap over 120ms for well over a second, so a burst that only clears
- *  on silence can stay "consumed" indefinitely — the next real gesture, and
- *  any horizontal one inside Works, then does nothing until the pointer
- *  physically moves and interrupts the feed. This deadline forces it to
- *  release once the animation, cooldown, and a generous decay margin have all
- *  had time to pass, whether or not the tail ever actually goes quiet. */
-const MOMENTUM_TAIL = 700;
+/** A delta this small means a flick's momentum has faded to nothing, whether
+ *  or not the events themselves ever stop long enough to hit BURST_GAP —
+ *  some trackpads (iPad's included) keep feeding tiny deltas with no real
+ *  gap for well over a second. This is what actually ends a consumed burst;
+ *  a fixed timer can't, since how long momentum takes to fade varies with
+ *  how hard the flick was — too short and the tail's last, still-sizeable
+ *  deltas re-accumulate into an unwanted second advance, too long and a
+ *  genuine next gesture finds the lock still held. */
+const MOMENTUM_FADE = 3;
+/** Backstop for the rare case where neither a pause nor a faded delta ever
+ *  arrives — bounds how long a consumed burst can hold the lock at all, so
+ *  it can never get stuck open-ended. */
+const MOMENTUM_TAIL = 2000;
 
 /** Every scroll gesture moves exactly one section, eased, whatever the input.
  *  This is the only thing that moves the page between sections — there's no
@@ -151,10 +155,9 @@ export function SlideScroll() {
     let lastEvent = 0;
     /** Once a burst has advanced a section, the rest of its momentum tail is
      *  spent — a flick moves exactly one section, however long the trackpad
-     *  keeps feeding events after `blockUntil` expires. A genuine pause (a
-     *  fresh burst) arms the next advance early; `consumedUntil` is the
-     *  backstop that arms it regardless, once the tail has had a fair chance
-     *  to finish. */
+     *  keeps feeding events after `blockUntil` expires. Cleared as soon as
+     *  the tail's own deltas fade out (see MOMENTUM_FADE), or by a genuine
+     *  pause, or — failing both — once `consumedUntil` runs out. */
     let burstConsumed = false;
     let consumedUntil = 0;
 
@@ -163,13 +166,17 @@ export function SlideScroll() {
       event.preventDefault();
 
       const now = performance.now();
-      if (now - lastEvent > BURST_GAP || now >= consumedUntil) {
+      if (now - lastEvent > BURST_GAP) {
         accumulated = 0;
         burstConsumed = false;
       }
       lastEvent = now;
 
-      if (burstConsumed) return;
+      if (burstConsumed) {
+        if (Math.abs(event.deltaY) > MOMENTUM_FADE && now < consumedUntil) return;
+        accumulated = 0;
+        burstConsumed = false;
+      }
 
       if (animating || now < blockUntil) {
         accumulated = 0;
