@@ -78,20 +78,33 @@
     overscroll-behavior-y: none;
   }
 
-  /* CSS snap is for a real pointer only. On a touch screen it is what made the
-     About section jump straight through to the next one: an iPad's own momentum
-     keeps running after a swipe has visually landed, and `proximity` then picks
-     whichever boundary that momentum is closest to — which, a moment after
-     landing, is already the *next* section. Reported exactly that way, in both
-     directions. A finger swipe now simply scrolls, and stops where it stopped.
-     Wheel and trackpad gestures, which iPadOS reports as a coarse pointer too,
-     are answered by SlideScroll instead: one gesture, one eased slide.
-     No `scroll-behavior: smooth` anywhere — it animates every scroll the page
-     makes, including SlideScroll's own, and the two then pull at the same
-     position. */
-  @media (prefers-reduced-motion: no-preference) and (pointer: fine) {
-    html {
-      scroll-snap-type: y proximity;
+  /* Two different jobs, so two different settings.
+     With a real pointer, SlideScroll answers the gesture itself and CSS snap is
+     only a backstop for keyboard and scrollbar scrolling, so `proximity` is
+     enough and never gets in the way.
+     On touch there is no gesture to answer: iOS owns the swipe and its momentum
+     outright. `mandatory` plus `scroll-snap-stop: always` is the one thing that
+     stops that momentum carrying straight through the section it just landed
+     on, which is what made About flash past on its own, in both directions.
+     `always` is doing the real work here: it forbids skipping a snap point,
+     however hard the flick was thrown.
+     No `scroll-behavior: smooth` anywhere: it animates every scroll the page
+     makes, including SlideScroll's own, and then the two pull at once. */
+  @media (prefers-reduced-motion: no-preference) {
+    @media (pointer: fine) {
+      html {
+        scroll-snap-type: y proximity;
+      }
+    }
+
+    @media not (pointer: fine) {
+      html {
+        scroll-snap-type: y mandatory;
+      }
+
+      .section-slide {
+        scroll-snap-stop: always;
+      }
     }
   }
 

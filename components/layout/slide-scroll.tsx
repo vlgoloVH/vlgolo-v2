@@ -51,6 +51,12 @@ export function SlideScroll() {
     let animating = false;
     let accumulated = 0;
     let lastEvent = 0;
+    /** True while the gesture that is currently running arrived during a slide
+     *  or its cooldown. It stays true for that whole gesture, however long its
+     *  momentum tail keeps feeding events — which is the point: a tail is not a
+     *  new instruction, so it must not be able to trigger a second slide just
+     *  because the cooldown happened to expire while it was still running. */
+    let tail = false;
     /** Nothing is accepted until this moment: the animation plus a little quiet
      *  after it. A deadline rather than a flag, because a flag waiting to be
      *  cleared can get stuck behind a long momentum tail and then the next
@@ -106,10 +112,16 @@ export function SlideScroll() {
       if (event.ctrlKey) return; // pinch zoom
 
       const now = performance.now();
-      if (now - lastEvent > BURST_GAP) accumulated = 0;
+
+      // A real pause is the only thing that starts a new gesture. Everything
+      // that keeps arriving without one belongs to the gesture already running.
+      if (now - lastEvent > BURST_GAP) {
+        accumulated = 0;
+        tail = animating || now < blockUntil;
+      }
       lastEvent = now;
 
-      if (animating || now < blockUntil) {
+      if (animating || now < blockUntil || tail) {
         event.preventDefault();
         accumulated = 0;
         return;
