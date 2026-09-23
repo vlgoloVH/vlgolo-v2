@@ -18,20 +18,16 @@ export function Contacts({ dict }: { dict: Dictionary }) {
   return (
     <RevealSection
       id="contacts"
-      className="section-slide relative z-40 overflow-hidden bg-bg"
+      // z-35: over Testimonials (30), still under the social rail (40).
+      className="section-slide relative z-[35] overflow-hidden bg-bg"
     >
       <Image
         src="/contact/workspace.jpg"
         alt={copy.scene}
         fill
         sizes="100vw"
-        className="object-cover object-[72%_50%] md:object-right"
-      />
-
-      {/* Only enough shade on the left to lift the type off the room. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.55),rgba(0,0,0,0.3)_40%,transparent_62%)] max-md:bg-[linear-gradient(180deg,rgba(0,0,0,0.55),rgba(0,0,0,0.25)_55%,rgba(0,0,0,0.5))]"
+        // Dimmed over black exactly as far as the hero video (--video-dim).
+        className="object-cover object-[72%_50%] opacity-[var(--video-dim)] md:object-right"
       />
 
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
@@ -49,8 +45,9 @@ export function Contacts({ dict }: { dict: Dictionary }) {
         </span>
       </div>
 
-      <div className="relative z-10 flex h-full flex-col justify-center px-6 pb-24 pt-28 md:px-[var(--frame-pad)] md:pb-0 md:pt-0">
-        <h2 className="reveal [--reveal-i:2] text-[clamp(40px,5vw,76px)] font-bold leading-[1.04] tracking-[-0.025em] text-ink">
+      <div className="relative z-10 flex h-full flex-col justify-center px-6 pb-24 pt-28 md:pl-[calc(var(--frame-line)+clamp(32px,5vw,104px))] md:pr-[var(--frame-pad)] md:pb-0 md:pt-0">
+        {/* Same type as the hero headline, so the page closes on its opening. */}
+        <h2 className="reveal [--reveal-i:2] text-display text-ink">
           {copy.headline.map((line) => (
             <span key={line} className="block">
               {line}
@@ -75,7 +72,7 @@ export function Contacts({ dict }: { dict: Dictionary }) {
         </a>
       </div>
 
-      <p className="reveal [--reveal-i:8] absolute bottom-8 left-6 right-6 text-[11px] uppercase tracking-[0.24em] text-ink/40 md:bottom-10 md:left-[var(--frame-pad)] md:text-[12px]">
+      <p className="reveal [--reveal-i:8] absolute bottom-8 left-6 right-6 text-[11px] uppercase tracking-[0.24em] text-ink/40 md:bottom-10 md:left-[calc(var(--frame-line)+clamp(32px,5vw,104px))] md:text-[12px]">
         {copy.availability}
       </p>
     </RevealSection>
