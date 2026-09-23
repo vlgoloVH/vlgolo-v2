@@ -23,7 +23,7 @@ const SHORT = 175;
 /** On a screen too short for the stylesheet's size, a quote may come down,
  *  but never below this share of it: the excerpts are written to fit, so this
  *  is a safety margin, not a way to squeeze in more text. */
-const FLOOR = 0.82;
+const FLOOR = 0.78;
 
 /** The stylesheet's size for the quote, or the largest below it (to half a
  *  pixel, down to FLOOR) at which it fits the box. */
@@ -108,11 +108,21 @@ export function TestimonialsStage({ label, fullLabel, closeLabel, items }: Props
                 “
               </span>
               {item.quote}”
+              {/* The whole recommendation, right under the excerpt it belongs
+                  to. Quiet on purpose: it should not compete with the quote. */}
+              <button
+                type="button"
+                tabIndex={index === active ? 0 : -1}
+                onClick={() => dialogRef.current?.showModal()}
+                className="mt-5 block text-[11px] font-normal uppercase leading-none tracking-[0.2em] text-ink/45 underline-offset-4 transition-colors duration-300 can-hover:text-ink can-hover:underline md:mt-7 md:text-[12px]"
+              >
+                {fullLabel}
+              </button>
             </blockquote>
           ))}
         </div>
 
-        <figcaption className="mt-6 flex shrink-0 flex-wrap items-center gap-x-5 gap-y-4 md:mt-10 md:flex-nowrap md:gap-8">
+        <figcaption className="mt-6 flex shrink-0 items-center gap-5 md:mt-10 md:gap-8">
           <div className="t-meta">
             <span key={active} className="t-swap">
               <span className="block text-[13px] font-medium uppercase tracking-[0.19em] text-ink">
@@ -132,16 +142,6 @@ export function TestimonialsStage({ label, fullLabel, closeLabel, items }: Props
             </span>
             / {pad(items.length)}
           </span>
-
-          {/* The whole recommendation, for anyone who wants more than the
-              excerpt. Quiet on purpose: it should not compete with the quote. */}
-          <button
-            type="button"
-            onClick={() => dialogRef.current?.showModal()}
-            className="w-full shrink-0 text-left text-[11px] md:ml-auto md:w-auto uppercase tracking-[0.2em] text-ink/45 underline-offset-4 transition-colors duration-300 can-hover:text-ink can-hover:underline md:text-[12px]"
-          >
-            {fullLabel}
-          </button>
         </figcaption>
 
         <dialog
