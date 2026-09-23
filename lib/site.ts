@@ -31,39 +31,26 @@ export const HERO = {
   },
 } as const;
 
-/** Descriptions for these come from the dictionary, keyed by slug. */
+/** The Works track, in order. A case with `placeholder` has no content yet and
+ *  shows a stand-in; the rest take their description from the dictionary,
+ *  keyed by slug. `tint` colours the section while that case is on screen. */
 export const CASES = [
   {
     slug: "smartcrowd",
-    title: "SmartCrowd",
-    year: "2025–2026",
+    title: "Smart Crowd",
+    href: "/cases/smartcrowd",
     cover: "/works/SmartCrowd_preview.jpg",
-    tags: ["Fintech", "Proptech"],
+    tags: ["Fintech", "Proptech", "Product Design"],
+    tint: "#1d4ed8",
   },
-  {
-    slug: "notary-hub",
-    title: "Notary HUB",
-    year: "2018–2019",
-    cover: "/works/NotaryHUB_preview.jpg",
-    tags: ["LegalTech", "SaaS"],
-  },
-  {
-    slug: "space-needle",
-    title: "Space Needle",
-    year: "2024–2025",
-    cover: "/works/SpaceNeedle_preview.jpg",
-    tags: ["B2C", "Enterprise"],
-  },
-  {
-    slug: "dan-mon-fairwind",
-    title: "Dan-Mon Fairwind",
-    year: "2022–2023",
-    cover: "/works/DanMon_preview.jpg",
-    tags: ["Enterprise", "CRM"],
-  },
+  { slug: "case-2", placeholder: true, tint: "#7c3aed" },
+  { slug: "case-3", placeholder: true, tint: "#0d9488" },
+  { slug: "case-4", placeholder: true, tint: "#d97706" },
+  { slug: "case-5", placeholder: true, tint: "#e11d48" },
 ] as const;
 
-export type CaseSlug = (typeof CASES)[number]["slug"];
+export type Case = (typeof CASES)[number];
+export type CaseSlug = Exclude<Case, { placeholder: true }>["slug"];
 
 export const ABOUT = {
   href: "/about",

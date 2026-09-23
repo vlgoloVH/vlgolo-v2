@@ -54,16 +54,18 @@ const en = {
   works: {
     /** Set vertically in the left margin, the same as about.rail. */
     rail: "Works",
+    /** Written inside the circle that replaces the cursor over a case. */
+    explore: "Explore more",
+    /** Where the progress bar under the cases reads out. */
+    progress: "Case",
     cases: {
       smartcrowd:
         "A UAE real estate investment platform where people can invest in property and manage their portfolio in one place.",
-      "notary-hub":
-        "A US platform for Remote Online Notarization, letting notaries, companies, and clients sign and handle legal documents fully online.",
-      "space-needle":
-        "The ticketing and digital experience for Space Needle, one of Seattle's most iconic landmarks, visited by millions each year.",
-      "dan-mon-fairwind":
-        "A global marine supplier that sources and delivers technical spare parts for ship equipment anywhere in the world.",
     } satisfies Record<CaseSlug, string>,
+    placeholder: {
+      title: "Coming soon",
+      description: "This case study is on its way.",
+    },
   },
 };
 
@@ -122,15 +124,15 @@ const uk: Dictionary = {
   },
   works: {
     rail: "Проєкти",
+    explore: "Відкрити кейс",
+    progress: "Кейс",
     cases: {
       smartcrowd:
         "Платформа для інвестицій у нерухомість в ОАЕ, де можна вкладати в житло й керувати своїм портфелем в одному місці.",
-      "notary-hub":
-        "Американська платформа для дистанційного нотаріального засвідчення: нотаріуси, компанії та клієнти підписують і оформлюють юридичні документи повністю онлайн.",
-      "space-needle":
-        "Продаж квитків і цифровий досвід для Space Needle, однієї з найвідоміших пам'яток Сіетла, яку щороку відвідують мільйони людей.",
-      "dan-mon-fairwind":
-        "Глобальний постачальник для морської галузі, який знаходить і доставляє технічні запчастини для суднового обладнання будь-куди у світі.",
+    },
+    placeholder: {
+      title: "Скоро",
+      description: "Цей кейс уже в роботі.",
     },
   },
 };

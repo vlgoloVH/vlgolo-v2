@@ -26,7 +26,7 @@ export default async function HomePage({
       <SlideScroll />
       <Hero dict={dict} />
       <About lang={lang} dict={dict} />
-      <Works dict={dict} />
+      <Works lang={lang} dict={dict} />
     </>
   );
 }

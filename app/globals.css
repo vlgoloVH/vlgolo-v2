@@ -628,3 +628,64 @@ html:has(.contact-dialog[open]) {
     animation: none;
   }
 }
+
+/* ──────────────────────────────────────────────
+   Works
+   ────────────────────────────────────────────── */
+
+/* The current case's tint (an "r g b" triple set by WorksTrack) laid thinly
+   over the section surface, strongest behind the image. */
+.works-tint {
+  --tint: 29 78 216;
+  background: radial-gradient(
+    ellipse 75% 85% at 68% 50%,
+    rgb(var(--tint) / 0.26),
+    rgb(var(--tint) / 0.1) 60%,
+    rgb(var(--tint) / 0.05)
+  );
+}
+
+/* The case image sits tilted, and leans a few pixels towards the pointer
+   while it is over it (--mx and --my run from -1 to 1, set by WorksTrack). */
+.case-media {
+  --mx: 0;
+  --my: 0;
+  --lift: 1;
+  transform: translate3d(calc(var(--mx) * 12px), calc(var(--my) * 12px), 0)
+    rotate(calc(-5deg + var(--mx) * 1.2deg)) scale(var(--lift));
+  transition: transform 0.9s var(--ease-soft);
+  will-change: transform;
+
+  &[data-hover] {
+    --lift: 1.02;
+  }
+}
+
+.case-placeholder {
+  background: linear-gradient(135deg, rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.01));
+}
+
+/* The circle that replaces the cursor over a case. A real mouse or trackpad
+   only: on touch there is no pointer to follow. */
+html[data-hover-capable="true"] [data-cursor] {
+  cursor: none;
+}
+
+.explore-cursor {
+  opacity: 0;
+  transform: scale(0.2);
+  transition:
+    transform 0.45s var(--ease-soft),
+    opacity 0.3s var(--ease-soft);
+
+  html[data-hover-capable="true"] &[data-on] {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-media {
+    transition: none;
+  }
+}

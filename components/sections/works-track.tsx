@@ -1,0 +1,209 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+
+export interface WorkItem {
+  slug: string;
+  tint: string;
+  title: string;
+  description: string;
+  tags: string[];
+  cover?: string;
+  /** Absent for a placeholder: it is not a link and gets no cursor. */
+  href?: string;
+}
+
+interface Props {
+  items: WorkItem[];
+  explore: string;
+  progressLabel: string;
+}
+
+const hexToRgb = (hex: string) => {
+  const n = parseInt(hex.slice(1), 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+};
+
+const pad = (n: number) => String(n).padStart(2, "0");
+
+/** The horizontal track of cases, plus the two things that follow it: the
+ *  section's colour, which slides from one case's tint to the next as the
+ *  track moves, and the progress bar under the cases. Both are written
+ *  straight to the DOM on scroll; only the case number goes through state,
+ *  and that changes once per case. */
+export function WorksTrack({ items, explore, progressLabel }: Props) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const tintRef = useRef<HTMLDivElement>(null);
+  const fillRef = useRef<HTMLSpanElement>(null);
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    const tint = tintRef.current;
+    const fill = fillRef.current;
+    if (!track || !tint || !fill) return;
+
+    const colours = items.map((item) => hexToRgb(item.tint));
+    const last = items.length - 1;
+    let raf = 0;
+
+    const update = () => {
+      raf = 0;
+      const position = Math.min(
+        Math.max(track.scrollLeft / Math.max(track.clientWidth, 1), 0),
+        last,
+      );
+      const from = Math.floor(position);
+      const to = Math.min(from + 1, last);
+      const t = position - from;
+      const rgb = colours[from].map((c, i) => Math.round(c + (colours[to][i] - c) * t));
+
+      tint.style.setProperty("--tint", rgb.join(" "));
+      fill.style.transform = `scaleX(${(position + 1) / items.length})`;
+      setCurrent(Math.round(position));
+    };
+
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+
+    update();
+    track.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      track.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [items]);
+
+  /** The image leans a little towards the pointer while it is over it. */
+  const onMediaMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === "touch") return;
+    const el = event.currentTarget;
+    const rect = el.getBoundingClientRect();
+    const mx = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    const my = ((event.clientY - rect.top) / rect.height) * 2 - 1;
+    el.style.setProperty("--mx", mx.toFixed(3));
+    el.style.setProperty("--my", my.toFixed(3));
+    el.dataset.hover = "true";
+  };
+
+  const onMediaLeave = (event: React.PointerEvent<HTMLDivElement>) => {
+    const el = event.currentTarget;
+    el.style.removeProperty("--mx");
+    el.style.removeProperty("--my");
+    delete el.dataset.hover;
+  };
+
+  return (
+    <>
+      {/* The case's own colour laid thinly over the section surface: strongest
+          behind the image, fading out towards the edges. */}
+      <div ref={tintRef} aria-hidden="true" className="works-tint pointer-events-none absolute inset-0" />
+
+      {/* Native overflow-x is the source of truth for horizontal position: on
+          mobile it is a plain touch-swipe carousel, and on desktop SlideScroll
+          feeds the wheel into this same scrollLeft instead of reinventing it.
+          No snapping of its own: the cases scroll freely, so a gesture leaves
+          them wherever it leaves them. */}
+      <div
+        ref={trackRef}
+        data-h-track
+        className="hide-scrollbar reveal [--reveal-i:2] absolute inset-y-0 left-[var(--frame-line)] right-[var(--frame-line)] flex overflow-x-auto overscroll-x-none"
+      >
+        {items.map((item, index) => {
+          const body = (
+            <div className="grid w-full items-center gap-10 px-6 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:gap-[4vw] md:px-[clamp(32px,5vw,104px)]">
+              <div className="order-2 md:order-1">
+                <h3 className="max-w-[6.5em] text-[clamp(48px,6.4vw,112px)] font-bold leading-[0.98] tracking-[-0.025em] text-ink">
+                  {item.title}
+                </h3>
+                <p className="mt-6 max-w-[25rem] text-[17px] leading-[1.9] text-ink md:mt-10 md:text-[clamp(17px,1.4vw,21px)]">
+                  {item.description}
+                </p>
+                {item.tags.length > 0 && (
+                  <ul className="mt-6 flex flex-wrap gap-3 md:mt-10">
+                    {item.tags.map((tag) => (
+                      <li
+                        key={tag}
+                        className="rounded-full border border-white/15 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.18em] text-ink/55"
+                      >
+                        {tag}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              <div className="order-1 md:order-2">
+                <div
+                  className="case-media ml-auto w-full max-w-[calc(62vh*4/3)]"
+                  onPointerMove={onMediaMove}
+                  onPointerLeave={onMediaLeave}
+                >
+                  {/* The frame is a device-like bezel around the picture. */}
+                  <div className="rounded-[clamp(22px,2.6vw,44px)] bg-[#343436] p-[clamp(8px,0.85vw,14px)] shadow-[0_50px_100px_-30px_rgba(0,0,0,0.7)]">
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-[clamp(14px,1.8vw,30px)] bg-[#1c1c1e]">
+                      {item.cover ? (
+                        <Image
+                          src={item.cover}
+                          alt={item.title}
+                          fill
+                          sizes="(min-width: 768px) 55vw, 90vw"
+                          className="object-cover"
+                          priority={index === 0}
+                        />
+                      ) : (
+                        <div className="case-placeholder absolute inset-0 flex items-center justify-center">
+                          <span className="select-none font-mono text-[clamp(64px,9vw,160px)] font-semibold leading-none text-white/[0.08]">
+                            {pad(index + 1)}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+
+          const shell = "relative flex h-full w-full shrink-0 items-center";
+
+          return item.href ? (
+            <Link
+              key={item.slug}
+              href={item.href}
+              prefetch={false}
+              data-cursor={explore}
+              className={shell}
+            >
+              {body}
+            </Link>
+          ) : (
+            <div key={item.slug} className={shell}>
+              {body}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Which case this is and how many are left: a thin rule that fills as
+          the track moves, between the current number and the total. */}
+      <div className="reveal [--reveal-i:3] pointer-events-none absolute bottom-8 right-[calc(var(--frame-line)+24px)] flex items-center gap-4 font-mono text-[12px] tracking-[0.2em] text-ink/45 md:bottom-[8vh] md:right-[calc(var(--frame-line)+clamp(32px,5vw,104px))]">
+        <span className="sr-only">
+          {progressLabel} {current + 1} / {items.length}
+        </span>
+        <span aria-hidden="true" className="w-[2ch] text-ink">
+          {pad(current + 1)}
+        </span>
+        <span aria-hidden="true" className="relative h-px w-24 overflow-hidden bg-white/15 md:w-32">
+          <span ref={fillRef} className="absolute inset-0 origin-left bg-white/80" />
+        </span>
+        <span aria-hidden="true">{pad(items.length)}</span>
+      </div>
+    </>
+  );
+}
