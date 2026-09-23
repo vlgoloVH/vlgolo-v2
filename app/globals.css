@@ -661,6 +661,35 @@ html:has(.contact-dialog[open]) {
   }
 }
 
+/* Depth while the track moves (--shift is set per case by WorksTrack): the
+   title runs ahead, the description and tags move with the case, the image
+   hangs back. `translate` rather than `transform`, so it stacks with the
+   image's own tilt and hover lean. */
+.case-title {
+  translate: calc(var(--shift, 0px) * 0.4) 0;
+}
+
+.case-visual {
+  translate: calc(var(--shift, 0px) * -0.35) 0;
+}
+
+.progress-digit {
+  display: block;
+  line-height: 1.4;
+  animation: digit-in 0.5s var(--ease-soft) both;
+}
+
+@keyframes digit-in {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
 .case-placeholder {
   background: linear-gradient(135deg, rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.01));
 }
@@ -700,5 +729,9 @@ html:has(.contact-dialog[open]) {
 @media (prefers-reduced-motion: reduce) {
   .case-media {
     transition: none;
+  }
+
+  .progress-digit {
+    animation: none;
   }
 }
