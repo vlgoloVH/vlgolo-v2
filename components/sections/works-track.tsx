@@ -46,9 +46,7 @@ export function WorksTrack({ items, explore, progressLabel }: Props) {
     if (!track || !tint || !fill) return;
 
     const colours = items.map((item) => hexToRgb(item.tint));
-    const cases = [...track.children] as HTMLElement[];
     const last = items.length - 1;
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let raf = 0;
 
     const update = () => {
@@ -65,20 +63,6 @@ export function WorksTrack({ items, explore, progressLabel }: Props) {
       tint.style.setProperty("--tint", rgb.join(" "));
       fill.style.transform = `scaleX(${(position + 1) / items.length})`;
       setCurrent(Math.round(position));
-
-      // Depth inside each case. `offset` is where the case sits: 0 centred,
-      // -1 gone off to the left, 1 waiting on the right. --shift peaks halfway
-      // through a move and is back to zero at both ends, so the layers drift
-      // apart in transit (the stylesheet sends the title ahead and holds the
-      // image back) and are exactly in place once a case lands, and fully off
-      // screen once it has left.
-      if (still) return;
-      const width = track.clientWidth;
-      cases.forEach((el, i) => {
-        const offset = Math.min(Math.max(i - position, -1), 1);
-        const shift = offset * (1 - Math.abs(offset)) * width;
-        el.style.setProperty("--shift", `${shift.toFixed(1)}px`);
-      });
     };
 
     const onScroll = () => {
@@ -134,7 +118,7 @@ export function WorksTrack({ items, explore, progressLabel }: Props) {
           const body = (
             <div className="grid w-full items-center gap-10 px-6 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:gap-[4vw] md:px-[clamp(32px,5vw,104px)]">
               <div className="order-2 md:order-1">
-                <h3 className="case-title max-w-[6.5em] text-[clamp(48px,6.4vw,112px)] font-bold leading-[0.98] tracking-[-0.025em] text-ink">
+                <h3 className="max-w-[6.5em] text-[clamp(48px,6.4vw,112px)] font-bold leading-[0.98] tracking-[-0.025em] text-ink">
                   {item.title}
                 </h3>
                 <p className="mt-6 max-w-[25rem] text-[17px] leading-[1.9] text-ink md:mt-10 md:text-[clamp(17px,1.4vw,21px)]">
@@ -154,7 +138,7 @@ export function WorksTrack({ items, explore, progressLabel }: Props) {
                 )}
               </div>
 
-              <div className="case-visual order-1 md:order-2">
+              <div className="order-1 md:order-2">
                 <div
                   className="case-media ml-auto w-full max-w-[calc(62vh*4/3)]"
                   onPointerMove={onMediaMove}
@@ -212,11 +196,8 @@ export function WorksTrack({ items, explore, progressLabel }: Props) {
         <span className="sr-only">
           {progressLabel} {current + 1} / {items.length}
         </span>
-        {/* The new number rises into place when the case changes. */}
-        <span aria-hidden="true" className="inline-flex h-[1.4em] w-[2ch] overflow-hidden text-ink">
-          <span key={current} className="progress-digit">
-            {pad(current + 1)}
-          </span>
+        <span aria-hidden="true" className="w-[2ch] text-ink">
+          {pad(current + 1)}
         </span>
         <span aria-hidden="true" className="relative h-px w-24 overflow-hidden bg-white/15 md:w-32">
           <span ref={fillRef} className="absolute inset-0 origin-left bg-white/80" />
