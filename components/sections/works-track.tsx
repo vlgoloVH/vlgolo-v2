@@ -136,8 +136,11 @@ export function WorksTrack({ items, explore, progressLabel }: Props) {
                   onPointerMove={onMediaMove}
                   onPointerLeave={onMediaLeave}
                 >
-                  {/* The frame is a device-like bezel around the picture. */}
-                  <div className="rounded-[clamp(22px,2.6vw,44px)] bg-[#343436] p-[clamp(8px,0.85vw,14px)] shadow-[0_50px_100px_-30px_rgba(0,0,0,0.7)]">
+                  {/* The frame is a device-like bezel around the picture, in the
+                      case's own colour: the tint mixed into a grey a step
+                      lighter than the section, so it reads as the background
+                      colour, only lighter. */}
+                  <div className="rounded-[clamp(22px,2.6vw,44px)] bg-[color-mix(in_srgb,rgb(var(--tint))_34%,#2e2e30)] p-[clamp(8px,0.85vw,14px)] shadow-[0_50px_100px_-30px_rgba(0,0,0,0.7)]">
                     <div className="relative aspect-[4/3] overflow-hidden rounded-[clamp(14px,1.8vw,30px)] bg-[#1c1c1e]">
                       <Image
                         src={item.cover}
