@@ -35,7 +35,7 @@ export function Hero({ dict }: { dict: Dictionary }) {
           ))}
         </h1>
 
-        <p className="enter-sub mt-6 max-w-[34em] text-balance text-[17px] leading-relaxed text-ink/70 md:mt-8 md:text-[20px]">
+        <p className="enter-sub mt-6 max-w-[34em] text-balance text-[18px] leading-relaxed text-ink md:mt-8 md:text-[23px]">
           {dict.hero.sub}
         </p>
 
