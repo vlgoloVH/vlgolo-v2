@@ -132,12 +132,16 @@ const en = {
     progress: "Case",
     cases: {
       smartcrowd:
-        "A UAE real estate investment platform where people can invest in property and manage their portfolio in one place.",
+        "Led a full product transformation across mobile, web and partner platforms, unifying fragmented user journeys and building a scalable design system from scratch.",
+      "space-needle":
+        "Designed a unified ticketing ecosystem across web, self-service kiosks and on-site tools, connecting purchase flows, accessibility and operations into one consistent experience.",
+      "dan-mon-fairwind":
+        "Designed an enterprise CRM that brought the full marine-parts sales cycle into one workflow, from opportunities and quotations to procurement, orders and delivery.",
+      "fozzy-group":
+        "Simplified complex retail back-office workflows for product catalog and commerce operations, creating clearer internal tools and a scalable design system for everyday work.",
+      bitterbrains:
+        "Designed and evolved a developer education ecosystem across learning platforms, certifications, conferences and B2B services, maintaining consistency as it scaled to 15 products.",
     } satisfies Record<CaseSlug, string>,
-    placeholder: {
-      title: "Coming soon",
-      description: "This case study is on its way.",
-    },
   },
 };
 
@@ -262,11 +266,15 @@ const uk: Dictionary = {
     progress: "Кейс",
     cases: {
       smartcrowd:
-        "Платформа для інвестицій у нерухомість в ОАЕ, де можна вкладати в житло й керувати своїм портфелем в одному місці.",
-    },
-    placeholder: {
-      title: "Скоро",
-      description: "Цей кейс уже в роботі.",
+        "Очолив повну трансформацію продукту на мобільних, веб- і партнерських платформах: об’єднав розрізнені шляхи користувачів і з нуля побудував масштабовану дизайн-систему.",
+      "space-needle":
+        "Спроєктував єдину екосистему продажу квитків для вебу, кіосків самообслуговування та інструментів на місці, поєднавши покупку, доступність і операційну роботу в один цілісний досвід.",
+      "dan-mon-fairwind":
+        "Спроєктував корпоративну CRM, яка звела весь цикл продажу суднових запчастин в один робочий процес: від можливостей і комерційних пропозицій до закупівель, замовлень і доставки.",
+      "fozzy-group":
+        "Спростив складні бек-офісні процеси ритейлу для каталогу товарів і комерційних операцій, створивши зрозуміліші внутрішні інструменти й масштабовану дизайн-систему для щоденної роботи.",
+      bitterbrains:
+        "Проєктував і розвивав освітню екосистему для розробників: навчальні платформи, сертифікації, конференції та B2B-сервіси, зберігаючи цілісність, поки вона зросла до 15 продуктів.",
     },
   },
 };

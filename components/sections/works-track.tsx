@@ -8,11 +8,12 @@ export interface WorkItem {
   slug: string;
   tint: string;
   title: string;
+  /** The name as set on the slide: always two lines. */
+  lines: string[];
   description: string;
   tags: string[];
-  cover?: string;
-  /** Absent for a placeholder: it is not a link and gets no cursor. */
-  href?: string;
+  cover: string;
+  href: string;
 }
 
 interface Props {
@@ -118,24 +119,29 @@ export function WorksTrack({ items, explore, progressLabel }: Props) {
           const body = (
             <div className="grid w-full items-center gap-10 px-6 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:gap-[4vw] md:px-[clamp(32px,5vw,104px)]">
               <div className="order-2 md:order-1">
-                <h3 className="max-w-[6.5em] text-[clamp(48px,6.4vw,112px)] font-bold leading-[0.98] tracking-[-0.025em] text-ink">
-                  {item.title}
+                <h3
+                  aria-label={item.title}
+                  className="text-[clamp(48px,6.4vw,112px)] font-bold leading-[0.98] tracking-[-0.025em] text-ink"
+                >
+                  {item.lines.map((line) => (
+                    <span key={line} aria-hidden="true" className="block">
+                      {line}
+                    </span>
+                  ))}
                 </h3>
                 <p className="mt-6 max-w-[25rem] text-[17px] leading-[1.9] text-ink md:mt-10 md:text-[clamp(17px,1.4vw,21px)]">
                   {item.description}
                 </p>
-                {item.tags.length > 0 && (
-                  <ul className="mt-6 flex flex-wrap gap-3 md:mt-10">
-                    {item.tags.map((tag) => (
-                      <li
-                        key={tag}
-                        className="rounded-full border border-white/15 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.18em] text-ink/55"
-                      >
-                        {tag}
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                <ul className="mt-6 flex flex-wrap gap-3 md:mt-10">
+                  {item.tags.map((tag) => (
+                    <li
+                      key={tag}
+                      className="rounded-full border border-white/15 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.18em] text-ink/55"
+                    >
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               <div className="order-1 md:order-2">
@@ -147,22 +153,14 @@ export function WorksTrack({ items, explore, progressLabel }: Props) {
                   {/* The frame is a device-like bezel around the picture. */}
                   <div className="rounded-[clamp(22px,2.6vw,44px)] bg-[#343436] p-[clamp(8px,0.85vw,14px)] shadow-[0_50px_100px_-30px_rgba(0,0,0,0.7)]">
                     <div className="relative aspect-[4/3] overflow-hidden rounded-[clamp(14px,1.8vw,30px)] bg-[#1c1c1e]">
-                      {item.cover ? (
-                        <Image
-                          src={item.cover}
-                          alt={item.title}
-                          fill
-                          sizes="(min-width: 768px) 55vw, 90vw"
-                          className="object-cover"
-                          priority={index === 0}
-                        />
-                      ) : (
-                        <div className="case-placeholder absolute inset-0 flex items-center justify-center">
-                          <span className="select-none font-mono text-[clamp(64px,9vw,160px)] font-semibold leading-none text-white/[0.08]">
-                            {pad(index + 1)}
-                          </span>
-                        </div>
-                      )}
+                      <Image
+                        src={item.cover}
+                        alt={item.title}
+                        fill
+                        sizes="(min-width: 768px) 55vw, 90vw"
+                        className="object-cover"
+                        priority={index === 0}
+                      />
                     </div>
                   </div>
                 </div>
@@ -170,22 +168,16 @@ export function WorksTrack({ items, explore, progressLabel }: Props) {
             </div>
           );
 
-          const shell = "relative flex h-full w-full shrink-0 items-center";
-
-          return item.href ? (
+          return (
             <Link
               key={item.slug}
               href={item.href}
               prefetch={false}
               data-cursor={explore}
-              className={shell}
+              className="relative flex h-full w-full shrink-0 items-center"
             >
               {body}
             </Link>
-          ) : (
-            <div key={item.slug} className={shell}>
-              {body}
-            </div>
           );
         })}
       </div>

@@ -12,25 +12,16 @@ import { ExploreCursor } from "@/components/ui/explore-cursor";
  *  edge between the frame lines, never past them into the rail or social-icon
  *  strips. The behaviour (tint, progress, image drift) lives in WorksTrack. */
 export function Works({ lang, dict }: { lang: Locale; dict: Dictionary }) {
-  const items: WorkItem[] = CASES.map((item) =>
-    "placeholder" in item
-      ? {
-          slug: item.slug,
-          tint: item.tint,
-          title: dict.works.placeholder.title,
-          description: dict.works.placeholder.description,
-          tags: [],
-        }
-      : {
-          slug: item.slug,
-          tint: item.tint,
-          title: item.title,
-          description: dict.works.cases[item.slug],
-          tags: [...item.tags],
-          cover: item.cover,
-          href: localizePath(lang, item.href),
-        },
-  );
+  const items: WorkItem[] = CASES.map((item) => ({
+    slug: item.slug,
+    tint: item.tint,
+    title: item.title,
+    lines: [...item.lines],
+    description: dict.works.cases[item.slug],
+    tags: [...item.tags],
+    cover: item.cover,
+    href: localizePath(lang, item.href),
+  }));
 
   return (
     <RevealSection

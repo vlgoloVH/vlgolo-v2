@@ -661,10 +661,6 @@ html:has(.contact-dialog[open]) {
   }
 }
 
-.case-placeholder {
-  background: linear-gradient(135deg, rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.01));
-}
-
 /* The circle that trails the cursor over a case. The cursor itself stays; the
    circle follows it a beat behind. A real mouse or trackpad only: on touch
    there is no pointer to follow.

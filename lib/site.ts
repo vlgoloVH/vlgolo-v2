@@ -31,26 +31,59 @@ export const HERO = {
   },
 } as const;
 
-/** The Works track, in order. A case with `placeholder` has no content yet and
- *  shows a stand-in; the rest take their description from the dictionary,
- *  keyed by slug. `tint` colours the section while that case is on screen. */
+/** The Works track, in order. Descriptions come from the dictionary, keyed
+ *  by slug. `lines` is the name as set on the slide, always on two lines.
+ *  `tint` colours the section while that case is on screen, picked from the
+ *  case's own cover. */
 export const CASES = [
   {
     slug: "smartcrowd",
-    title: "Smart Crowd",
+    title: "SmartCrowd",
+    lines: ["Smart", "Crowd"],
     href: "/cases/smartcrowd",
     cover: "/works/SmartCrowd_preview.jpg",
     tags: ["Fintech", "Proptech", "Product Design"],
     tint: "#1d4ed8",
   },
-  { slug: "case-2", placeholder: true, tint: "#7c3aed" },
-  { slug: "case-3", placeholder: true, tint: "#0d9488" },
-  { slug: "case-4", placeholder: true, tint: "#d97706" },
-  { slug: "case-5", placeholder: true, tint: "#e11d48" },
+  {
+    slug: "space-needle",
+    title: "Space Needle",
+    lines: ["Space", "Needle"],
+    href: "/cases/space-needle",
+    cover: "/works/SpaceNeedle_preview.jpg",
+    tags: ["B2C", "B2B", "Enterprise"],
+    tint: "#f97316",
+  },
+  {
+    slug: "dan-mon-fairwind",
+    title: "Dan-Mon Fairwind",
+    lines: ["Dan-Mon", "Fairwind"],
+    href: "/cases/dan-mon-fairwind",
+    cover: "/works/DanMon_preview.jpg",
+    tags: ["Enterprise", "CRM", "B2B"],
+    tint: "#0891b2",
+  },
+  {
+    slug: "fozzy-group",
+    title: "Fozzy Group",
+    lines: ["Fozzy", "Group"],
+    href: "/cases/fozzy-group",
+    cover: "/works/FozzyGroup_preview.jpg",
+    tags: ["Retail", "Back-Office", "Design System"],
+    tint: "#7c3aed",
+  },
+  {
+    slug: "bitterbrains",
+    title: "BitterBrains",
+    lines: ["Bitter", "Brains"],
+    href: "/cases/bitterbrains",
+    cover: "/works/BitterBrail_preview.jpg",
+    tags: ["EdTech", "SaaS", "Community"],
+    tint: "#ca8a04",
+  },
 ] as const;
 
-export type Case = (typeof CASES)[number];
-export type CaseSlug = Exclude<Case, { placeholder: true }>["slug"];
+export type CaseSlug = (typeof CASES)[number]["slug"];
 
 export const ABOUT = {
   href: "/about",
