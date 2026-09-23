@@ -3,6 +3,7 @@ import type { Dictionary } from "@/lib/dictionaries";
 import { SITE } from "@/lib/site";
 import { RevealSection } from "@/components/layout/reveal-section";
 import { ContactDialog } from "@/components/ui/contact-dialog";
+import { GlassButton } from "@/components/ui/glass-button";
 
 /** The last slide, and the hero's closing shot: the same desk after work, the
  *  chair pushed back, the screen still on, dimmed like the hero video. The
@@ -62,11 +63,10 @@ export function Contacts({ dict }: { dict: Dictionary }) {
           {copy.body}
         </p>
 
-        <ContactDialog
-          label={copy.email}
-          copy={dict.contact}
-          className="reveal [--reveal-i:7] mt-10 md:mt-12"
-        />
+        <div className="reveal [--reveal-i:7] mt-10 flex flex-col items-center gap-4 sm:flex-row md:mt-12">
+          <ContactDialog label={copy.email} copy={dict.contact} />
+          <GlassButton href={SITE.resume} label={copy.resume} download videoSelector={null} />
+        </div>
       </div>
 
       {/* The site footer, as on the current site: copyright on the left, back to
