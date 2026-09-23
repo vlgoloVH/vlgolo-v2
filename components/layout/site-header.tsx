@@ -58,7 +58,7 @@ export function SiteHeader({ lang, dict }: { lang: Locale; dict: Dictionary }) {
           <a
             href={SITE.resume}
             download
-            className="flex items-center gap-2 rounded-full border border-white/20 px-3.5 py-1.5 text-[13px] text-ink transition-colors duration-300 can-hover:border-white/50 can-hover:bg-white/5 md:px-4 md:py-2 md:text-[15px]"
+            className="flex items-center gap-2 text-[13px] text-ink/85 transition-colors duration-300 can-hover:text-ink md:text-[15px]"
           >
             {dict.resume}
             {/* The arrow keeps dropping into the tray, on a slow loop. */}
