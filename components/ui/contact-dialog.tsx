@@ -53,7 +53,7 @@ export function ContactDialog({ label, copy, className = "" }: Props) {
 
   return (
     <>
-      <GlassButton label={label} onClick={open} className={className} />
+      <GlassButton label={label} onClick={open} videoSelector={null} className={className} />
 
       <dialog
         ref={dialogRef}

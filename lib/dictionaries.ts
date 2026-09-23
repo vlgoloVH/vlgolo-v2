@@ -51,6 +51,17 @@ const en = {
     ],
     cta: "More about me",
   },
+  contacts: {
+    /** Set vertically in the left margin, the same as about.rail. */
+    rail: "Contact",
+    headline: ["Let’s talk about", "your product"],
+    body: "If you have a product, team or challenge in mind, I’d be happy to hear about it.",
+    email: "Email me",
+    linkedin: "LinkedIn",
+    availability: "Available for Senior / Lead Product Design opportunities",
+    /** Alt text for the background picture. */
+    scene: "The same desk at night, the chair pushed back and the screen left on.",
+  },
   testimonials: {
     /** Set vertically in the left margin, the same as about.rail. */
     rail: "Words",
@@ -154,6 +165,15 @@ const uk: Dictionary = {
       "Працював із фінтехом, SaaS, enterprise і споживчими продуктами, допомагаючи командам перетворювати ранні ідеї на масштабовані запущені продукти. Моя робота лежить на перетині користувачів, бізнесу й технологій. Я зосереджуюсь на тому, щоб зрозуміти проблему, знайти правильний напрямок, спростити складне і побудувати системи, які ростуть разом із продуктом.",
     ],
     cta: "Більше про мене",
+  },
+  contacts: {
+    rail: "Контакти",
+    headline: ["Поговорімо про", "твій продукт"],
+    body: "Якщо в тебе є продукт, команда чи задача, буду радий про це почути.",
+    email: "Написати мені",
+    linkedin: "LinkedIn",
+    availability: "Відкритий до ролей Senior / Lead Product Designer",
+    scene: "Той самий стіл уночі, крісло відсунуте, екран увімкнений.",
   },
   testimonials: {
     rail: "Відгуки",
