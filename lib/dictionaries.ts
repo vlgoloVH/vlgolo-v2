@@ -55,7 +55,7 @@ const en = {
     /** Set vertically in the left margin, the same as about.rail. */
     rail: "Works",
     /** Written inside the circle that replaces the cursor over a case. */
-    explore: "Explore more",
+    explore: "View case ↗",
     /** Where the progress bar under the cases reads out. */
     progress: "Case",
     cases: {
@@ -124,7 +124,7 @@ const uk: Dictionary = {
   },
   works: {
     rail: "Проєкти",
-    explore: "Відкрити кейс",
+    explore: "Дивитися кейс ↗",
     progress: "Кейс",
     cases: {
       smartcrowd:

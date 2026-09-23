@@ -95,7 +95,7 @@ export function ExploreCursor() {
     >
       <div
         data-on={on ? "true" : undefined}
-        className="explore-cursor -ml-[60px] -mt-[60px] flex h-[120px] w-[120px] items-center justify-center rounded-full px-5 text-center text-[12px] font-medium uppercase leading-[1.5] tracking-[0.19em] text-ink"
+        className="explore-cursor -ml-[60px] -mt-[60px] flex h-[120px] w-[120px] items-center justify-center rounded-full px-3 text-center text-[12px] font-medium uppercase leading-[1.5] tracking-[0.19em] text-ink"
       >
         <span className="relative">{label}</span>
       </div>
