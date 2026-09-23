@@ -10,123 +10,115 @@ interface Props {
   items: readonly Item[];
 }
 
-/** How long the pointer has to rest on a quote before it takes over. Long
- *  enough that sweeping across the section does not shuffle everything, short
- *  enough to feel like it answered the hover. */
-const DWELL = 320;
-const SWIPE = 50;
+/** A beat before a hovered author takes over, so running the pointer down the
+ *  list does not flick through every quote on the way. */
+const DWELL = 90;
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-/** Every quote is always on stage; `slots[i]` says where quote i sits. Slot 0
- *  is the main position, 1–3 the small ones around it. Choosing a quote swaps
- *  its slot with the active one's, and the stylesheet animates the move — each
- *  quote keeps its own size and line breaks and is only translated and scaled,
- *  so nothing reflows and no text is swapped in place. */
+/** Split screen: the active quote large on the left, the four authors as a
+ *  list on the right that switches it. Hover (with a real pointer), click, tap
+ *  or keyboard focus all select. Every quote stays in the page; `state` says
+ *  which one is shown, which one is on its way out and which are idle, and the
+ *  stylesheet runs the mask transition between them. */
 export function TestimonialsStage({ label, items }: Props) {
-  const [slots, setSlots] = useState(() => items.map((_, i) => i));
-  const active = slots.indexOf(0);
-
+  const [active, setActive] = useState(0);
+  const [previous, setPrevious] = useState<number | null>(null);
+  /** No entrance on first render: the section's own reveal handles that. */
+  const [moved, setMoved] = useState(false);
   const timer = useRef(0);
-  /** The quote that has just been sent to the pointer's position. It ignores
-   *  the pointer until the pointer has left it once, or it would take the main
-   *  spot straight back and the two would trade places forever. */
-  const settling = useRef<number | null>(null);
-  const touch = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
   const select = (index: number) => {
     window.clearTimeout(timer.current);
     if (index === active) return;
-    setSlots((current) => {
-      const next = [...current];
-      const from = current.indexOf(0);
-      next[from] = current[index];
-      next[index] = 0;
-      return next;
-    });
-    settling.current = active;
+    setPrevious(active);
+    setActive(index);
+    setMoved(true);
   };
 
-  const step = (direction: 1 | -1) =>
-    select((active + direction + items.length) % items.length);
+  const state = (index: number) => {
+    if (index === active) return moved ? "in" : "shown";
+    if (index === previous) return "out";
+    return "idle";
+  };
+
+  const current = items[active];
 
   return (
-    <div
-      className="reveal [--reveal-i:2] absolute inset-y-0 left-[var(--frame-line)] right-[var(--frame-line)] px-6 pb-[12vh] pt-[16vh] md:px-[clamp(32px,5vw,104px)] md:pb-[10vh] md:pt-[14vh]"
-      onTouchStart={(event) => {
-        const t = event.touches[0];
-        touch.current = { x: t.clientX, y: t.clientY };
-      }}
-      onTouchEnd={(event) => {
-        const start = touch.current;
-        touch.current = null;
-        if (!start) return;
-        const t = event.changedTouches[0];
-        const dx = t.clientX - start.x;
-        const dy = t.clientY - start.y;
-        // Sideways only: an upward swipe is the page scroll and stays that.
-        if (Math.abs(dx) > SWIPE && Math.abs(dx) > Math.abs(dy) * 1.5) {
-          step(dx < 0 ? 1 : -1);
-        }
-      }}
-    >
-      <ul aria-label={label} className="t-stage relative h-full w-full">
-        {items.map((item, index) => {
-          const isActive = index === active;
-          return (
-            <li
+    <div className="reveal [--reveal-i:2] absolute inset-y-0 left-[var(--frame-line)] right-[var(--frame-line)] flex flex-col justify-center gap-10 px-6 pb-10 pt-24 md:grid md:grid-cols-[minmax(0,1.75fr)_minmax(0,1fr)] md:items-center md:gap-[5vw] md:px-[clamp(32px,5vw,104px)] md:py-0">
+      <figure aria-live="polite">
+        <div className="grid">
+          {items.map((item, index) => (
+            <blockquote
               key={index}
-              data-slot={slots[index]}
-              data-active={isActive ? "true" : undefined}
-              aria-current={isActive ? "true" : undefined}
-              role={isActive ? undefined : "button"}
-              tabIndex={isActive ? undefined : 0}
-              className="t-item"
+              data-state={state(index)}
+              aria-hidden={index !== active}
+              className="t-quote relative max-w-[15em]"
+            >
+              <span aria-hidden="true" className="t-mark">
+                “
+              </span>
+              {item.quote}”
+            </blockquote>
+          ))}
+        </div>
+
+        <figcaption className="mt-8 flex items-center gap-5 md:mt-14 md:gap-8">
+          <div className="t-meta">
+            <span key={active} className="t-swap">
+              <span className="block text-[13px] font-medium uppercase tracking-[0.19em] text-ink">
+                {current.name}
+              </span>
+              <span className="mt-1.5 block text-[12px] uppercase tracking-[0.16em] text-ink/55">
+                {current.role} · {current.company}
+              </span>
+            </span>
+          </div>
+
+          <span className="flex shrink-0 items-center gap-2 whitespace-nowrap font-mono text-[12px] tracking-[0.2em] text-ink/45">
+            <span className="inline-block overflow-hidden text-ink">
+              <span key={active} className="t-swap">
+                {pad(active + 1)}
+              </span>
+            </span>
+            / {pad(items.length)}
+          </span>
+        </figcaption>
+      </figure>
+
+      <ol aria-label={label} className="flex flex-col gap-1 md:gap-2">
+        {items.map((item, index) => (
+          <li key={index}>
+            <button
+              type="button"
+              aria-current={index === active ? "true" : undefined}
+              className="t-author"
               onClick={() => select(index)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  select(index);
-                }
-              }}
+              onFocus={() => select(index)}
               onPointerEnter={(event) => {
-                if (event.pointerType === "touch" || isActive) return;
-                if (settling.current === index) return;
+                if (event.pointerType === "touch") return;
                 window.clearTimeout(timer.current);
                 timer.current = window.setTimeout(() => select(index), DWELL);
               }}
-              onPointerLeave={() => {
-                if (settling.current === index) settling.current = null;
-                window.clearTimeout(timer.current);
-              }}
+              onPointerLeave={() => window.clearTimeout(timer.current)}
             >
-              <blockquote className="t-quote">
-                <span aria-hidden="true" className="t-mark">
-                  “
+              <span className="font-mono text-[12px] tracking-[0.2em] text-ink/70">
+                {pad(index + 1)}
+              </span>
+              <span>
+                <span className="block text-[16px] font-medium text-ink md:text-[18px]">
+                  {item.name}
                 </span>
-                {item.quote}”
-              </blockquote>
-
-              <div className="t-meta" aria-hidden={!isActive}>
-                <div>
-                  <p className="text-[13px] font-medium uppercase tracking-[0.19em] text-ink">
-                    {item.name}
-                  </p>
-                  <p className="mt-1.5 text-[12px] uppercase tracking-[0.16em] text-ink/55">
-                    {item.role} · {item.company}
-                  </p>
-                </div>
-                <span aria-hidden="true" className="h-8 w-px bg-white/20" />
-                <span className="font-mono text-[12px] tracking-[0.2em] text-ink/70">
-                  {pad(index + 1)} / {pad(items.length)}
+                <span className="mt-1 block text-[12px] uppercase tracking-[0.16em] text-ink/55">
+                  {item.role} · {item.company}
                 </span>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
+              </span>
+            </button>
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }

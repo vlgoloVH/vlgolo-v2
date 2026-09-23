@@ -2,11 +2,10 @@ import type { Dictionary } from "@/lib/dictionaries";
 import { RevealSection } from "@/components/layout/reveal-section";
 import { TestimonialsStage } from "@/components/sections/testimonials-stage";
 
-/** A full-screen slide of four quotes, typography first: one large and active,
- *  three small and dimmed around it. Choosing one (hover, click, tap or swipe)
- *  moves it into the main position and sends the old one to its place — see
- *  TestimonialsStage. It rides up over Works the same way About rides over the
- *  hero: an opaque surface, one step higher in the stack. */
+/** A full-screen slide, split in two: the active quote large on the left, the
+ *  four authors as a list on the right that switches it (see
+ *  TestimonialsStage). It rides up over Works the same way About rides over
+ *  the hero: an opaque surface, one step higher in the stack. */
 export function Testimonials({ dict }: { dict: Dictionary }) {
   return (
     <RevealSection
