@@ -51,6 +51,28 @@ const en = {
     ],
     cta: "More about me",
   },
+  /** Labels on the case study pages. The case copy itself is in lib/cases. */
+  caseStudy: {
+    /** The left rail's names for the sections, in page order. */
+    nav: ["Intro", "Context", "Role", "Challenge", "Solution", "System", "Impact"],
+    quick: {
+      label: "Project in 30 seconds",
+      product: "The product",
+      problem: "The problem",
+      role: "My role",
+      result: "The result",
+    },
+    context: {
+      label: "Context",
+      stages: ["The invite", "What I found", "What happened next"],
+    },
+    role: { label: "My role", scope: "Scope", team: "Worked with" },
+    challenge: { label: "The challenge" },
+    chapter: "Chapter",
+    impact: { label: "Impact" },
+    reflection: { label: "Reflection", heading: "What this project taught me" },
+    next: { label: "Next case", view: "View case ↗" },
+  },
   /** The About page (app/[lang]/about). */
   aboutPage: {
     title: "About",
@@ -335,6 +357,26 @@ const uk: Dictionary = {
       "Працював із фінтехом, SaaS, enterprise і споживчими продуктами, допомагаючи командам перетворювати ранні ідеї на масштабовані запущені продукти. Моя робота лежить на перетині користувачів, бізнесу й технологій. Я зосереджуюсь на тому, щоб зрозуміти проблему, знайти правильний напрямок, спростити складне і побудувати системи, які ростуть разом із продуктом.",
     ],
     cta: "Більше про мене",
+  },
+  caseStudy: {
+    nav: ["Вступ", "Контекст", "Роль", "Виклик", "Рішення", "Система", "Результат"],
+    quick: {
+      label: "Проєкт за 30 секунд",
+      product: "Продукт",
+      problem: "Проблема",
+      role: "Моя роль",
+      result: "Результат",
+    },
+    context: {
+      label: "Контекст",
+      stages: ["Запрошення", "Що я знайшов", "Що було далі"],
+    },
+    role: { label: "Моя роль", scope: "Зона відповідальності", team: "Працював з" },
+    challenge: { label: "Виклик" },
+    chapter: "Розділ",
+    impact: { label: "Результат" },
+    reflection: { label: "Висновки", heading: "Чого мене навчив цей проєкт" },
+    next: { label: "Наступний кейс", view: "Дивитися кейс ↗" },
   },
   aboutPage: {
     title: "Про мене",

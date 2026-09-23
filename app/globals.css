@@ -936,12 +936,14 @@ html:not([data-ready]) .ab-rail-in {
   animation: fade-in 1s var(--ease-soft) 0.5s both;
 }
 
-.about-page {
+.about-page,
+.case-page {
   --k: 1;
 }
 
 @media (max-width: 767px) {
-  .about-page {
+  .about-page,
+  .case-page {
     --k: 0.4;
   }
 }
@@ -1400,7 +1402,8 @@ html[data-hover-capable="true"] .ab-collage:hover {
 
 /* Reduced motion: everything at rest and fully shown. */
 @media (prefers-reduced-motion: reduce) {
-  .about-page [data-p] {
+  .about-page [data-p],
+  .case-page [data-p] {
     --p: 0.5 !important;
   }
 
@@ -1432,6 +1435,361 @@ html[data-hover-capable="true"] .ab-collage:hover {
   .ab-rail-name,
   .ab-cap-title,
   .ab-cap-panel {
+    transition: none;
+  }
+}
+
+/* ──────────────────────────────────────────────
+   Case study (app/[lang]/cases/[slug])
+   Two drivers: --p from ScrollDriver on [data-p] (an element's trip through
+   the viewport), and --sp from Track on pinned stages (0 → 1 while pinned,
+   or the trip up the screen where nothing pins). --tint is the case's
+   colour as "r g b".
+   ────────────────────────────────────────────── */
+
+/* ── Hero ── */
+
+.cs-hero-bg {
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 100%, rgb(var(--tint) / calc(0.12 + var(--sp, 0) * 0.3)), transparent 70%),
+    linear-gradient(#000, color-mix(in srgb, rgb(var(--tint)) calc(var(--sp, 0) * 18%), #0b0b0c));
+}
+
+.cs-hero-copy {
+  transform: translate3d(0, calc(var(--sp, 0) * -34vh * var(--k)), 0);
+  opacity: calc(1 - var(--sp, 0) * 1.3);
+}
+
+.cs-hero-meta {
+  opacity: calc(1 - var(--sp, 0) * 2.4) !important;
+}
+
+.cs-hero-visual {
+  perspective: 1600px;
+}
+
+/* Tipped back and cropped by the bottom edge at first, then upright, framed
+   and smaller. */
+.cs-hero-mock {
+  transform-origin: 50% 100%;
+  transform: translate3d(0, calc((1 - var(--sp, 0)) * 26vh * var(--k)), 0)
+    rotateX(calc((1 - var(--sp, 0)) * 14deg * var(--k)))
+    scale(calc(1.06 - var(--sp, 0) * 0.3 * var(--k)));
+  will-change: transform;
+}
+
+@media (max-width: 767px) {
+  .cs-hero-copy,
+  .cs-hero-mock {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* ── 30 seconds: four answers pulling into a grid ── */
+
+.cs-quick {
+  --q: clamp(0, calc((var(--p, 1) - 0.1 - var(--i) * 0.03) * 4), 1);
+  transform: translate3d(calc((1 - var(--q)) * var(--dx) * 1vw * var(--k)), calc((1 - var(--q)) * var(--dy) * 1vh * var(--k)), 0)
+    rotate(calc((1 - var(--q)) * var(--dr)));
+  opacity: calc(0.2 + var(--q) * 0.8);
+}
+
+/* ── Context ── */
+
+.cs-beat {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.6s var(--ease-soft),
+    transform 0.6s var(--ease-soft);
+
+  &.is-on {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Role: the scope growing ── */
+
+.cs-scope-item {
+  --on: clamp(0, calc((var(--sp, 1) * (var(--n) + 1) - var(--i) - 0.3) * 2), 1);
+  opacity: calc(0.08 + var(--on) * 0.92);
+  transform: translate3d(calc((1 - var(--on)) * -16px), 0, 0);
+}
+
+.cs-scope-count {
+  -webkit-text-stroke: 1px rgb(255 255 255 / 0.5);
+  color: transparent;
+}
+
+.cs-ring {
+  --s: calc(160px + var(--r) * 170px);
+  width: var(--s);
+  height: var(--s);
+  transform: translate(-50%, -50%) scale(clamp(0, calc(var(--sp, 1) * 4.4 - var(--r)), 1));
+  opacity: clamp(0, calc(var(--sp, 1) * 4.4 - var(--r)), 1);
+}
+
+.cs-scope-team {
+  opacity: clamp(0, calc((var(--sp, 1) - 0.82) * 8), 1);
+}
+
+/* ── Challenge: the pile, then the clearing ── */
+
+.cs-tension {
+  --on: clamp(0, calc((var(--sp, 1) * (var(--n) + 1.4) - var(--i) - 0.4) * 2), 1);
+  opacity: calc(0.1 + var(--on) * 0.9);
+}
+
+.cs-pile {
+  container-type: size;
+}
+
+.cs-frag {
+  --in: clamp(0, calc((var(--sp, 1) * 1.8 - var(--i) / var(--m)) * 4), 1);
+  --tidy: clamp(0, calc((var(--sp, 1) - 0.66) / 0.26), 1);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(var(--w) * 1cqw);
+  height: calc(var(--h) * 1cqh);
+  border-radius: 6px;
+  border: 1px solid rgb(255 255 255 / 0.22);
+  background: rgb(255 255 255 / 0.05);
+  transform: translate(
+      calc((var(--cx) + (var(--gx) - var(--cx)) * var(--tidy)) * 1cqw),
+      calc((var(--cy) + (var(--gy) - var(--cy)) * var(--tidy)) * 1cqh)
+    )
+    rotate(calc(var(--cr) * (1 - var(--tidy))))
+    scale(calc(0.9 + var(--in) * 0.1));
+  opacity: var(--in);
+}
+
+.cs-frag--bar {
+  background: rgb(var(--tint) / calc(0.12 + var(--tidy) * 0.3));
+}
+
+.cs-frag--card {
+  background: rgb(255 255 255 / 0.07);
+}
+
+.cs-frag--pill {
+  border-radius: 999px;
+  background: rgb(var(--tint) / 0.35);
+}
+
+.cs-frag--row {
+  border-color: rgb(255 255 255 / 0.14);
+}
+
+/* ── Chapters ── */
+
+/* Sticky: each point is lit while it crosses the middle of the screen. */
+.cs-point {
+  --d: max(var(--p, 0.5) - 0.5, 0.5 - var(--p, 0.5));
+  opacity: clamp(0.22, calc(1.7 - var(--d) * 5), 1);
+  transition: opacity 0.2s linear;
+}
+
+.cs-sticky-visual img {
+  transform: scale(calc(1.08 - var(--p, 0.5) * 0.08));
+}
+
+/* Strip: the rail of screens slides left across the pinned stage. */
+.cs-strip-rail {
+  --h: min(62svh, 46vw);
+  height: var(--h);
+  width: calc(var(--h) * var(--ratio));
+  transform: translate3d(calc((100vw - var(--h) * var(--ratio) - var(--frame-pad)) * var(--sp, 0) + var(--frame-pad)), 0, 0);
+  will-change: transform;
+}
+
+.cs-strip-points {
+  transform: translate3d(calc(var(--sp, 0) * -60vw * var(--k)), 0, 0);
+}
+
+@media (max-width: 767px) {
+  .cs-strip-rail {
+    --h: 52vw;
+  }
+}
+
+/* Flow: a line drawing down through the steps. */
+.cs-flow {
+  --f: clamp(0, calc((var(--p, 1) - 0.2) / 0.42), 1);
+}
+
+.cs-flow-line {
+  transform: scaleY(var(--f));
+}
+
+.cs-flow-step {
+  --on: clamp(0, calc((var(--f) * var(--n) - var(--i)) * 1.6), 1);
+  opacity: calc(0.22 + var(--on) * 0.78);
+}
+
+.cs-flow-dot {
+  background: rgb(var(--tint) / calc(var(--on) * 1));
+  border-color: rgb(255 255 255 / calc(0.3 + var(--on) * 0.6));
+  box-shadow: 0 0 0 calc(var(--on) * 6px) rgb(var(--tint) / 0.18);
+}
+
+/* Backdrop: the copy sits on a soft shade so it reads over the screen. */
+.cs-backdrop-copy {
+  background: linear-gradient(90deg, rgb(20 20 21 / 0.96) 55%, rgb(20 20 21 / 0.75) 80%, transparent);
+}
+
+.cs-backdrop-img {
+  transform: scale(calc(1.06 - var(--p, 0.5) * 0.08));
+}
+
+/* Reveal: the screen opens out from a vertical slit. */
+.cs-slit {
+  --o: clamp(0, calc((var(--p, 1) - 0.08) * 3), 1);
+  clip-path: inset(0 calc((1 - var(--o)) * 46%) round clamp(12px, 1.2vw, 20px));
+}
+
+.cs-slit-img {
+  transform: scale(calc(1.18 - var(--o) * 0.18));
+}
+
+/* ── Visual pauses ── */
+
+.cs-moment-frame {
+  width: min(100%, 86vw);
+}
+
+@media (min-width: 768px) {
+  .cs-moment-frame {
+    width: calc(100vw - var(--frame-line) * 2 - 48px);
+  }
+}
+
+.cs-moment--mask .cs-moment-img {
+  --o: clamp(0, calc((var(--p, 1) - 0.12) * 2.6), 1);
+  clip-path: circle(calc(var(--o) * 75%) at 50% 55%);
+}
+
+.cs-moment--tilt .cs-moment-frame {
+  perspective: 1400px;
+}
+
+.cs-moment--tilt .cs-moment-img {
+  --o: clamp(0, calc((var(--p, 1) - 0.1) * 2.5), 1);
+  transform-origin: 50% 100%;
+  transform: rotateX(calc((1 - var(--o)) * 16deg * var(--k))) scale(calc(0.86 + var(--o) * 0.14));
+}
+
+.cs-moment--drift .cs-moment-img img {
+  transform: translate3d(0, calc((var(--p, 0.5) - 0.5) * -12%), 0) scale(1.18);
+}
+
+.cs-moment--enter .cs-moment-img {
+  --o: clamp(0, calc((var(--p, 1) - 0.08) * 2.4), 1);
+  transform: translate3d(calc((1 - var(--o)) * 44vw * var(--k)), 0, 0) rotate(calc((1 - var(--o)) * 3deg));
+  opacity: calc(0.3 + var(--o) * 0.7);
+}
+
+/* ── System ── */
+
+.cs-layer {
+  --on: clamp(0, calc((var(--sp, 1) * (var(--n) + 0.6) - var(--i) - 0.2) * 2.2), 1);
+  opacity: var(--on);
+  transform: translate3d(0, calc((1 - var(--on)) * -22px), 0);
+}
+
+.cs-loop {
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - clamp(0, calc((var(--p, 1) - 0.15) * 2.6), 1));
+}
+
+.cs-spoke {
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - clamp(0, calc((var(--p, 1) - 0.25 - var(--i) * 0.04) * 4), 1));
+}
+
+.cs-module {
+  --on: clamp(0, calc((var(--p, 1) - 0.2 - var(--i) * 0.05) * 5), 1);
+  opacity: var(--on);
+  scale: calc(0.9 + var(--on) * 0.1);
+}
+
+.cs-eco-link {
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - clamp(0, calc((var(--p, 1) - 0.18 - var(--i) * 0.022) * 5), 1));
+}
+
+.cs-eco-node {
+  --on: clamp(0, calc((var(--p, 1) - 0.2 - var(--i) * 0.022) * 6), 1);
+  opacity: var(--on);
+  scale: calc(0.7 + var(--on) * 0.3);
+}
+
+/* ── Impact ── */
+
+.cs-rise {
+  --o: clamp(0, calc((var(--p, 1) - 0.12) * 4), 1);
+  transform: translate3d(0, calc((1 - var(--o)) * 100%), 0);
+}
+
+/* ── Reflection ── */
+
+.cs-insight {
+  opacity: 0.18;
+  transition: opacity 0.6s var(--ease-soft);
+
+  &.is-on {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 767px) {
+  .cs-insight {
+    opacity: 1;
+  }
+}
+
+/* ── Next case: the room shifts to the next case's colour ── */
+
+.cs-next-bg {
+  background: radial-gradient(
+      ellipse 80% 70% at 70% 50%,
+      rgb(var(--next) / calc(clamp(0, (var(--p, 1) - 0.1) * 1.6, 1) * 0.45)),
+      transparent 75%
+    ),
+    rgb(var(--tint) / calc((1 - clamp(0, (var(--p, 1) - 0.1) * 1.6, 1)) * 0.1));
+}
+
+.cs-next-cover {
+  transform: translate3d(0, calc((var(--p, 0.5) - 0.5) * -80px * var(--k)), 0);
+}
+
+/* Reduced motion: every stage at rest, in its finished state. */
+@media (prefers-reduced-motion: reduce) {
+  /* Track holds --sp at 1 here; the hero and the strip start from 0. */
+  .cs-hero-copy,
+  .cs-hero-meta {
+    opacity: 1 !important;
+    transform: none;
+  }
+
+  .cs-hero-mock,
+  .cs-strip-rail,
+  .cs-strip-points {
+    transform: none;
+  }
+
+  /* The strip can still be browsed: sideways, by hand. */
+  .cs-strip > div {
+    overflow-x: auto;
+  }
+
+  .cs-point,
+  .cs-flow-step,
+  .cs-beat,
+  .cs-insight {
+    opacity: 1;
     transition: none;
   }
 }
