@@ -72,7 +72,7 @@ export function TestimonialsStage({ label, items }: Props) {
                 {current.name}
               </span>
               <span className="mt-1.5 block text-[12px] uppercase tracking-[0.16em] text-ink/55">
-                {current.role} · {current.company}
+                {[current.role, current.company].filter(Boolean).join(" · ")}
               </span>
             </span>
           </div>
@@ -112,7 +112,7 @@ export function TestimonialsStage({ label, items }: Props) {
                   {item.name}
                 </span>
                 <span className="mt-1 block text-[12px] uppercase tracking-[0.16em] text-ink/55">
-                  {item.role} · {item.company}
+                  {[item.role, item.company].filter(Boolean).join(" · ")}
                 </span>
               </span>
             </button>
