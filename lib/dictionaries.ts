@@ -57,7 +57,6 @@ const en = {
     headline: ["Let’s talk about", "your product"],
     body: "If you have a product, team or challenge in mind, I’d be happy to hear about it.",
     email: "Email me",
-    availability: "Available for Senior / Lead Product Design opportunities",
     /** The footer link back to the hero. */
     top: "Back to top",
     /** Alt text for the background picture. */
@@ -184,7 +183,6 @@ const uk: Dictionary = {
     headline: ["Поговорімо про", "твій продукт"],
     body: "Якщо в тебе є продукт, команда чи задача, буду радий про це почути.",
     email: "Написати мені",
-    availability: "Відкритий до ролей Senior / Lead Product Designer",
     top: "Нагору",
     scene: "Той самий стіл уночі, крісло відсунуте, екран увімкнений.",
   },

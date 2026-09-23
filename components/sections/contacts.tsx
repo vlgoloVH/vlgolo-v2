@@ -41,11 +41,13 @@ export function Contacts({ dict }: { dict: Dictionary }) {
         </span>
       </div>
 
-      {/* Centred on the screen like the hero, with the hero's own eyebrow and
-          headline type, so the page closes on the shape it opened with. */}
+      {/* Centred on the screen like the hero, with the hero's headline type,
+          so the page closes on the shape it opened with. */}
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 pb-28 pt-24 text-center md:px-[var(--frame-pad)] md:pb-24 md:pt-24">
-        <p className="reveal [--reveal-i:2] text-eyebrow font-medium uppercase text-ink/85">
-          {copy.availability}
+        {/* The address as plain text, where the hero has its eyebrow: to read
+            or copy, not to click. The button below is the way to write. */}
+        <p className="reveal [--reveal-i:2] select-text text-[17px] font-medium tracking-[0.04em] text-ink/85 md:text-[22px]">
+          {SITE.email}
         </p>
 
         <h2 className="reveal [--reveal-i:3] mt-6 text-display text-ink md:mt-8">
@@ -65,13 +67,6 @@ export function Contacts({ dict }: { dict: Dictionary }) {
           copy={dict.contact}
           className="reveal [--reveal-i:7] mt-10 md:mt-12"
         />
-
-        <a
-          href={`mailto:${SITE.email}`}
-          className="reveal [--reveal-i:8] mt-6 text-[14px] tracking-[0.02em] text-ink/50 transition-colors duration-300 can-hover:text-ink"
-        >
-          {SITE.email}
-        </a>
       </div>
 
       {/* The site footer, as on the current site: copyright on the left, back to
