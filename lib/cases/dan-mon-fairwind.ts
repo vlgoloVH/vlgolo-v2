@@ -6,19 +6,9 @@ export const danMonFairwind: CaseStudy = {
   slug: "dan-mon-fairwind",
   hero: {
     statement: "Designing the enterprise CRM that runs the full sales-to-supply lifecycle.",
-    meta: ["Maritime · Spare Parts", "2022–2023", "Product Designer", "Web"],
-  },
-  summary: {
-    lead: "One CRM for the entire sales lifecycle.",
-    product:
-      "An internal CRM for a global supplier that sources and delivers technical spare parts for ship equipment anywhere in the world.",
-    problem:
-      "Enquiries, quotes, purchase orders and customers lived in spreadsheets, email and disconnected tools. Context and margin leaked at every handoff.",
-    role: "End-to-end design: product discovery, workflow mapping, information architecture and every module’s interface.",
-    result: "One connected system and a single source of truth for every deal, from first enquiry to delivered order.",
+    meta: ["Maritime · Spare Parts","2022–2023","Product Designer","Web"],
   },
   context: {
-    headline: ["Every deal lived", "in a different place."],
     invite:
       "Dan-Mon Fairwind runs a global marine spare-parts business on a web of spreadsheets, email, and disconnected tools. They brought me in to design a single internal CRM their whole team could run the business on, from first enquiry to delivered order.",
     situation:
@@ -26,15 +16,15 @@ export const danMonFairwind: CaseStudy = {
     outcome:
       "A unified enterprise CRM covering the complete lifecycle, including opportunities, quotations, procurement, order fulfilment, and customer relationships, giving the team one connected system and a single source of truth for every deal.",
     motif: "pipeline",
-    labels: ["Enquiry", "Quote", "Order", "Delivery"],
+    labels: ["Enquiry","Quote","Order","Delivery"],
   },
   role: {
-    statement: "The workflow came first. The screens came after.",
-    body: [
+    title: "Product Designer",
+    summary:
       "I owned end-to-end design of the internal CRM, the system the entire company uses to manage the sales-to-supply lifecycle. From product discovery and workflow mapping to information architecture and interface design across every module, I shaped how the team turns enquiries into quotes, purchase orders, and delivered parts.",
+    summaryExtra:
       "I worked upstream from the screens, mapping the real, messy workflow first across sales, procurement, and operations, then designing each module to mirror how the business actually runs. I built a shared pattern library so complex, data-heavy tools stayed consistent, and validated every flow with the people who use it daily.",
-    ],
-    scope: [
+    owned: [
       "Product Discovery",
       "Workflow Mapping",
       "Information Architecture",
@@ -42,15 +32,27 @@ export const danMonFairwind: CaseStudy = {
       "Platform Design System",
       "Prototyping & Validation",
     ],
-    team: ["Founders / Operations Lead", "Sales Team", "Procurement Team", "Engineering"],
+    withWhom: [
+      "Founders / Operations Lead",
+      "Sales Team",
+      "Procurement Team",
+      "Engineering",
+    ],
+    howIWorked: [
+      "End-to-end execution",
+      "Workflow-driven design",
+      "Hands-on with the team",
+      "Module-by-module delivery",
+      "Validated with daily users",
+    ],
   },
-  challenge: {
-    headline: "The business ran on spreadsheets and email.",
-    tensions: [
-      "Every enquiry, quote, purchase order and customer lived in a different place.",
-      "Sales chased quotes over email.",
-      "Procurement re-keyed the same data.",
-      "No one had a clear view of a deal from start to finish.",
+  overview: {
+    tagline: "One CRM for the entire sales lifecycle.",
+    images: [
+      { src: `${dir}/wide-1.webp`, alt: "Dan-Mon Fairwind CRM" },
+      { src: `${dir}/wide-2.webp`, alt: "Dan-Mon Fairwind pipeline" },
+      { src: `${dir}/wide-3.webp`, alt: "Dan-Mon Fairwind procurement" },
+      { src: `${dir}/wide-4.webp`, alt: "Dan-Mon Fairwind accounts" },
     ],
   },
   chapters: [
@@ -108,21 +110,6 @@ export const danMonFairwind: CaseStudy = {
       ],
     },
   ],
-  moments: [
-    { src: `${dir}/wide-1.webp`, alt: "Dan-Mon Fairwind CRM", after: -1, effect: "tilt" },
-    { src: `${dir}/wide-2.webp`, alt: "Dan-Mon Fairwind pipeline", after: 0, effect: "mask" },
-    { src: `${dir}/wide-3.webp`, alt: "Dan-Mon Fairwind procurement", after: 2, effect: "drift" },
-    { src: `${dir}/wide-4.webp`, alt: "Dan-Mon Fairwind accounts", after: 3, effect: "enter" },
-  ],
-  system: {
-    variant: "lifecycle",
-    label: "Connected modules",
-    title: "Four modules. One source of truth.",
-    description:
-      "Each module mirrors how the business actually runs, and every order stays connected back to its original deal. A shared pattern library kept complex, data-heavy tools consistent, so the whole system reads as one product.",
-    modules: ["Opportunities", "Quotations", "Procurement & Fulfilment", "Customers & Accounts"],
-    core: "One CRM",
-  },
   impact: {
     items: [
       { value: "4", label: "Connected modules", body: "Opportunities, quotations, procurement & fulfilment, and accounts, all in one system." },

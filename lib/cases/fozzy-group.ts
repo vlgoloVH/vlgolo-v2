@@ -6,20 +6,9 @@ export const fozzyGroup: CaseStudy = {
   slug: "fozzy-group",
   hero: {
     statement: "Designing the back-office behind Silpo, the flagship supermarket chain of one of Ukraine’s largest retailers.",
-    meta: ["Retail · Enterprise", "2025", "Senior Product Designer", "Desktop / Web"],
-  },
-  summary: {
-    lead: "Improving the system Silpo runs on, and the design system behind it.",
-    product:
-      "Silpo’s internal back-office: the system behind a supermarket chain with hundreds of stores across Ukraine.",
-    problem:
-      "A large, complex system that had grown dense over years of added features. Teams worked around clunky flows and inconsistent screens.",
-    role: "Senior Product Designer on the back-office team: product catalog, commerce operations and a large design system.",
-    result:
-      "Faster, clearer and more consistent tools for the teams who run the business every day.",
+    meta: ["Retail · Enterprise","2025","Senior Product Designer","Desktop / Web"],
   },
   context: {
-    headline: ["Years of features.", "One very dense system."],
     invite:
       "Fozzy Group is one of Ukraine’s largest retailers, and Silpo is its flagship supermarket chain with hundreds of stores across the country. I joined as a Senior Product Designer on the team designing Silpo’s internal back-office, the system the business runs its retail operations on.",
     situation:
@@ -27,15 +16,15 @@ export const fozzyGroup: CaseStudy = {
     outcome:
       "Working alongside other designers, I improved existing tools and designed new ones across the catalog and commerce sides of the back-office, and contributed to a large design system that brought consistency and speed to the teams building on top of it.",
     motif: "catalog",
-    labels: ["Catalog", "Commerce"],
+    labels: ["Catalog","Commerce"],
   },
   role: {
-    statement: "Inside the system a whole retailer runs on.",
-    body: [
+    title: "Senior Product Designer",
+    summary:
       "I joined Silpo’s back-office team as a Senior Product Designer, the operational system behind one of Ukraine’s largest supermarket chains. My focus was improving existing tools and designing new ones across two core areas: the product catalog and day-to-day commerce operations.",
+    summaryExtra:
       "On the catalog side, I worked on products, categories, modifier groups, product characteristics, and characteristic sets. On the commerce side, I worked on offers, the order flow, merchant management, branch-level services, and access levels. Alongside this feature work, I contributed to a large design system, working closely with other designers across the team.",
-    ],
-    scope: [
+    owned: [
       "Product Catalog",
       "Modifier Groups & Characteristics",
       "Offers & Order Flow",
@@ -43,15 +32,27 @@ export const fozzyGroup: CaseStudy = {
       "Access Levels",
       "Design System",
     ],
-    team: ["Product Management", "Engineering", "Other Designers", "Operations Teams"],
+    withWhom: [
+      "Product Management",
+      "Engineering",
+      "Other Designers",
+      "Operations Teams",
+    ],
+    howIWorked: [
+      "Feature-by-feature delivery",
+      "Design system contribution",
+      "Cross-functional collaboration",
+      "Close design collaboration",
+      "Iterative improvement",
+    ],
   },
-  challenge: {
-    headline: "Too big to redesign at once.",
-    tensions: [
-      "A large, complex system: the catalog, commerce operations and everything in between.",
-      "Dense after years of added features.",
-      "Teams worked around clunky flows and inconsistent screens.",
-      "Hundreds of stores depending on one data-heavy product.",
+  overview: {
+    tagline: "Improving the system Silpo runs on, and the design system behind it.",
+    images: [
+      { src: `${dir}/wide-1.webp`, alt: "Silpo back-office" },
+      { src: `${dir}/wide-2.webp`, alt: "Silpo product catalog" },
+      { src: `${dir}/wide-3.webp`, alt: "Silpo commerce operations" },
+      { src: `${dir}/wide-4.webp`, alt: "Silpo design system" },
     ],
   },
   chapters: [
@@ -83,25 +84,20 @@ export const fozzyGroup: CaseStudy = {
         "Branch-level services and access levels",
       ],
     },
+    {
+      name: "Design System",
+      title: "One system behind a sprawling product",
+      description:
+        "Alongside the feature work, I contributed to a large design system: the shared components, patterns, and rules that keep this many tools, and this many teams, moving in the same direction.",
+      visual: `${dir}/chapter-3.webp`,
+      layout: "focus",
+      points: [
+        "Contributed to a large-scale design system",
+        "Shared components and patterns across the back-office",
+        "Helped bring consistency across a huge, sprawling product",
+      ],
+    },
   ],
-  moments: [
-    { src: `${dir}/wide-1.webp`, alt: "Silpo back-office", after: -1, effect: "drift" },
-    { src: `${dir}/wide-2.webp`, alt: "Silpo product catalog", after: 0, effect: "mask" },
-    { src: `${dir}/wide-3.webp`, alt: "Silpo commerce operations", after: 1, effect: "tilt" },
-  ],
-  system: {
-    variant: "stack",
-    label: "Design System",
-    title: "One system behind a sprawling product.",
-    description:
-      "Alongside the feature work, I contributed to a large design system: the shared components, patterns, and rules that keep this many tools, and this many teams, moving in the same direction.",
-    points: [
-      "Contributed to a large-scale design system",
-      "Shared components and patterns across the back-office",
-      "Helped bring consistency across a huge, sprawling product",
-    ],
-    outputs: ["Product catalog", "Commerce operations", "Every back-office team"],
-  },
   impact: {
     items: [
       { value: "300+", label: "Silpo stores", body: "The retail network the back-office keeps running day to day." },

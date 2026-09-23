@@ -54,24 +54,29 @@ const en = {
   /** Labels on the case study pages. The case copy itself is in lib/cases. */
   caseStudy: {
     /** The left rail's names for the sections, in page order. */
-    nav: ["Intro", "Context", "Role", "Challenge", "Solution", "System", "Impact"],
-    quick: {
-      label: "Project in 30 seconds",
-      product: "The product",
-      problem: "The problem",
-      role: "My role",
-      result: "The result",
-    },
+    nav: ["Intro", "Context", "Role", "Overview", "Transformation", "Impact", "Reflection"],
     context: {
       label: "Context",
-      stages: ["The invite", "What I found", "What happened next"],
+      /** The three parts, as on the current site. */
+      stages: ["The invite", "What followed", "The outcome"],
     },
-    role: { label: "My role", scope: "Scope", team: "Worked with" },
-    challenge: { label: "The challenge" },
-    chapter: "Chapter",
+    role: {
+      label: "My role",
+      owned: "What I owned",
+      withWhom: "With whom",
+      howIWorked: "How I worked",
+    },
+    overview: { label: "Overview" },
+    transformation: { label: "Product transformation", chapter: "Chapter" },
     impact: { label: "Impact" },
-    reflection: { label: "Reflection", heading: "What this project taught me" },
-    next: { label: "Next case", view: "View case ↗" },
+    reflection: { label: "Reflection" },
+    pager: { previous: "Previous case", next: "Next case", view: "View case ↗" },
+    contact: {
+      headline: "Have a product problem worth solving?",
+      body: "Tell me what you’re working on.",
+      email: "Email me",
+      linkedin: "LinkedIn",
+    },
   },
   /** The About page (app/[lang]/about). */
   aboutPage: {
@@ -359,24 +364,28 @@ const uk: Dictionary = {
     cta: "Більше про мене",
   },
   caseStudy: {
-    nav: ["Вступ", "Контекст", "Роль", "Виклик", "Рішення", "Система", "Результат"],
-    quick: {
-      label: "Проєкт за 30 секунд",
-      product: "Продукт",
-      problem: "Проблема",
-      role: "Моя роль",
-      result: "Результат",
-    },
+    nav: ["Вступ", "Контекст", "Роль", "Огляд", "Трансформація", "Результат", "Висновки"],
     context: {
       label: "Контекст",
-      stages: ["Запрошення", "Що я знайшов", "Що було далі"],
+      stages: ["Запрошення", "Що було далі", "Результат"],
     },
-    role: { label: "Моя роль", scope: "Зона відповідальності", team: "Працював з" },
-    challenge: { label: "Виклик" },
-    chapter: "Розділ",
+    role: {
+      label: "Моя роль",
+      owned: "За що я відповідав",
+      withWhom: "З ким",
+      howIWorked: "Як я працював",
+    },
+    overview: { label: "Огляд" },
+    transformation: { label: "Трансформація продукту", chapter: "Розділ" },
     impact: { label: "Результат" },
-    reflection: { label: "Висновки", heading: "Чого мене навчив цей проєкт" },
-    next: { label: "Наступний кейс", view: "Дивитися кейс ↗" },
+    reflection: { label: "Висновки" },
+    pager: { previous: "Попередній кейс", next: "Наступний кейс", view: "Дивитися кейс ↗" },
+    contact: {
+      headline: "Є продуктова задача, яку варто розв’язати?",
+      body: "Розкажи, над чим працюєш.",
+      email: "Написати мені",
+      linkedin: "LinkedIn",
+    },
   },
   aboutPage: {
     title: "Про мене",

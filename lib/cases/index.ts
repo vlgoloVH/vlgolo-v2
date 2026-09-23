@@ -19,8 +19,10 @@ export function getCase(slug: string) {
   const index = CASES.findIndex((item) => item.slug === slug);
   if (index < 0) return null;
   const card = CASES[index];
+  // In a ring, as on the current site: the first case's previous is the last.
+  const previous = CASES[(index - 1 + CASES.length) % CASES.length];
   const next = CASES[(index + 1) % CASES.length];
-  return { card, study: STUDIES[card.slug], next };
+  return { card, study: STUDIES[card.slug], previous, next };
 }
 
 export const CASE_SLUGS = CASES.map((item) => item.slug);

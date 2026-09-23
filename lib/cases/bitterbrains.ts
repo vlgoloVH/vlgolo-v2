@@ -6,20 +6,9 @@ export const bitterbrains: CaseStudy = {
   slug: "bitterbrains",
   hero: {
     statement: "From a small Vue.js education startup to a global developer education company. I was there for all of it.",
-    meta: ["EdTech · Developer Education", "2018–2023", "Product Designer", "Web"],
-  },
-  summary: {
-    lead: "One team. Six years. Fifteen products.",
-    product:
-      "A developer education company building online learning platforms, skill certifications, and global conferences for software engineers.",
-    problem:
-      "A product built entirely by developers, that kept growing into new products, conferences, certifications and services, each needing its own experience.",
-    role: "The first and only designer, growing into Product Designer: responsible for the design of every product, conference and brand touchpoint.",
-    result:
-      "15 products, 4 global conferences and a community of over 2 million developers across 156 countries.",
+    meta: ["EdTech · Developer Education","2018–2023","Product Designer","Web"],
   },
   context: {
-    headline: ["A small team.", "Big ambitions."],
     invite:
       "I joined the team when the company was still VueSchool, a small but ambitious group of developers and educators building the best place to learn Vue.js on the internet. I was the first and only designer on the team, brought in to bring structure and craft to a product that had been built entirely by developers.",
     situation:
@@ -30,12 +19,12 @@ export const bitterbrains: CaseStudy = {
     labels: ["Vue School"],
   },
   role: {
-    statement: "If it needed to look good and work well, it came through me.",
-    body: [
+    title: "Product Designer",
+    summary:
       "I joined as a UX/UI Designer and grew into a Product Designer over five years, becoming the person responsible for the design of every product, conference, and brand touchpoint the company produced.",
+    summaryExtra:
       "I worked across every function: product, marketing, engineering, and content. From designing platform UIs and course experiences to creating conference brands, social media assets, and physical event materials, if it needed to look good and work well, it came through me.",
-    ],
-    scope: [
+    owned: [
       "Platform UX & UI",
       "Design Systems",
       "Brand & Visual Identity",
@@ -44,15 +33,31 @@ export const bitterbrains: CaseStudy = {
       "Marketing & Campaign Design",
       "Cross-Product Consistency",
     ],
-    team: ["Engineering", "Marketing", "Content & Education", "1 Designer", "Video Designers", "External Partners"],
+    withWhom: [
+      "Engineering",
+      "Marketing",
+      "Content & Education",
+      "1 Designer",
+      "Video Designers",
+      "External Partners",
+    ],
+    howIWorked: [
+      "End-to-end product design",
+      "Brand & visual identity",
+      "Cross-functional collaboration",
+      "Marketing design",
+      "Conference experience design",
+      "Iterative delivery",
+    ],
   },
-  challenge: {
-    headline: "Growing faster than its design.",
-    tensions: [
-      "A product that had been built entirely by developers.",
-      "The first and only designer on the team.",
-      "New products, conferences, certifications and services, each with its own experience.",
-      "Keeping one way of thinking across all of it, year after year.",
+  overview: {
+    tagline: "One team. Six years. Fifteen products.",
+    images: [
+      { src: `${dir}/wide-1.webp`, alt: "BitterBrains products" },
+      { src: `${dir}/wide-2.webp`, alt: "Vue School platform" },
+      { src: `${dir}/wide-3.webp`, alt: "Certificates.dev" },
+      { src: `${dir}/wide-4.webp`, alt: "BitterBrains conferences" },
+      { src: `${dir}/wide-5.webp`, alt: "BitterBrains business services" },
     ],
   },
   chapters: [
@@ -126,7 +131,7 @@ export const bitterbrains: CaseStudy = {
       description:
         "As AI began reshaping how developers write and ship code, BitterBrains launched AIDD, an AI-Driven Development learning path designed to help developers build faster and smarter using AI tools. I designed the full product experience from scratch, positioning it as the company’s first product built for what comes after traditional courses, and a signal of where the platform is headed next.",
       visual: `${dir}/chapter-5.webp`,
-      layout: "sticky",
+      layout: "focus",
       points: [
         "AIDD: AI-Driven Development hands-on learning path product",
         "Multi-module course experience with progressive skill building",
@@ -136,36 +141,6 @@ export const bitterbrains: CaseStudy = {
       ],
     },
   ],
-  moments: [
-    { src: `${dir}/wide-1.webp`, alt: "BitterBrains products", after: -1, effect: "mask" },
-    { src: `${dir}/wide-2.webp`, alt: "Vue School platform", after: 0, effect: "drift" },
-    { src: `${dir}/wide-3.webp`, alt: "Certificates.dev", after: 1, effect: "tilt" },
-    { src: `${dir}/wide-4.webp`, alt: "BitterBrains conferences", after: 2, effect: "enter" },
-    { src: `${dir}/wide-5.webp`, alt: "BitterBrains business services", after: 4, effect: "mask" },
-  ],
-  system: {
-    variant: "ecosystem",
-    label: "Ecosystem",
-    title: "One team. Six years. Fifteen products.",
-    description:
-      "When you work across 15 products over six years, what has to stay consistent is not only how they look, but the thinking behind them: the same thinking, applied everywhere.",
-    core: "Vue School",
-    products: [
-      "Mastering Nuxt",
-      "Mastering Pinia",
-      "Certificates.dev",
-      "Vue Bundle",
-      "Frontend Nation",
-      "Vue.js Nation",
-      "Nuxt Nation",
-      "Vue.js Forge",
-      "InstantDev",
-      "LevelUp",
-      "AIDD",
-    ],
-    total: 15,
-    totalLabel: "Products",
-  },
   impact: {
     items: [
       { value: "15", label: "Products designed", body: "From Vue School and certifications to conferences and business services, every product touched by design." },

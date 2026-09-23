@@ -6,20 +6,9 @@ export const spaceNeedle: CaseStudy = {
   slug: "space-needle",
   hero: {
     statement: "Designing the complete digital ecosystem of one of Seattle’s most iconic landmarks.",
-    meta: ["Travel & Entertainment", "2024–2025", "Senior Product Designer", "Web / Kiosk / Tablet"],
-  },
-  summary: {
-    lead: "One ecosystem. Six products. Three brands.",
-    product:
-      "The ticketing and digital experience for Space Needle, one of Seattle’s most iconic landmarks, visited by millions each year.",
-    problem:
-      "In-tower tablets, ticketing kiosks, web purchase flows, box office tools and internal systems, each built independently without a shared design language.",
-    role: "Senior Product Designer for over a year, across six products and three very different audiences.",
-    result:
-      "One redesigned, unified ecosystem, from camera tablets to internal operations, adapted for two partner attractions.",
+    meta: ["Travel & Entertainment","2024–2025","Senior Product Designer","Web / Kiosk / Tablet"],
   },
   context: {
-    headline: ["Many touchpoints.", "No single experience."],
     invite:
       "Space Needle brought me in to design tablet interfaces for their in-tower camera experiences: Oculus Selfie, Halo Selfie, SkyHigh, and more. What started as a focused UI project evolved into a long-term partnership across the entire digital product ecosystem.",
     situation:
@@ -27,15 +16,15 @@ export const spaceNeedle: CaseStudy = {
     outcome:
       "Over the course of the engagement, I redesigned and unified the entire ecosystem: camera experience tablets, ticketing kiosks, web purchase flows, box office interfaces, an internal management platform, and Spacebook, all adapted for partner attractions Chihuly Garden and Glass and Seattle Top Tix.",
     motif: "journey",
-    labels: ["Web", "Kiosk", "Box office", "Tablet", "Spacebook", "Platform"],
+    labels: ["Web","Kiosk","Box office","Tablet","Spacebook","Platform"],
   },
   role: {
-    statement: "One tablet project became every digital touchpoint the attraction runs.",
-    body: [
+    title: "Senior Product Designer",
+    summary:
       "I was brought in as Senior Product Designer to design tablet interfaces for Space Needle’s in-tower camera experiences, and ended up staying for over a year as the scope expanded to cover every digital touchpoint the attraction operates, from guest-facing kiosks and web flows to the internal platform that runs day-to-day operations.",
+    summaryExtra:
       "Across the engagement I worked on six distinct products serving three very different audiences: tourists experiencing the tower for the first time, on-site staff handling ticketing and sales, and operations managers controlling pricing, inventory, and scheduling across all channels. Each product had its own context, constraints, and success criteria, and all of them had to work together as a single coherent ecosystem.",
-    ],
-    scope: [
+    owned: [
       "In-Tower Camera Tablet UI",
       "Ticketing Kiosk Redesign",
       "Web Purchase Flow",
@@ -44,15 +33,28 @@ export const spaceNeedle: CaseStudy = {
       "Spacebook (Web & Tablet)",
       "Partner Platform Adaptation",
     ],
-    team: ["Product Management", "Engineering", "Operations Team", "Marketing"],
+    withWhom: [
+      "Product Management",
+      "Engineering",
+      "Operations Team",
+      "Marketing",
+    ],
+    howIWorked: [
+      "End-to-end product design",
+      "Multi-platform thinking",
+      "Cross-functional collaboration",
+      "Iterative delivery",
+      "Partner adaptation",
+      "Research-informed decisions",
+    ],
   },
-  challenge: {
-    headline: "Six products. Three audiences. No shared language.",
-    tensions: [
-      "Every touchpoint had been built independently, with its own logic.",
-      "Tourists who have never used the product before, and may never use it again.",
-      "On-site staff selling tickets at the counter, where speed is non-negotiable.",
-      "Operations managers controlling pricing, inventory and schedules across every channel.",
+  overview: {
+    tagline: "One ecosystem. Six products. Three brands.",
+    images: [
+      { src: `${dir}/wide-1.webp`, alt: "Space Needle ticketing kiosks" },
+      { src: `${dir}/wide-2.webp`, alt: "Space Needle in-tower experiences" },
+      { src: `${dir}/wide-3.webp`, alt: "Space Needle web and box office" },
+      { src: `${dir}/wide-4.webp`, alt: "Space Needle management platform" },
     ],
   },
   chapters: [
@@ -126,7 +128,7 @@ export const spaceNeedle: CaseStudy = {
       description:
         "The management platform gives Space Needle operations teams full control over every variable that affects the guest experience: pricing, inventory, schedules, discounts, bundles, and real-time sales data across all channels.",
       visual: `${dir}/chapter-5.webp`,
-      layout: "sticky",
+      layout: "focus",
       points: [
         "Pricing configuration by month, week, day, and individual time slot",
         "Ticket inventory and capacity management per channel",
@@ -136,30 +138,23 @@ export const spaceNeedle: CaseStudy = {
         "Role-based access for managers and operations staff",
       ],
     },
+    {
+      name: "Partner Platforms",
+      title: "One foundation. Three brands.",
+      description:
+        "Every product designed for Space Needle was adapted for two partner attractions: Chihuly Garden and Glass, and Seattle Top Tix. Same underlying logic, same component architecture, completely different brand expressions.",
+      visual: `${dir}/chapter-6.webp`,
+      layout: "sticky",
+      points: [
+        "Kiosk UI adapted for Chihuly Garden and Glass",
+        "Kiosk UI adapted for Seattle Top Tix",
+        "Web purchase flow adapted for both partner platforms",
+        "Brand token system enabling full visual differentiation",
+        "Shared component architecture across all three brands",
+        "Partner onboarding accelerated through reusable foundations",
+      ],
+    },
   ],
-  moments: [
-    { src: `${dir}/wide-1.webp`, alt: "Space Needle ticketing kiosks", after: -1, effect: "enter" },
-    { src: `${dir}/wide-2.webp`, alt: "Space Needle in-tower experiences", after: 1, effect: "mask" },
-    { src: `${dir}/wide-3.webp`, alt: "Space Needle web and box office", after: 2, effect: "drift" },
-    { src: `${dir}/wide-4.webp`, alt: "Space Needle management platform", after: 4, effect: "tilt" },
-  ],
-  system: {
-    variant: "stack",
-    label: "Partner Platforms",
-    title: "One foundation. Three brands.",
-    description:
-      "Every product designed for Space Needle was adapted for two partner attractions: Chihuly Garden and Glass, and Seattle Top Tix. Same underlying logic, same component architecture, completely different brand expressions.",
-    points: [
-      "Kiosk UI adapted for Chihuly Garden and Glass",
-      "Kiosk UI adapted for Seattle Top Tix",
-      "Web purchase flow adapted for both partner platforms",
-      "Brand token system enabling full visual differentiation",
-      "Shared component architecture across all three brands",
-      "Partner onboarding accelerated through reusable foundations",
-    ],
-    outputs: ["Space Needle", "Chihuly Garden and Glass", "Seattle Top Tix"],
-    brands: true,
-  },
   impact: {
     items: [
       { value: "6+", label: "Products designed", body: "Camera tablets, kiosks, web flows, box office, management platform, and Spacebook." },
