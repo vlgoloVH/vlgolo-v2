@@ -27,7 +27,12 @@ export function Testimonials({ dict }: { dict: Dictionary }) {
         </span>
       </div>
 
-      <TestimonialsStage label={dict.testimonials.label} items={dict.testimonials.items} />
+      <TestimonialsStage
+        label={dict.testimonials.label}
+        fullLabel={dict.testimonials.full}
+        closeLabel={dict.testimonials.close}
+        items={dict.testimonials.items}
+      />
     </RevealSection>
   );
 }

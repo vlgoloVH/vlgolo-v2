@@ -7,6 +7,8 @@ type Item = Dictionary["testimonials"]["items"][number];
 
 interface Props {
   label: string;
+  fullLabel: string;
+  closeLabel: string;
   items: readonly Item[];
 }
 
@@ -14,16 +16,23 @@ interface Props {
  *  list does not flick through every quote on the way. */
 const DWELL = 90;
 
-/** The range a quote's type may take. The recommendations run from about 100
- *  to about 200 words and are always shown in full, so each one is set as
- *  large as its own length allows in the space there is, within these bounds. */
-const MAX_SIZE = 44;
-const MIN_SIZE = 13;
+/** Excerpts up to this many characters are set a size larger (see `.t-quote`
+ *  in globals.css): two steps, so the type stays steady between quotes. */
+const SHORT = 175;
 
-/** Largest font size, to half a pixel, at which the quote fits the box. */
+/** On a screen too short for the stylesheet's size, a quote may come down,
+ *  but never below this share of it: the excerpts are written to fit, so this
+ *  is a safety margin, not a way to squeeze in more text. */
+const FLOOR = 0.82;
+
+/** The stylesheet's size for the quote, or the largest below it (to half a
+ *  pixel, down to FLOOR) at which it fits the box. */
 function fit(quote: HTMLElement, box: HTMLElement) {
-  let lo = MIN_SIZE;
-  let hi = MAX_SIZE;
+  quote.style.removeProperty("font-size");
+  if (quote.offsetHeight <= box.clientHeight) return;
+  const base = parseFloat(getComputedStyle(quote).fontSize);
+  let lo = base * FLOOR;
+  let hi = base;
   while (hi - lo > 0.5) {
     const mid = (lo + hi) / 2;
     quote.style.fontSize = `${mid}px`;
@@ -40,13 +49,14 @@ const pad = (n: number) => String(n).padStart(2, "0");
  *  or keyboard focus all select. Every quote stays in the page; `state` says
  *  which one is shown, which one is on its way out and which are idle, and the
  *  stylesheet runs the mask transition between them. */
-export function TestimonialsStage({ label, items }: Props) {
+export function TestimonialsStage({ label, fullLabel, closeLabel, items }: Props) {
   const [active, setActive] = useState(0);
   const [previous, setPrevious] = useState<number | null>(null);
   /** No entrance on first render: the section's own reveal handles that. */
   const [moved, setMoved] = useState(false);
   const timer = useRef(0);
   const boxRef = useRef<HTMLDivElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
@@ -81,7 +91,7 @@ export function TestimonialsStage({ label, items }: Props) {
   const current = items[active];
 
   return (
-    <div className="reveal [--reveal-i:2] absolute inset-y-0 left-[var(--frame-line)] right-[var(--frame-line)] flex flex-col gap-6 px-6 pb-8 pt-24 md:grid md:grid-cols-[minmax(0,1.75fr)_minmax(0,1fr)] md:grid-rows-[minmax(0,1fr)] md:gap-[5vw] md:px-[clamp(32px,5vw,104px)] md:pb-[clamp(48px,9vh,104px)] md:pt-[clamp(112px,16vh,160px)]">
+    <div className="reveal [--reveal-i:2] absolute inset-y-0 left-[var(--frame-line)] right-[var(--frame-line)] flex flex-col gap-6 px-6 pb-8 pt-24 md:grid md:grid-cols-[minmax(0,1.9fr)_minmax(0,1fr)] md:grid-rows-[minmax(0,1fr)] md:gap-[5vw] md:px-[clamp(32px,5vw,104px)] md:pb-[clamp(48px,9vh,104px)] md:pt-[clamp(112px,16vh,160px)]">
       <figure aria-live="polite" className="flex min-h-0 flex-1 flex-col">
         {/* The quotes share one cell of this box and are each sized to fill
             it, so the name below stays put whichever one is showing. */}
@@ -90,6 +100,7 @@ export function TestimonialsStage({ label, items }: Props) {
             <blockquote
               key={index}
               data-state={state(index)}
+              data-size={item.quote.length <= SHORT ? "l" : "m"}
               aria-hidden={index !== active}
               className="t-quote relative max-w-[42em]"
             >
@@ -101,7 +112,7 @@ export function TestimonialsStage({ label, items }: Props) {
           ))}
         </div>
 
-        <figcaption className="mt-6 flex shrink-0 items-center gap-5 md:mt-10 md:gap-8">
+        <figcaption className="mt-6 flex shrink-0 flex-wrap items-center gap-x-5 gap-y-4 md:mt-10 md:flex-nowrap md:gap-8">
           <div className="t-meta">
             <span key={active} className="t-swap">
               <span className="block text-[13px] font-medium uppercase tracking-[0.19em] text-ink">
@@ -121,7 +132,58 @@ export function TestimonialsStage({ label, items }: Props) {
             </span>
             / {pad(items.length)}
           </span>
+
+          {/* The whole recommendation, for anyone who wants more than the
+              excerpt. Quiet on purpose: it should not compete with the quote. */}
+          <button
+            type="button"
+            onClick={() => dialogRef.current?.showModal()}
+            className="w-full shrink-0 text-left text-[11px] md:ml-auto md:w-auto uppercase tracking-[0.2em] text-ink/45 underline-offset-4 transition-colors duration-300 can-hover:text-ink can-hover:underline md:text-[12px]"
+          >
+            {fullLabel}
+          </button>
         </figcaption>
+
+        <dialog
+          ref={dialogRef}
+          aria-label={`${current.name}: ${fullLabel}`}
+          className="contact-dialog"
+          onClick={(event) => {
+            if (event.target === event.currentTarget) dialogRef.current?.close();
+          }}
+        >
+          <div className="relative w-full rounded-[28px] border border-white/10 bg-surface p-7 text-left md:p-12">
+            <button
+              type="button"
+              onClick={() => dialogRef.current?.close()}
+              aria-label={closeLabel}
+              className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full text-ink/60 transition-colors duration-300 can-hover:bg-white/5 can-hover:text-ink md:right-7 md:top-7"
+            >
+              <svg
+                viewBox="0 0 16 16"
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                aria-hidden="true"
+              >
+                <path d="M3 3l10 10M13 3 3 13" />
+              </svg>
+            </button>
+
+            <p className="pr-10 text-[17px] leading-[1.7] text-ink md:text-[19px]">
+              “{current.full}”
+            </p>
+            <p className="mt-8 text-[13px] font-medium uppercase tracking-[0.19em] text-ink">
+              {current.name}
+            </p>
+            <p className="mt-1.5 text-[12px] uppercase tracking-[0.16em] text-ink/55">
+              {[current.role, current.company].filter(Boolean).join(" · ")}
+            </p>
+          </div>
+        </dialog>
       </figure>
 
       {/* On a phone the list is a row of numbers, so the quote keeps the room

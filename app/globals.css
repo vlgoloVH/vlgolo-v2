@@ -707,17 +707,23 @@ html:has(.contact-dialog[open]) {
    Testimonials
    ────────────────────────────────────────────── */
 
-/* All the quotes share one grid cell of a box that fills the column, and
-   each is sized to that box by TestimonialsStage (the full text always shows,
-   so a longer one is set smaller). Each sits in the middle of the box. Only the active one is visible. On a change
+/* All the quotes share one grid cell of a box that fills the column, and each
+   sits in the middle of it. The excerpts are written to fit, so the type holds
+   at two steady sizes: data-size="l" for the shorter ones, "m" for the rest
+   (TestimonialsStage only nudges them down on a screen too short for them). Only the active one is visible. On a change
    the old quote rises out, wiped away from below, and the new one rises in,
    revealed from below: a vertical mask plus a short lift, no plain crossfade. */
 .t-quote {
   grid-area: 1 / 1;
   align-self: center;
+  font-size: clamp(34px, 4.2vw, 64px);
   font-weight: 500;
-  line-height: 1.32;
-  letter-spacing: -0.012em;
+  line-height: 1.12;
+  letter-spacing: -0.022em;
+
+  &[data-size="m"] {
+    font-size: clamp(30px, 3.65vw, 56px);
+  }
   text-wrap: pretty;
   color: var(--color-ink);
 
@@ -872,6 +878,14 @@ html:has(.contact-dialog[open]) {
 }
 
 @media (max-width: 767px) {
+  .t-quote {
+    font-size: clamp(24px, 7vw, 30px);
+
+    &[data-size="m"] {
+      font-size: clamp(22px, 6.2vw, 27px);
+    }
+  }
+
   .t-author {
     display: flex;
     justify-content: center;

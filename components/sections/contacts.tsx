@@ -63,9 +63,17 @@ export function Contacts({ dict }: { dict: Dictionary }) {
           {copy.body}
         </p>
 
-        <div className="reveal [--reveal-i:7] mt-10 flex flex-col items-center gap-4 sm:flex-row md:mt-12">
-          <ContactDialog label={copy.email} copy={dict.contact} />
-          <GlassButton href={SITE.resume} label={copy.resume} download videoSelector={null} />
+        {/* A grid of equal columns, so both pills are as wide as the wider one;
+            stacked on a phone, still one width. */}
+        <div className="reveal [--reveal-i:7] mt-10 grid gap-4 sm:grid-cols-2 md:mt-12">
+          <ContactDialog label={copy.email} copy={dict.contact} className="w-full" />
+          <GlassButton
+            href={SITE.resume}
+            label={copy.resume}
+            download
+            videoSelector={null}
+            className="w-full"
+          />
         </div>
       </div>
 
