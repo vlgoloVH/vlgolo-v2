@@ -909,3 +909,529 @@ html:has(.contact-dialog[open]) {
     transition: opacity 0.3s linear;
   }
 }
+
+/* ──────────────────────────────────────────────
+   About page (app/[lang]/about)
+   A long editorial scroll. ScrollDriver writes --p (0 → 1, an element's trip
+   through the viewport) on every [data-p]; custom properties inherit, so
+   children read their section's --p and the motion below is plain CSS on
+   transform, opacity and clip-path. --k scales every distance: full on
+   desktop, gentle on a phone.
+   ────────────────────────────────────────────── */
+
+/* Opened straight on About (see ScrollDriver): the header and rails arrive
+   almost at once, since the long Home entrance waits on the Home hero video.
+   Set before the entrance starts and never removed, because changing the
+   delay of an entrance that has already played would replay it. */
+html[data-quick] {
+  --enter-start: 0.2s;
+}
+
+/* The rail is new on this page, so it has its own short entrance. */
+html:not([data-ready]) .ab-rail-in {
+  opacity: 0;
+}
+
+[data-ready] .ab-rail-in {
+  animation: fade-in 1s var(--ease-soft) 0.5s both;
+}
+
+.about-page {
+  --k: 1;
+}
+
+@media (max-width: 767px) {
+  .about-page {
+    --k: 0.4;
+  }
+}
+
+/* Section label: "02  STORY". */
+.ab-label {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: rgb(255 255 255 / 0.55);
+
+  & > span {
+    font-family: var(--font-mono);
+    letter-spacing: 0.2em;
+    color: var(--color-ink);
+  }
+}
+
+/* Parallax: --speed is how far, in px, the element travels against the
+   scroll over its section's whole trip (negative runs ahead of it). */
+.ab-par {
+  transform: translate3d(0, calc((var(--p, 0.5) - 0.5) * var(--speed, 0) * 1px * var(--k)), 0);
+  will-change: transform;
+}
+
+/* Oversized outlined fragments sliding sideways. */
+.ab-slide {
+  transform: translate3d(calc((var(--p, 0.5) - 0.5) * var(--dir, 1) * 28vw * var(--k)), 0, 0);
+  will-change: transform;
+}
+
+.ab-fragment {
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  font-size: clamp(88px, 16vw, 300px);
+  font-weight: 700;
+  line-height: 0.8;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(255 255 255 / 0.1);
+}
+
+.ab-fragment--sm {
+  font-size: clamp(60px, 9vw, 180px);
+}
+
+/* Photos open from the top edge down as they come up, while the picture
+   inside settles from a slight zoom. --at is where in the trip it starts. */
+.ab-reveal-img {
+  --r: clamp(0, (var(--p, 1) - var(--at, 0.04)) * 4.5, 1);
+  clip-path: inset(0 0 calc((1 - var(--r)) * 100%) 0);
+}
+
+.ab-img {
+  transform: scale(calc(1.14 - var(--r) * 0.14));
+  transform-origin: 50% 30%;
+}
+
+/* Word-by-word: each word brightens as the line rises through the lower half
+   of the screen. The fallback (no --p yet) is fully lit. */
+.ab-words {
+  --t: calc((var(--p, 1) - 0.08) / 0.34);
+
+  & > span[aria-hidden] > span {
+    opacity: clamp(0.16, calc((var(--t) - var(--i) / var(--n)) * 3.4 + 0.16), 1);
+  }
+}
+
+/* The path from art to ownership, one step at a time. */
+.ab-path li {
+  opacity: clamp(0.2, calc(((var(--p, 1) - 0.12) / 0.32 - var(--i) / var(--n)) * 4 + 0.2), 1);
+}
+
+/* ── 01 · Intro ── */
+
+.ab-hero {
+  --hp: max(0, (var(--p, 0.5) - 0.5) * 2);
+}
+
+.ab-drift {
+  transform: translate3d(0, calc(var(--hp) * var(--speed) * 100svh * var(--k)), 0);
+  will-change: transform;
+}
+
+.ab-hero-portrait {
+  transform: translate3d(0, calc(var(--hp) * var(--speed) * 100svh * var(--k)), 0)
+    scale(calc(1 - var(--hp) * 0.07));
+  transform-origin: 50% 100%;
+}
+
+.ab-hero-copy {
+  opacity: calc(1 - var(--hp) * 1.5);
+}
+
+.ab-glow {
+  background:
+    radial-gradient(ellipse 42% 62% at 74% 58%, rgb(255 255 255 / 0.1), transparent 70%),
+    radial-gradient(ellipse 70% 50% at 12% 100%, rgb(255 255 255 / 0.035), transparent 70%);
+}
+
+.ab-backdrop {
+  font-size: 21vw;
+  letter-spacing: -0.045em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(255 255 255 / 0.1);
+}
+
+.ab-grain {
+  opacity: 0.08;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* The opening shot: each element has its own move and its own --d delay.
+   Held until the preloader lets the page start, and skipped after a
+   language switch. */
+.ab-load {
+  animation: var(--anim) both;
+  animation-delay: var(--d, 0s);
+}
+
+.ab-glow.ab-load,
+.ab-backdrop.ab-load {
+  --anim: fade-in 2.6s var(--ease-soft);
+}
+
+.ab-rise-soft {
+  --anim: ab-settle 2.2s var(--ease-soft);
+}
+
+.ab-rise {
+  --anim: ab-rise 1.3s var(--ease-soft);
+}
+
+.ab-mask {
+  --anim: ab-mask 1.4s cubic-bezier(0.2, 0.7, 0.1, 1);
+}
+
+html:not([data-ready]) .ab-load {
+  animation-play-state: paused;
+}
+
+[data-settled] .ab-load {
+  animation: none;
+}
+
+@keyframes ab-settle {
+  from {
+    opacity: 0;
+    transform: translateY(3%) scale(1.03);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ab-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ab-mask {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.ab-scroll-line {
+  animation: ab-scroll-line 2.4s var(--ease-soft) infinite;
+}
+
+@keyframes ab-scroll-line {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(200%);
+  }
+}
+
+/* ── 03 · Thinking and 05 · Process: pinned steps ── */
+
+.ab-step,
+.ab-statement {
+  opacity: 0.2;
+  transition:
+    opacity 0.6s var(--ease-soft),
+    transform 0.6s var(--ease-soft);
+
+  &[data-on] {
+    opacity: 1;
+  }
+}
+
+.ab-step[data-on] {
+  transform: translateX(14px);
+}
+
+.ab-statement {
+  transform: scale(0.97);
+  transform-origin: 0 50%;
+
+  &[data-on] {
+    transform: none;
+  }
+}
+
+.ab-art {
+  transition: opacity 0.6s var(--ease-soft);
+}
+
+/* The four corners of a drawing's area, nothing more. */
+.ab-corners {
+  --c: rgb(255 255 255 / 0.28);
+  background:
+    linear-gradient(var(--c), var(--c)) 0 0 / 18px 1px,
+    linear-gradient(var(--c), var(--c)) 0 0 / 1px 18px,
+    linear-gradient(var(--c), var(--c)) 100% 0 / 18px 1px,
+    linear-gradient(var(--c), var(--c)) 100% 0 / 1px 18px,
+    linear-gradient(var(--c), var(--c)) 0 100% / 18px 1px,
+    linear-gradient(var(--c), var(--c)) 0 100% / 1px 18px,
+    linear-gradient(var(--c), var(--c)) 100% 100% / 18px 1px,
+    linear-gradient(var(--c), var(--c)) 100% 100% / 1px 18px;
+  background-repeat: no-repeat;
+}
+
+/* Phone: the process statements brighten one after another as they rise. */
+.ab-stack-line {
+  opacity: clamp(0.2, calc(((var(--p, 1) - 0.1) / 0.3 - var(--i) / var(--n)) * 4 + 0.2), 1);
+}
+
+/* ── 04 · Experience ── */
+
+.ab-chapter {
+  opacity: 0.22;
+  transition: opacity 0.6s var(--ease-soft);
+
+  &[data-on] {
+    opacity: 1;
+  }
+}
+
+.ab-year {
+  font-size: clamp(96px, 11vw, 200px);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(255 255 255 / 0.4);
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s var(--ease-soft),
+    transform 0.7s var(--ease-soft);
+
+  &.is-on {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── 06 · Capabilities ── */
+
+.ab-cap {
+  position: relative;
+
+  /* A faint glass strip behind the open row. */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0 -24px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgb(255 255 255 / 0.06), rgb(255 255 255 / 0.02));
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-soft);
+    pointer-events: none;
+  }
+
+  &[data-open]::before {
+    opacity: 1;
+  }
+}
+
+.ab-cap-title {
+  opacity: 0.55;
+  transition:
+    opacity 0.5s var(--ease-soft),
+    transform 0.6s var(--ease-soft);
+
+  [data-open] & {
+    opacity: 1;
+    transform: translateX(12px);
+  }
+}
+
+.ab-cap-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.6s var(--ease-soft);
+
+  & > div {
+    min-height: 0;
+  }
+
+  [data-open] & {
+    grid-template-rows: 1fr;
+  }
+}
+
+.ab-icon {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+
+  & * {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition:
+      transform 0.6s var(--ease-soft),
+      opacity 0.5s var(--ease-soft),
+      stroke-dashoffset 0.8s var(--ease-soft);
+  }
+}
+
+.ab-icon-cross {
+  transform-box: view-box !important;
+  transform-origin: 32px 32px !important;
+}
+
+[data-open] .ab-icon-inner {
+  transform: scale(0.5);
+}
+
+[data-open] .ab-icon-cross {
+  transform: rotate(45deg);
+}
+
+.ab-icon-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+
+  [data-open] & {
+    stroke-dashoffset: 0;
+  }
+}
+
+.ab-icon-cell {
+  opacity: 0.18;
+  transform: scale(0.6);
+  transition-delay: calc(var(--i) * 35ms) !important;
+
+  [data-open] & {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── 07 · Personal ── */
+
+.ab-collage.ab-par {
+  transform: translate3d(0, calc((var(--p, 0.5) - 0.5) * var(--speed, 0) * 1px * var(--k)), 0)
+    rotate(var(--tilt, 0deg));
+}
+
+.ab-collage-card {
+  overflow: hidden;
+  box-shadow:
+    0 40px 80px -30px rgb(0 0 0 / 0.7),
+    0 0 0 1px rgb(255 255 255 / 0.08);
+  transition: transform 0.6s var(--ease-soft);
+}
+
+html[data-hover-capable="true"] .ab-collage:hover {
+  z-index: 10 !important;
+
+  & .ab-collage-card {
+    transform: scale(1.035);
+  }
+}
+
+/* ── 08 · Close: a light running round the resume button ── */
+
+@property --orbit {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.ab-orbit::before,
+.ab-orbit::after {
+  content: "";
+  position: absolute;
+  inset: -9px;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.ab-orbit::before {
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.1);
+}
+
+.ab-orbit::after {
+  padding: 1px;
+  background: conic-gradient(
+    from var(--orbit),
+    transparent 0deg 280deg,
+    rgb(255 255 255 / 0.8) 340deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: ab-orbit 7s linear infinite;
+}
+
+@keyframes ab-orbit {
+  to {
+    --orbit: 360deg;
+  }
+}
+
+/* ── Rail ── */
+
+.ab-rail-name {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.5s var(--ease-soft),
+    transform 0.5s var(--ease-soft);
+
+  &.is-on {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Reduced motion: everything at rest and fully shown. */
+@media (prefers-reduced-motion: reduce) {
+  .about-page [data-p] {
+    --p: 0.5 !important;
+  }
+
+  .ab-words > span[aria-hidden] > span,
+  .ab-path li,
+  .ab-stack-line {
+    opacity: 1 !important;
+  }
+
+  .ab-reveal-img {
+    clip-path: none;
+  }
+
+  .ab-img {
+    transform: none;
+  }
+
+  .ab-load,
+  .ab-rail-in,
+  .ab-scroll-line,
+  .ab-orbit::after {
+    animation: none;
+  }
+
+  .ab-step,
+  .ab-statement,
+  .ab-chapter,
+  .ab-year,
+  .ab-rail-name,
+  .ab-cap-title,
+  .ab-cap-panel {
+    transition: none;
+  }
+}

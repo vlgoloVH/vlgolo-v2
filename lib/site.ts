@@ -97,3 +97,22 @@ export const ABOUT = {
     poster: "/about/portrait-alpha-poster.png",
   },
 } as const;
+
+/** Files and fixed values for the About page. Its words live in the
+ *  dictionary under `aboutPage`. Section ids are what the left rail and any
+ *  in-page link point at, in page order. */
+export const ABOUT_PAGE = {
+  sections: ["intro", "story", "thinking", "experience", "process", "capabilities", "personal"],
+  portrait: { src: "/about-page/portrait.webp", width: 810, height: 1440 },
+  story: [
+    { src: "/about-page/story-desk.webp", width: 2400, height: 1050 },
+    { src: "/about-page/story-portrait.webp", width: 1100, height: 1434 },
+  ],
+  personal: [
+    "/about-page/personal-snow.webp",
+    "/about-page/personal-louvre.webp",
+    "/about-page/personal-valencia.webp",
+    "/about-page/personal-kotor.webp",
+  ],
+  tools: ["Figma", "FigJam", "Storybook", "Maze", "Amplitude", "SQL", "AI"],
+} as const;
