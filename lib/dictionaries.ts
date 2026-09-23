@@ -51,6 +51,39 @@ const en = {
     ],
     cta: "More about me",
   },
+  testimonials: {
+    /** Set vertically in the left margin, the same as about.rail. */
+    rail: "Words",
+    /** Read out to screen readers ahead of the list. */
+    label: "Testimonials",
+    /** Placeholders: the real quotes, names and roles come later. */
+    items: [
+      {
+        quote: "Vlad turned a tangled product into something our users understood on day one.",
+        name: "Name Surname",
+        role: "Role",
+        company: "Company",
+      },
+      {
+        quote: "He asks the questions nobody else asks, and the product is better for it.",
+        name: "Name Surname",
+        role: "Role",
+        company: "Company",
+      },
+      {
+        quote: "Clear thinking, calm delivery and design decisions you can defend in any room.",
+        name: "Name Surname",
+        role: "Role",
+        company: "Company",
+      },
+      {
+        quote: "Our metrics moved within weeks of shipping the new flows he designed.",
+        name: "Name Surname",
+        role: "Role",
+        company: "Company",
+      },
+    ],
+  },
   works: {
     /** Set vertically in the left margin, the same as about.rail. */
     rail: "Works",
@@ -121,6 +154,36 @@ const uk: Dictionary = {
       "Працював із фінтехом, SaaS, enterprise і споживчими продуктами, допомагаючи командам перетворювати ранні ідеї на масштабовані запущені продукти. Моя робота лежить на перетині користувачів, бізнесу й технологій. Я зосереджуюсь на тому, щоб зрозуміти проблему, знайти правильний напрямок, спростити складне і побудувати системи, які ростуть разом із продуктом.",
     ],
     cta: "Більше про мене",
+  },
+  testimonials: {
+    rail: "Відгуки",
+    label: "Відгуки",
+    items: [
+      {
+        quote: "Влад перетворив заплутаний продукт на такий, що користувачі зрозуміли з першого дня.",
+        name: "Ім'я Прізвище",
+        role: "Посада",
+        company: "Компанія",
+      },
+      {
+        quote: "Він ставить питання, яких не ставить ніхто інший, і продукт від цього тільки кращий.",
+        name: "Ім'я Прізвище",
+        role: "Посада",
+        company: "Компанія",
+      },
+      {
+        quote: "Ясне мислення, спокійна робота і дизайн-рішення, які можна захистити в будь-якій кімнаті.",
+        name: "Ім'я Прізвище",
+        role: "Посада",
+        company: "Компанія",
+      },
+      {
+        quote: "Наші метрики зрушили за кілька тижнів після запуску нових флоу, які він спроєктував.",
+        name: "Ім'я Прізвище",
+        role: "Посада",
+        company: "Компанія",
+      },
+    ],
   },
   works: {
     rail: "Проєкти",

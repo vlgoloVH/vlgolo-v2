@@ -4,6 +4,7 @@ import { ViewportHeight } from "@/components/layout/viewport-height";
 import { Hero } from "@/components/sections/hero";
 import { About } from "@/components/sections/about";
 import { Works } from "@/components/sections/works";
+import { Testimonials } from "@/components/sections/testimonials";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
 
@@ -27,6 +28,7 @@ export default async function HomePage({
       <Hero dict={dict} />
       <About lang={lang} dict={dict} />
       <Works lang={lang} dict={dict} />
+      <Testimonials dict={dict} />
     </>
   );
 }

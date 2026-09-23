@@ -702,3 +702,220 @@ html:has(.contact-dialog[open]) {
     transition: none;
   }
 }
+
+/* ──────────────────────────────────────────────
+   Testimonials
+   ────────────────────────────────────────────── */
+
+/* The stage is a size container, so every position below is a share of it
+   (cqw, cqh) and the quotes can be moved with transform alone. */
+.t-stage {
+  container-type: size;
+}
+
+/* Each quote keeps the main size and its own line breaks at all times; the
+   small ones are the same block scaled down from the top left. Slot 0 is the
+   main position, 1–3 sit in a staggered column on the right. --y is where the
+   block's vertical centre lands. */
+.t-item {
+  --x: 0;
+  --y: 50;
+  --s: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60cqw;
+  transform-origin: 0 0;
+  transform: translate(calc(var(--x) * 1cqw), calc(var(--y) * 1cqh)) scale(var(--s))
+    translateY(-50%);
+  opacity: 0.25;
+  cursor: pointer;
+  transition:
+    transform 0.65s var(--ease-soft),
+    opacity 0.65s var(--ease-soft);
+
+  &[data-slot="1"] {
+    --x: 70;
+    --y: 14;
+    --s: 0.32;
+  }
+
+  &[data-slot="2"] {
+    --x: 77;
+    --y: 50;
+    --s: 0.32;
+  }
+
+  &[data-slot="3"] {
+    --x: 66;
+    --y: 86;
+    --s: 0.32;
+  }
+
+  &[data-active] {
+    z-index: 1;
+    opacity: 1;
+    cursor: default;
+  }
+
+  &:focus-visible {
+    outline: none;
+    opacity: 0.6;
+  }
+
+  /* The glass surface a small quote rests on while it is hovered. Drawn at
+     full size and scaled down with the quote, so it lands as a soft pill. */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -56px -72px;
+    border-radius: 96px;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.35);
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-soft);
+    pointer-events: none;
+  }
+
+  html[data-hover-capable="true"] &:not([data-active]):hover {
+    opacity: 0.6;
+
+    &::before {
+      opacity: 1;
+    }
+  }
+}
+
+.t-quote {
+  position: relative;
+  font-size: clamp(40px, 4.6vw, 76px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  text-wrap: pretty;
+  color: var(--color-ink);
+}
+
+/* The opening mark hangs in the margin so the first letters line up. */
+.t-mark {
+  position: absolute;
+  right: 100%;
+  margin-right: 0.04em;
+}
+
+/* Name, role and index on the same glass as the buttons. It shows only on the
+   active quote, a beat after the quote has arrived, and a faint light passes
+   across it once as it does. */
+.t-meta {
+  /* Hangs below the quote rather than adding to its height, so every quote is
+     centred on its words alone and the hover surface fits the text. */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 40px;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 16px 28px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px) brightness(0.85);
+  -webkit-backdrop-filter: blur(10px) brightness(0.85);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-soft);
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.14), transparent 45%);
+    pointer-events: none;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 35%,
+      rgba(255, 255, 255, 0.16) 50%,
+      transparent 65%
+    );
+    transform: translateX(-100%);
+    pointer-events: none;
+  }
+
+  & > * {
+    position: relative;
+  }
+
+  [data-active] > & {
+    opacity: 1;
+    transition-delay: 0.3s;
+    transition-duration: 0.6s;
+
+    &::after {
+      animation: meta-sheen 1.2s var(--ease-soft) 0.45s both;
+    }
+  }
+}
+
+@keyframes meta-sheen {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@media (max-width: 767px) {
+  .t-item {
+    width: 100cqw;
+    --y: 38;
+
+    &[data-slot="1"],
+    &[data-slot="2"],
+    &[data-slot="3"] {
+      --y: 90;
+      --s: 0.3;
+    }
+
+    &[data-slot="1"] {
+      --x: 0;
+    }
+
+    &[data-slot="2"] {
+      --x: 35;
+    }
+
+    &[data-slot="3"] {
+      --x: 70;
+    }
+  }
+
+  .t-quote {
+    font-size: clamp(28px, 7.4vw, 36px);
+  }
+
+  .t-meta {
+    gap: 16px;
+    margin-top: 28px;
+    padding: 12px 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-item {
+    transition: opacity 0.3s linear;
+  }
+
+  .t-meta::after {
+    animation: none !important;
+  }
+}
