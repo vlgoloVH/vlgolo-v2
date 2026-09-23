@@ -59,6 +59,8 @@ const en = {
     email: "Email me",
     linkedin: "LinkedIn",
     availability: "Available for Senior / Lead Product Design opportunities",
+    /** The footer link back to the hero. */
+    top: "Back to top",
     /** Alt text for the background picture. */
     scene: "The same desk at night, the chair pushed back and the screen left on.",
   },
@@ -180,6 +182,7 @@ const uk: Dictionary = {
     email: "Написати мені",
     linkedin: "LinkedIn",
     availability: "Відкритий до ролей Senior / Lead Product Designer",
+    top: "Нагору",
     scene: "Той самий стіл уночі, крісло відсунуте, екран увімкнений.",
   },
   testimonials: {

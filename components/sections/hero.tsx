@@ -4,7 +4,7 @@ import { GlassButton } from "@/components/ui/glass-button";
 
 export function Hero({ dict }: { dict: Dictionary }) {
   return (
-    <section className="section-slide relative flex items-center justify-center overflow-hidden bg-bg">
+    <section id="top" className="section-slide relative flex items-center justify-center overflow-hidden bg-bg">
       <div className="hero-drift absolute inset-0">
         <HeroVideo />
       </div>
