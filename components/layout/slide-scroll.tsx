@@ -122,6 +122,9 @@ export function SlideScroll() {
 
     const onWheel = (event: WheelEvent) => {
       if (event.ctrlKey) return; // pinch zoom
+      // A modal is open: the page behind it stays put, and the wheel belongs to
+      // whatever is under the pointer inside the modal.
+      if (document.querySelector("dialog[open]")) return;
 
       const now = performance.now();
 

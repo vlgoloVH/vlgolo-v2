@@ -5,6 +5,9 @@ export const SITE = {
   wordmark: "Vlad.Holoborodko.",
   email: "vlgolo1996@gmail.com",
   url: "https://vlgolo.com",
+  resume: "/resume.pdf",
+  /** Where the contact form posts. */
+  formspree: "https://formspree.io/f/mvznjbod",
 } as const;
 
 /** Labels for these come from the dictionary, under the same keys. */
@@ -21,7 +24,6 @@ export const SOCIAL_LINKS = [
 ] as const;
 
 export const HERO = {
-  resume: "/resume.pdf",
   video: {
     mp4: "/hero/hero.mp4",
     webm: "/hero/hero.webm",

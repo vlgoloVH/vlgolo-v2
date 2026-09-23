@@ -186,7 +186,8 @@ function compile(gl: WebGLRenderingContext, type: number, src: string) {
 }
 
 interface Props {
-  href: string;
+  /** A link when set; without it the pill is a button (see onClick, type). */
+  href?: string;
   label: string;
   /** Which video the lens refracts. Defaults to the first one on the page;
    *  null means there is nothing to refract, and the lens runs flat — the
@@ -194,6 +195,10 @@ interface Props {
   videoSelector?: string | null;
   /** Set for a file the visitor should get rather than a page to open. */
   download?: boolean;
+  onClick?: () => void;
+  /** For the button form only: "submit" inside a form. */
+  type?: "button" | "submit";
+  disabled?: boolean;
   className?: string;
 }
 
@@ -210,9 +215,12 @@ export function GlassButton({
   label,
   videoSelector = "video",
   download = false,
+  onClick,
+  type = "button",
+  disabled = false,
   className = "",
 }: Props) {
-  const rootRef = useRef<HTMLAnchorElement>(null);
+  const rootRef = useRef<HTMLAnchorElement & HTMLButtonElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [live, setLive] = useState(false);
 
@@ -455,20 +463,34 @@ export function GlassButton({
     };
   }, [videoSelector]);
 
-  return (
-    <a
-      ref={rootRef}
-      href={href}
-      download={download || undefined}
-      data-live={live ? "true" : undefined}
-      className={`glass-pill group ${className}`}
-    >
+  const inner = (
+    <>
       <canvas
         ref={canvasRef}
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 h-full w-full opacity-0 transition-opacity duration-500 group-data-[live=true]:opacity-100"
       />
       <span className="relative">{label}</span>
+    </>
+  );
+
+  const shared = {
+    ref: rootRef,
+    "data-live": live ? "true" : undefined,
+    className: `glass-pill group ${className}`,
+  };
+
+  if (href === undefined) {
+    return (
+      <button {...shared} type={type} onClick={onClick} disabled={disabled}>
+        {inner}
+      </button>
+    );
+  }
+
+  return (
+    <a {...shared} href={href} download={download || undefined} onClick={onClick}>
+      {inner}
     </a>
   );
 }

@@ -145,6 +145,7 @@
   letter-spacing: 0.19em;
   text-transform: uppercase;
   color: #fff;
+  cursor: pointer;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(6px) brightness(0.8);
   -webkit-backdrop-filter: blur(6px) brightness(0.8);
@@ -540,5 +541,80 @@ html:not([data-ready]) .enter-line {
 
   .hero-fade {
     opacity: 1;
+  }
+}
+
+/* Contact form. The panel rises in and the page behind it dims and blurs; the
+   page also stops scrolling while it is open. */
+.contact-dialog {
+  width: min(640px, calc(100% - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 0;
+  overflow-y: auto;
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+
+.contact-dialog[open] {
+  animation: dialog-in 0.45s var(--ease-soft) both;
+}
+
+.contact-dialog::backdrop {
+  background: rgb(0 0 0 / 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: fade-in 0.45s var(--ease-soft) both;
+}
+
+html:has(.contact-dialog[open]) {
+  overflow: hidden;
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-dialog[open],
+  .contact-dialog::backdrop {
+    animation: none;
+  }
+}
+
+/* The Resume button's arrow: drops in from above, rests, sinks into the tray
+   and fades, then comes round again. */
+.download-arrow {
+  animation: download-drop 2.4s var(--ease-soft) infinite;
+}
+
+@keyframes download-drop {
+  0% {
+    transform: translateY(-4px);
+    opacity: 0;
+  }
+  25%,
+  65% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(3px);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .download-arrow {
+    animation: none;
   }
 }

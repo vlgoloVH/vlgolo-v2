@@ -1,7 +1,6 @@
 import type { Dictionary } from "@/lib/dictionaries";
-import { HERO } from "@/lib/site";
 import { HeroVideo } from "@/components/sections/hero-video";
-import { GlassButton } from "@/components/ui/glass-button";
+import { ContactDialog } from "@/components/ui/contact-dialog";
 
 export function Hero({ dict }: { dict: Dictionary }) {
   return (
@@ -36,10 +35,9 @@ export function Hero({ dict }: { dict: Dictionary }) {
           ))}
         </h1>
 
-        <GlassButton
-          href={HERO.resume}
+        <ContactDialog
           label={dict.hero.cta}
-          download
+          copy={dict.contact}
           className="enter-cta mt-20 md:mt-24"
         />
       </div>
