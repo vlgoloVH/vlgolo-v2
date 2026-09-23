@@ -167,14 +167,6 @@ export function WorksTrack({ items, explore, progressLabel }: Props) {
               style={{ "--tint": hexToRgb(item.tint).join(" ") } as React.CSSProperties}
               className="works-tint relative flex h-full w-full shrink-0 items-center"
             >
-              {/* A hairline where one case meets the next, the same as the
-                  frame lines, so the seam shows while the track moves. */}
-              {index > 0 && (
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-y-0 left-0 w-px bg-white/12"
-                />
-              )}
               {body}
             </Link>
           );
