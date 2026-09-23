@@ -1,3 +1,5 @@
+import type { Dictionary } from "@/lib/dictionaries";
+import { localizePath, type Locale } from "@/lib/i18n";
 import { ABOUT } from "@/lib/site";
 import { AboutVideo } from "@/components/sections/about-video";
 import { RevealSection } from "@/components/layout/reveal-section";
@@ -6,7 +8,7 @@ import { GlassButton } from "@/components/ui/glass-button";
 /** Rides up over the pinned hero: its own background is opaque, which is what
  *  makes the two sections read as stacked slides. Everything inside arrives in
  *  sequence once the section is on screen — see `.reveal` in globals.css. */
-export function About() {
+export function About({ lang, dict }: { lang: Locale; dict: Dictionary }) {
   return (
     <RevealSection
       id="about"
@@ -25,7 +27,7 @@ export function About() {
         className="absolute left-0 top-1/2 hidden w-[var(--frame-line)] -translate-y-1/2 justify-center md:flex"
       >
         <span className="reveal [--reveal-i:4] text-[14px] uppercase tracking-[0.36em] text-ink/60 [text-orientation:upright] [writing-mode:vertical-rl]">
-          {ABOUT.rail}
+          {dict.about.rail}
         </span>
       </div>
 
@@ -40,16 +42,16 @@ export function About() {
             >
               👋
             </span>
-            {ABOUT.eyebrow}
+            {dict.about.eyebrow}
           </p>
 
           <p className="reveal [--reveal-i:2] mt-10 text-[19px] leading-[1.85] text-muted md:text-[22px]">
-            {ABOUT.body}
+            {dict.about.body}
           </p>
 
           <GlassButton
-            href={ABOUT.cta.href}
-            label={ABOUT.cta.label}
+            href={localizePath(lang, ABOUT.href)}
+            label={dict.about.cta}
             videoSelector={null}
             className="reveal [--reveal-i:3] mt-14"
           />

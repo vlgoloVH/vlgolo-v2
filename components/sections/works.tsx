@@ -1,4 +1,5 @@
-import { WORKS } from "@/lib/site";
+import type { Dictionary } from "@/lib/dictionaries";
+import { CASES } from "@/lib/site";
 import { RevealSection } from "@/components/layout/reveal-section";
 
 /** One section-slide holding a horizontal track of full-screen cases —
@@ -7,7 +8,7 @@ import { RevealSection } from "@/components/layout/reveal-section";
  *  from the side and the one before it slides out, the way andrewreff.com's
  *  selected-works section reads. Every case fills edge to edge between the
  *  frame lines, never past them into the rail or social-icon strips. */
-export function Works() {
+export function Works({ dict }: { dict: Dictionary }) {
   return (
     <RevealSection
       id="works"
@@ -18,13 +19,13 @@ export function Works() {
         <span className="reveal-line absolute inset-y-0 right-[var(--frame-line)] w-px bg-white/12" />
       </div>
 
-      {/* Section name in the left margin, exactly where ABOUT.rail sits. */}
+      {/* Section name in the left margin, exactly where the About rail sits. */}
       <div
         aria-hidden="true"
         className="absolute left-0 top-1/2 hidden w-[var(--frame-line)] -translate-y-1/2 justify-center md:flex"
       >
         <span className="reveal [--reveal-i:1] text-[14px] uppercase tracking-[0.36em] text-ink/60 [text-orientation:upright] [writing-mode:vertical-rl]">
-          {WORKS.rail}
+          {dict.works.rail}
         </span>
       </div>
 
@@ -37,7 +38,7 @@ export function Works() {
         data-h-track
         className="hide-scrollbar reveal [--reveal-i:2] absolute inset-y-0 left-[var(--frame-line)] right-[var(--frame-line)] flex overflow-x-auto overscroll-x-none"
       >
-        {WORKS.cases.map((item, index) => (
+        {CASES.map((item, index) => (
           <article
             key={item.slug}
             className="relative h-full w-full shrink-0 bg-white/5"
@@ -55,7 +56,7 @@ export function Works() {
                   {item.title}
                 </h3>
                 <p className="mt-3 max-w-md text-sm leading-relaxed text-muted md:text-base">
-                  {item.description}
+                  {dict.works.cases[item.slug]}
                 </p>
               </div>
 

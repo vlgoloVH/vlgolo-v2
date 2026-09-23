@@ -1,8 +1,9 @@
+import type { Dictionary } from "@/lib/dictionaries";
 import { HERO } from "@/lib/site";
 import { HeroVideo } from "@/components/sections/hero-video";
 import { GlassButton } from "@/components/ui/glass-button";
 
-export function Hero() {
+export function Hero({ dict }: { dict: Dictionary }) {
   return (
     <section className="section-slide relative flex items-center justify-center overflow-hidden bg-bg">
       <div className="hero-drift absolute inset-0">
@@ -24,11 +25,11 @@ export function Hero() {
           back, especially on the way up. */}
       <div className="hero-parallax relative z-10 flex w-full flex-col items-center px-6 text-center md:px-[var(--frame-pad)]">
         <p className="enter-eyebrow text-eyebrow font-medium uppercase text-ink/85">
-          {HERO.eyebrow}
+          {dict.hero.eyebrow}
         </p>
 
         <h1 className="enter-headline mt-6 max-w-[16em] text-display text-ink md:mt-8">
-          {HERO.headline.map((line) => (
+          {dict.hero.headline.map((line) => (
             <span key={line} className="block">
               {line}
             </span>
@@ -36,8 +37,8 @@ export function Hero() {
         </h1>
 
         <GlassButton
-          href={HERO.cta.href}
-          label={HERO.cta.label}
+          href={HERO.resume}
+          label={dict.hero.cta}
           download
           className="enter-cta mt-20 md:mt-24"
         />

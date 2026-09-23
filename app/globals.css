@@ -462,10 +462,33 @@ html:not([data-ready]) .enter-line {
   animation-delay: calc(var(--enter-start) + var(--enter-step) * 4);
 }
 
+/* Switching language mounts the page again, and the full entrance would make
+   the visitor wait four seconds for a header they already had. So after the
+   first load the frame is simply there, and only the hero copy fades in, as
+   the new words. The preloader sets data-settled. */
+[data-settled] .enter-video {
+  animation: none;
+  opacity: var(--video-dim);
+}
+
+[data-settled] .enter-line,
+[data-settled] .enter-chrome {
+  animation: none;
+}
+
+[data-settled] .enter-eyebrow,
+[data-settled] .enter-headline,
+[data-settled] .enter-cta {
+  animation: fade-in 0.6s var(--ease-soft) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .enter-video,
   .enter-line,
   .enter-eyebrow,
+  [data-settled] .enter-eyebrow,
+  [data-settled] .enter-headline,
+  [data-settled] .enter-cta,
   .enter-headline,
   .enter-cta,
   .enter-chrome,

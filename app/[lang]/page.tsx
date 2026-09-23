@@ -4,19 +4,29 @@ import { ViewportHeight } from "@/components/layout/viewport-height";
 import { Hero } from "@/components/sections/hero";
 import { About } from "@/components/sections/about";
 import { Works } from "@/components/sections/works";
+import { getDictionary } from "@/lib/dictionaries";
+import type { Locale } from "@/lib/i18n";
 
 /** The home page is a stack of full-height slides: each section is one screen,
  *  the hero's content lags behind the scroll, and the section after it is opaque
  *  so it reads as sliding over the top. */
-export default function HomePage() {
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  // The layout has already rejected anything that is not a locale.
+  const lang = (await params).lang as Locale;
+  const dict = getDictionary(lang);
+
   return (
     <>
       <ViewportHeight />
       <ScrollState />
       <SlideScroll />
-      <Hero />
-      <About />
-      <Works />
+      <Hero dict={dict} />
+      <About lang={lang} dict={dict} />
+      <Works dict={dict} />
     </>
   );
 }

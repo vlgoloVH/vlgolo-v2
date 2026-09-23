@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 /** Nothing on the page animates until this component says the hero video can
  *  actually play. Without that gate the CSS sequence runs against a black
@@ -8,12 +8,30 @@ import { useEffect, useState } from "react";
  *  once when it finally arrives. */
 const MAX_WAIT = 6000;
 
+/** Whether this tab has already been through the entrance. Module state, so it
+ *  outlives the component: switching language mounts the whole document again,
+ *  React wipes every attribute off <html> on the way, and without this the
+ *  visitor would sit through the preloader and the full entrance a second time.
+ *  False on the server and on the first client render alike, so hydration
+ *  still matches. */
+let entered = false;
+
 export function Preloader() {
-  const [ready, setReady] = useState(false);
-  const [hidden, setHidden] = useState(false);
+  const [ready, setReady] = useState(() => entered);
+  const [hidden, setHidden] = useState(() => entered);
   const [progress, setProgress] = useState(0);
 
+  // Before paint, or the frame would flash for one frame without its gates.
+  // data-settled tells the stylesheet to skip the entrance (see globals.css).
+  useLayoutEffect(() => {
+    if (!entered) return;
+    const root = document.documentElement;
+    root.dataset.ready = "true";
+    root.dataset.settled = "true";
+  }, []);
+
   useEffect(() => {
+    if (entered) return;
     let done = false;
 
     // Starts the bar from zero on the frame after mount so it animates.
@@ -22,6 +40,7 @@ export function Preloader() {
     const finish = () => {
       if (done) return;
       done = true;
+      entered = true;
       document.documentElement.dataset.ready = "true";
       setReady(true);
       setProgress(1);
