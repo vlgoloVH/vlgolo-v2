@@ -1,6 +1,6 @@
 import type { Dictionary } from "@/lib/dictionaries";
 import { HeroVideo } from "@/components/sections/hero-video";
-import { ContactDialog } from "@/components/ui/contact-dialog";
+import { GlassButton } from "@/components/ui/glass-button";
 
 export function Hero({ dict }: { dict: Dictionary }) {
   return (
@@ -35,10 +35,14 @@ export function Hero({ dict }: { dict: Dictionary }) {
           ))}
         </h1>
 
-        <ContactDialog
+        <p className="enter-sub mt-6 max-w-[34em] text-balance text-[17px] leading-relaxed text-ink/70 md:mt-8 md:text-[20px]">
+          {dict.hero.sub}
+        </p>
+
+        <GlassButton
+          href="#works"
           label={dict.hero.cta}
-          copy={dict.contact}
-          className="enter-cta mt-20 md:mt-24"
+          className="enter-cta mt-14 md:mt-16"
         />
       </div>
 

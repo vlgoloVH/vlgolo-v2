@@ -422,6 +422,7 @@
 html:not([data-ready]) .enter-video,
 html:not([data-ready]) .enter-eyebrow,
 html:not([data-ready]) .enter-headline,
+html:not([data-ready]) .enter-sub,
 html:not([data-ready]) .enter-cta,
 html:not([data-ready]) .enter-chrome {
   opacity: 0;
@@ -453,6 +454,11 @@ html:not([data-ready]) .enter-line {
   animation-delay: calc(var(--enter-start) + var(--enter-step) * 1.8);
 }
 
+[data-ready] .enter-sub {
+  animation: rise-in 1.6s var(--ease-soft) both;
+  animation-delay: calc(var(--enter-start) + var(--enter-step) * 2.5);
+}
+
 [data-ready] .enter-cta {
   animation: rise-in 1.6s var(--ease-soft) both;
   animation-delay: calc(var(--enter-start) + var(--enter-step) * 3);
@@ -479,6 +485,7 @@ html:not([data-ready]) .enter-line {
 
 [data-settled] .enter-eyebrow,
 [data-settled] .enter-headline,
+[data-settled] .enter-sub,
 [data-settled] .enter-cta {
   animation: fade-in 0.6s var(--ease-soft) both;
 }
@@ -489,14 +496,17 @@ html:not([data-ready]) .enter-line {
   .enter-eyebrow,
   [data-settled] .enter-eyebrow,
   [data-settled] .enter-headline,
+  [data-settled] .enter-sub,
   [data-settled] .enter-cta,
   .enter-headline,
+  .enter-sub,
   .enter-cta,
   .enter-chrome,
   html:not([data-ready]) .enter-video,
   html:not([data-ready]) .enter-line,
   html:not([data-ready]) .enter-eyebrow,
   html:not([data-ready]) .enter-headline,
+  html:not([data-ready]) .enter-sub,
   html:not([data-ready]) .enter-cta,
   html:not([data-ready]) .enter-chrome {
     animation: none;

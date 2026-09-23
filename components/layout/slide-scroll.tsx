@@ -221,11 +221,31 @@ export function SlideScroll() {
       glide(tops[next]);
     };
 
+    /** A link to a section on this same page ("#works", "/uk#works") glides
+     *  there on the same curve instead of jumping. Capture phase, so it answers
+     *  before Next's own link handling does. */
+    const onClick = (event: MouseEvent) => {
+      if (event.defaultPrevented || event.button !== 0) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const link = (event.target as Element | null)?.closest?.("a[href*='#']");
+      if (!(link instanceof HTMLAnchorElement)) return;
+      if (link.pathname !== location.pathname || !link.hash) return;
+      const target = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+      if (!target) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+      blockUntil = performance.now() + DURATION + COOLDOWN;
+      glide(target.offsetTop);
+    };
+
     window.addEventListener("wheel", onWheel, { passive: false });
+    document.addEventListener("click", onClick, true);
 
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("wheel", onWheel);
+      document.removeEventListener("click", onClick, true);
       root.style.removeProperty("scroll-snap-type");
       root.style.scrollBehavior = behaviour;
     };

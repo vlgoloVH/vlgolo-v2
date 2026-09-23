@@ -23,9 +23,10 @@ const en = {
   status: "Available",
   resume: "Resume",
   hero: {
-    eyebrow: "Senior Product Designer · Est. 2015",
-    headline: ["Designing products", "that drive growth"],
-    cta: "Email me",
+    eyebrow: "Senior Product Designer",
+    headline: ["Making complex", "products feel simple"],
+    sub: "From discovery to scalable systems — designing products for people and business.",
+    cta: "View selected work",
   },
   contact: {
     title: "Let's talk",
@@ -89,9 +90,10 @@ const uk: Dictionary = {
   status: "Відкритий до роботи",
   resume: "Резюме",
   hero: {
-    eyebrow: "Senior Product Designer · з 2015 року",
-    headline: ["Проєктую продукти,", "що дають зростання"],
-    cta: "Написати мені",
+    eyebrow: "Senior Product Designer",
+    headline: ["Роблю складні", "продукти простими"],
+    sub: "Від дослідження до масштабованих систем: проєктую продукти для людей і бізнесу.",
+    cta: "Дивитися роботи",
   },
   contact: {
     title: "Давай поговоримо",
