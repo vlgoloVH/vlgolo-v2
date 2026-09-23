@@ -44,8 +44,12 @@ const en = {
     /** Set vertically in the left margin, the way the hero rules frame the page. */
     rail: "About",
     eyebrow: "Hey there, I'm Vlad!",
-    body: "I'm a Product Designer with 10+ years of experience building digital products across diverse industries and markets. I help teams transform complex ideas into intuitive experiences that create meaningful value for users and measurable results for businesses…",
-    cta: "Learn more",
+    /** One entry per paragraph. */
+    body: [
+      "I’m a Product Designer with 10+ years of experience solving complex product problems. I turn complicated workflows, business requirements and user needs into products that feel clear and simple.",
+      "I’ve worked across fintech, SaaS, enterprise and consumer products, helping teams turn early ideas into scalable, shipped experiences. My work sits at the intersection of users, business and technology. I focus on understanding the problem, finding the right direction, simplifying complexity and building systems that can grow with the product.",
+    ],
+    cta: "More about me",
   },
   works: {
     /** Set vertically in the left margin, the same as about.rail. */
@@ -110,8 +114,11 @@ const uk: Dictionary = {
   about: {
     rail: "Про мене",
     eyebrow: "Привіт, я Влад!",
-    body: "Я продуктовий дизайнер з досвідом понад 10 років: створюю цифрові продукти в різних індустріях і на різних ринках. Допомагаю командам перетворювати складні ідеї на зрозумілий досвід, що дає справжню цінність користувачам і вимірюваний результат бізнесу…",
-    cta: "Детальніше",
+    body: [
+      "Я продуктовий дизайнер з досвідом понад 10 років у розв’язанні складних продуктових задач. Перетворюю заплутані процеси, бізнес-вимоги й потреби користувачів на продукти, які сприймаються зрозумілими і простими.",
+      "Працював із фінтехом, SaaS, enterprise і споживчими продуктами, допомагаючи командам перетворювати ранні ідеї на масштабовані запущені продукти. Моя робота лежить на перетині користувачів, бізнесу й технологій. Я зосереджуюсь на тому, щоб зрозуміти проблему, знайти правильний напрямок, спростити складне і побудувати системи, які ростуть разом із продуктом.",
+    ],
+    cta: "Більше про мене",
   },
   works: {
     rail: "Проєкти",

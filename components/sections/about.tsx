@@ -45,9 +45,11 @@ export function About({ lang, dict }: { lang: Locale; dict: Dictionary }) {
             {dict.about.eyebrow}
           </p>
 
-          <p className="reveal [--reveal-i:2] mt-10 text-[19px] leading-[1.85] text-muted md:text-[22px]">
-            {dict.about.body}
-          </p>
+          <div className="reveal [--reveal-i:2] mt-10 space-y-5 text-[17px] leading-[1.75] text-muted md:text-[18px]">
+            {dict.about.body.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </div>
 
           <GlassButton
             href={localizePath(lang, ABOUT.href)}
