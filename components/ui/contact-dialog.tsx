@@ -11,13 +11,15 @@ interface Props {
   label: string;
   copy: Dictionary["contact"];
   className?: string;
+  /** What the pill's glass refracts (see GlassButton); nothing by default. */
+  glassSource?: string | null;
 }
 
 /** The hero's glass pill, opening a contact form in a native <dialog>: the
  *  browser handles focus, Escape and the layer above the page, so none of that
  *  is reinvented here. The form posts to Formspree and stays in place, so the
  *  visitor never leaves the site. */
-export function ContactDialog({ label, copy, className = "" }: Props) {
+export function ContactDialog({ label, copy, className = "", glassSource = null }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [status, setStatus] = useState<Status>("idle");
 
@@ -53,7 +55,7 @@ export function ContactDialog({ label, copy, className = "" }: Props) {
 
   return (
     <>
-      <GlassButton label={label} onClick={open} videoSelector={null} className={className} />
+      <GlassButton label={label} onClick={open} videoSelector={glassSource} className={className} />
 
       <dialog
         ref={dialogRef}

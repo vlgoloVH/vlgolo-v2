@@ -19,6 +19,7 @@ export function Contacts({ dict }: { dict: Dictionary }) {
       className="section-slide relative z-[35] overflow-hidden bg-bg"
     >
       <Image
+        id="contact-scene"
         src="/contact/workspace.jpg"
         alt={copy.scene}
         fill
@@ -73,12 +74,12 @@ export function Contacts({ dict }: { dict: Dictionary }) {
         {/* A grid of equal columns, so both pills are as wide as the wider one;
             stacked on a phone, still one width. */}
         <div className="reveal [--reveal-i:7] mt-10 grid gap-4 sm:grid-cols-2 md:mt-12">
-          <ContactDialog label={copy.email} copy={dict.contact} className="w-full" />
+          <ContactDialog label={copy.email} copy={dict.contact} glassSource="#contact-scene" className="w-full" />
           <GlassButton
             href={SITE.resume}
             label={copy.resume}
             download
-            videoSelector={null}
+            videoSelector="#contact-scene"
             className="w-full"
           />
         </div>

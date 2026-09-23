@@ -189,9 +189,10 @@ interface Props {
   /** A link when set; without it the pill is a button (see onClick, type). */
   href?: string;
   label: string;
-  /** Which video the lens refracts. Defaults to the first one on the page;
-   *  null means there is nothing to refract, and the lens runs flat — the
-   *  sheen, the glare and the hover colour still play. */
+  /** What the lens refracts: a video, or a still picture (an <img>, e.g. the
+   *  contact scene). Defaults to the first video on the page; null means
+   *  there is nothing to refract, and the lens runs flat — the sheen, the
+   *  glare and the hover colour still play. */
   videoSelector?: string | null;
   /** Set for a file the visitor should get rather than a page to open. */
   download?: boolean;
@@ -232,9 +233,14 @@ export function GlassButton({
     const canvas = canvasRef.current;
     if (!root || !canvas) return;
 
-    const video = videoSelector
-      ? document.querySelector<HTMLVideoElement>(videoSelector)
+    const found = videoSelector
+      ? document.querySelector<HTMLVideoElement | HTMLImageElement>(videoSelector)
       : null;
+    // The picture behind the pill: a video is uploaded every frame, a still
+    // image once, as soon as it has loaded.
+    const video = found instanceof HTMLVideoElement || found instanceof HTMLImageElement ? found : null;
+    const still = video instanceof HTMLImageElement;
+    let uploaded = false;
 
     const gl = canvas.getContext("webgl", {
       alpha: true,
@@ -381,21 +387,30 @@ export function GlassButton({
       // Off screen there is nothing to show, and the frame upload is the kind of
       // work that turns up as scroll jank.
       if (!onScreen) return;
-      if (video && video.readyState < 2) return;
+      if (video instanceof HTMLVideoElement && video.readyState < 2) return;
+      if (video instanceof HTMLImageElement && !(video.complete && video.naturalWidth)) return;
 
       const pill = root.getBoundingClientRect();
       if (!pill.width) return;
 
-      // The video is object-contain, so work out the letterboxed draw area.
+      // Where the picture is actually drawn inside its box, from its own
+      // object-fit and object-position (the hero video is contained, the
+      // contact scene covers and sits to one side).
       const box = video?.getBoundingClientRect();
-      const scale =
-        video && box
-          ? Math.min(box.width / video.videoWidth, box.height / video.videoHeight)
-          : 1;
-      const drawW = video ? video.videoWidth * scale : pill.width;
-      const drawH = video ? video.videoHeight * scale : pill.height;
-      const drawX = video && box ? box.x + (box.width - drawW) / 2 : pill.x;
-      const drawY = video && box ? box.y + (box.height - drawH) / 2 : pill.y;
+      const natW = video ? (still ? video.naturalWidth : (video as HTMLVideoElement).videoWidth) : 0;
+      const natH = video ? (still ? video.naturalHeight : (video as HTMLVideoElement).videoHeight) : 0;
+      const style = video ? getComputedStyle(video) : null;
+      const fit = style?.objectFit === "cover" ? Math.max : Math.min;
+      const scale = video && box ? fit(box.width / natW, box.height / natH) : 1;
+      const drawW = video ? natW * scale : pill.width;
+      const drawH = video ? natH * scale : pill.height;
+      const place = (value: string | undefined, free: number) => {
+        if (!value) return free / 2;
+        return value.endsWith("%") ? (free * parseFloat(value)) / 100 : parseFloat(value) || 0;
+      };
+      const [posX, posY] = (style?.objectPosition ?? "50% 50%").split(" ");
+      const drawX = video && box ? box.x + place(posX, box.width - drawW) : pill.x;
+      const drawY = video && box ? box.y + place(posY, box.height - drawH) : pill.y;
       if (!drawW || !drawH) return;
 
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -420,7 +435,8 @@ export function GlassButton({
       gl.uniform1f(uniforms.uHover, hover);
 
       gl.bindTexture(gl.TEXTURE_2D, texture);
-      if (video) {
+      if (video && !(still && uploaded)) {
+        uploaded = true;
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 0);
         try {
           gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video);
