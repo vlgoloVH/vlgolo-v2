@@ -8,9 +8,9 @@ import { useEffect, useRef, useState } from "react";
  *  not per frame, so it feels the same at 60Hz and 120Hz. */
 const LAG = 90;
 
-/** Over anything marked `data-cursor`, the pointer becomes a circle carrying
- *  that attribute's text. The native cursor is hidden there by the stylesheet
- *  (only for a real mouse or trackpad, see data-hover-capable), and a finger
+/** Over anything marked `data-cursor`, a circle carrying that attribute's text
+ *  trails the pointer. The pointer itself stays visible; the circle is only
+ *  shown for a real mouse or trackpad (see data-hover-capable), and a finger
  *  never sees any of this. It also re-checks what is under a still pointer
  *  when the page scrolls, because the cases slide under the pointer on a wheel
  *  gesture without the pointer itself moving. */
