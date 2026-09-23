@@ -2,9 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 
-/** How far the circle closes on the pointer each frame: below 1 it trails a
- *  touch behind, which is what makes it feel like an object, not a sprite. */
-const FOLLOW = 0.22;
+/** How long the circle takes to catch up, in ms: the time constant of a plain
+ *  exponential ease. It trails a touch behind the pointer and settles without
+ *  ever overshooting, so it reads as weight, not as jelly. Measured in time,
+ *  not per frame, so it feels the same at 60Hz and 120Hz. */
+const LAG = 90;
 
 /** Over anything marked `data-cursor`, the pointer becomes a circle carrying
  *  that attribute's text. The native cursor is hidden there by the stylesheet
@@ -28,13 +30,22 @@ export function ExploreCursor() {
     let cx = x;
     let cy = y;
     let raf = 0;
+    let last = 0;
     let placed = false;
 
-    const loop = () => {
-      cx += (x - cx) * FOLLOW;
-      cy += (y - cy) * FOLLOW;
+    const loop = (now: number) => {
+      const dt = last ? Math.min(now - last, 64) : 16;
+      last = now;
+      const k = 1 - Math.exp(-dt / LAG);
+      cx += (x - cx) * k;
+      cy += (y - cy) * k;
       el.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
-      raf = Math.abs(x - cx) + Math.abs(y - cy) > 0.1 ? requestAnimationFrame(loop) : 0;
+      if (Math.abs(x - cx) + Math.abs(y - cy) > 0.1) {
+        raf = requestAnimationFrame(loop);
+      } else {
+        raf = 0;
+        last = 0;
+      }
     };
 
     const check = () => {
@@ -84,9 +95,9 @@ export function ExploreCursor() {
     >
       <div
         data-on={on ? "true" : undefined}
-        className="explore-cursor -ml-[56px] -mt-[56px] flex h-[112px] w-[112px] items-center justify-center rounded-full bg-white px-4 text-center text-[12px] font-semibold uppercase leading-[1.35] tracking-[0.14em] text-black"
+        className="explore-cursor -ml-[60px] -mt-[60px] flex h-[120px] w-[120px] items-center justify-center rounded-full px-5 text-center text-[12px] font-medium uppercase leading-[1.5] tracking-[0.19em] text-ink"
       >
-        {label}
+        <span className="relative">{label}</span>
       </div>
     </div>
   );
