@@ -27,6 +27,13 @@ export function Contacts({ dict }: { dict: Dictionary }) {
         className="object-cover object-[72%_50%] opacity-[var(--video-dim)] md:object-right"
       />
 
+      {/* Shade along the right edge only, so the social icons in that strip
+          stay readable over the lit city in the window. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-0 right-0 hidden w-[calc(var(--frame-line)*3)] bg-[linear-gradient(270deg,rgba(0,0,0,0.88),rgba(0,0,0,0.65)_33%,transparent)] md:block"
+      />
+
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <span className="reveal-line absolute inset-y-0 left-[var(--frame-line)] w-px bg-white/12" />
         <span className="reveal-line absolute inset-y-0 right-[var(--frame-line)] w-px bg-white/12" />
