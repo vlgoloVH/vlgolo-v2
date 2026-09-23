@@ -29,24 +29,20 @@ const hexToRgb = (hex: string) => {
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-/** The horizontal track of cases, plus the two things that follow it: the
- *  section's colour, which slides from one case's tint to the next as the
- *  track moves, and the progress bar under the cases. Both are written
- *  straight to the DOM on scroll; only the case number goes through state,
- *  and that changes once per case. */
+/** The horizontal track of cases and the progress bar under it. Each case
+ *  carries its own tint, so the next colour arrives with the next case at its
+ *  edge rather than blending in. The bar is written straight to the DOM on
+ *  scroll; only the case number goes through state, once per case. */
 export function WorksTrack({ items, explore, progressLabel }: Props) {
   const trackRef = useRef<HTMLDivElement>(null);
-  const tintRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLSpanElement>(null);
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
     const track = trackRef.current;
-    const tint = tintRef.current;
     const fill = fillRef.current;
-    if (!track || !tint || !fill) return;
+    if (!track || !fill) return;
 
-    const colours = items.map((item) => hexToRgb(item.tint));
     const last = items.length - 1;
     let raf = 0;
 
@@ -56,12 +52,6 @@ export function WorksTrack({ items, explore, progressLabel }: Props) {
         Math.max(track.scrollLeft / Math.max(track.clientWidth, 1), 0),
         last,
       );
-      const from = Math.floor(position);
-      const to = Math.min(from + 1, last);
-      const t = position - from;
-      const rgb = colours[from].map((c, i) => Math.round(c + (colours[to][i] - c) * t));
-
-      tint.style.setProperty("--tint", rgb.join(" "));
       fill.style.transform = `scaleX(${(position + 1) / items.length})`;
       setCurrent(Math.round(position));
     };
@@ -101,10 +91,6 @@ export function WorksTrack({ items, explore, progressLabel }: Props) {
 
   return (
     <>
-      {/* The case's own colour laid thinly over the section surface: strongest
-          behind the image, fading out towards the edges. */}
-      <div ref={tintRef} aria-hidden="true" className="works-tint pointer-events-none absolute inset-0" />
-
       {/* Native overflow-x is the source of truth for horizontal position: on
           mobile it is a plain touch-swipe carousel, and on desktop SlideScroll
           feeds the wheel into this same scrollLeft instead of reinventing it.
@@ -174,8 +160,18 @@ export function WorksTrack({ items, explore, progressLabel }: Props) {
               href={item.href}
               prefetch={false}
               data-cursor={explore}
-              className="relative flex h-full w-full shrink-0 items-center"
+              // The case's own colour, laid thinly over the section surface.
+              style={{ "--tint": hexToRgb(item.tint).join(" ") } as React.CSSProperties}
+              className="works-tint relative flex h-full w-full shrink-0 items-center"
             >
+              {/* A hairline where one case meets the next, the same as the
+                  frame lines, so the seam shows while the track moves. */}
+              {index > 0 && (
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-y-0 left-0 w-px bg-white/12"
+                />
+              )}
               {body}
             </Link>
           );

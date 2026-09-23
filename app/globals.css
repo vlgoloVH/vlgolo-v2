@@ -633,8 +633,8 @@ html:has(.contact-dialog[open]) {
    Works
    ────────────────────────────────────────────── */
 
-/* The current case's tint (an "r g b" triple set by WorksTrack) laid thinly
-   over the section surface, strongest behind the image. */
+/* A case's own tint (an "r g b" triple set per case by WorksTrack) laid
+   thinly over the section surface, strongest behind the image. */
 .works-tint {
   --tint: 29 78 216;
   background: radial-gradient(
