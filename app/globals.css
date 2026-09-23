@@ -707,18 +707,17 @@ html:has(.contact-dialog[open]) {
    Testimonials
    ────────────────────────────────────────────── */
 
-/* All four quotes share one grid cell, so the block is as tall as the longest
-   and the name below never jumps; each sits on the bottom of the cell, right
-   above the name, and any spare room collects above it. Only the active one is visible. On a change
+/* All the quotes share one grid cell of a box that fills the column, and
+   each is sized to that box by TestimonialsStage (the full text always shows,
+   so a longer one is set smaller). Each sits in the middle of the box. Only the active one is visible. On a change
    the old quote rises out, wiped away from below, and the new one rises in,
    revealed from below: a vertical mask plus a short lift, no plain crossfade. */
 .t-quote {
   grid-area: 1 / 1;
-  align-self: end;
-  font-size: clamp(34px, 4.3vw, 68px);
+  align-self: center;
   font-weight: 500;
-  line-height: 1.1;
-  letter-spacing: -0.025em;
+  line-height: 1.32;
+  letter-spacing: -0.012em;
   text-wrap: pretty;
   color: var(--color-ink);
 
@@ -873,12 +872,11 @@ html:has(.contact-dialog[open]) {
 }
 
 @media (max-width: 767px) {
-  .t-quote {
-    font-size: clamp(22px, 6.2vw, 28px);
-  }
-
   .t-author {
-    padding: 8px 14px;
+    display: flex;
+    justify-content: center;
+    padding: 12px 0;
+    border-radius: 100px;
   }
 }
 

@@ -14,6 +14,25 @@ interface Props {
  *  list does not flick through every quote on the way. */
 const DWELL = 90;
 
+/** The range a quote's type may take. The recommendations run from about 100
+ *  to about 200 words and are always shown in full, so each one is set as
+ *  large as its own length allows in the space there is, within these bounds. */
+const MAX_SIZE = 44;
+const MIN_SIZE = 13;
+
+/** Largest font size, to half a pixel, at which the quote fits the box. */
+function fit(quote: HTMLElement, box: HTMLElement) {
+  let lo = MIN_SIZE;
+  let hi = MAX_SIZE;
+  while (hi - lo > 0.5) {
+    const mid = (lo + hi) / 2;
+    quote.style.fontSize = `${mid}px`;
+    if (quote.offsetHeight <= box.clientHeight) lo = mid;
+    else hi = mid;
+  }
+  quote.style.fontSize = `${lo}px`;
+}
+
 const pad = (n: number) => String(n).padStart(2, "0");
 
 /** Split screen: the active quote large on the left, the four authors as a
@@ -27,8 +46,23 @@ export function TestimonialsStage({ label, items }: Props) {
   /** No entrance on first render: the section's own reveal handles that. */
   const [moved, setMoved] = useState(false);
   const timer = useRef(0);
+  const boxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => () => window.clearTimeout(timer.current), []);
+
+  // Size every quote to the box, and again whenever the box changes size.
+  useEffect(() => {
+    const box = boxRef.current;
+    if (!box) return;
+    const run = () => {
+      box.querySelectorAll<HTMLElement>(".t-quote").forEach((quote) => fit(quote, box));
+    };
+    run();
+    void document.fonts?.ready.then(run);
+    const observer = new ResizeObserver(run);
+    observer.observe(box);
+    return () => observer.disconnect();
+  }, [items]);
 
   const select = (index: number) => {
     window.clearTimeout(timer.current);
@@ -47,15 +81,17 @@ export function TestimonialsStage({ label, items }: Props) {
   const current = items[active];
 
   return (
-    <div className="reveal [--reveal-i:2] absolute inset-y-0 left-[var(--frame-line)] right-[var(--frame-line)] flex flex-col justify-center gap-10 px-6 pb-10 pt-24 md:grid md:grid-cols-[minmax(0,1.75fr)_minmax(0,1fr)] md:items-center md:gap-[5vw] md:px-[clamp(32px,5vw,104px)] md:py-0">
-      <figure aria-live="polite">
-        <div className="grid">
+    <div className="reveal [--reveal-i:2] absolute inset-y-0 left-[var(--frame-line)] right-[var(--frame-line)] flex flex-col gap-6 px-6 pb-8 pt-24 md:grid md:grid-cols-[minmax(0,1.75fr)_minmax(0,1fr)] md:grid-rows-[minmax(0,1fr)] md:gap-[5vw] md:px-[clamp(32px,5vw,104px)] md:pb-[clamp(48px,9vh,104px)] md:pt-[clamp(112px,16vh,160px)]">
+      <figure aria-live="polite" className="flex min-h-0 flex-1 flex-col">
+        {/* The quotes share one cell of this box and are each sized to fill
+            it, so the name below stays put whichever one is showing. */}
+        <div ref={boxRef} className="grid min-h-0 flex-1 grid-rows-[minmax(0,1fr)]">
           {items.map((item, index) => (
             <blockquote
               key={index}
               data-state={state(index)}
               aria-hidden={index !== active}
-              className="t-quote relative max-w-[15em]"
+              className="t-quote relative max-w-[42em]"
             >
               <span aria-hidden="true" className="t-mark">
                 “
@@ -65,7 +101,7 @@ export function TestimonialsStage({ label, items }: Props) {
           ))}
         </div>
 
-        <figcaption className="mt-8 flex items-center gap-5 md:mt-14 md:gap-8">
+        <figcaption className="mt-6 flex shrink-0 items-center gap-5 md:mt-10 md:gap-8">
           <div className="t-meta">
             <span key={active} className="t-swap">
               <span className="block text-[13px] font-medium uppercase tracking-[0.19em] text-ink">
@@ -88,9 +124,11 @@ export function TestimonialsStage({ label, items }: Props) {
         </figcaption>
       </figure>
 
-      <ol aria-label={label} className="flex flex-col gap-1 md:gap-2">
+      {/* On a phone the list is a row of numbers, so the quote keeps the room
+          it needs; the name is in the pill above. */}
+      <ol aria-label={label} className="flex shrink-0 gap-2 md:flex-col md:gap-2 md:self-center">
         {items.map((item, index) => (
-          <li key={index}>
+          <li key={index} className="flex-1 md:flex-none">
             <button
               type="button"
               aria-current={index === active ? "true" : undefined}
@@ -107,8 +145,8 @@ export function TestimonialsStage({ label, items }: Props) {
               <span className="font-mono text-[12px] tracking-[0.2em] text-ink/70">
                 {pad(index + 1)}
               </span>
-              <span>
-                <span className="block text-[16px] font-medium text-ink md:text-[18px]">
+              <span className="sr-only md:not-sr-only">
+                <span className="block text-[18px] font-medium text-ink">
                   {item.name}
                 </span>
                 <span className="mt-1 block text-[12px] uppercase tracking-[0.16em] text-ink/55">

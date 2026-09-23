@@ -1,11 +1,8 @@
 import Image from "next/image";
 import type { Dictionary } from "@/lib/dictionaries";
-import { SITE, SOCIAL_LINKS } from "@/lib/site";
+import { SITE } from "@/lib/site";
 import { RevealSection } from "@/components/layout/reveal-section";
 import { ContactDialog } from "@/components/ui/contact-dialog";
-import { GlassButton } from "@/components/ui/glass-button";
-
-const LINKEDIN = SOCIAL_LINKS.find((link) => link.label === "LinkedIn")!.href;
 
 /** The last slide, and the hero's closing shot: the same desk after work, the
  *  chair pushed back, the screen still on, dimmed like the hero video. The
@@ -63,10 +60,11 @@ export function Contacts({ dict }: { dict: Dictionary }) {
           {copy.body}
         </p>
 
-        <div className="reveal [--reveal-i:7] mt-10 flex flex-col items-center gap-4 sm:flex-row md:mt-12">
-          <ContactDialog label={copy.email} copy={dict.contact} />
-          <GlassButton href={LINKEDIN} label={copy.linkedin} newTab videoSelector={null} />
-        </div>
+        <ContactDialog
+          label={copy.email}
+          copy={dict.contact}
+          className="reveal [--reveal-i:7] mt-10 md:mt-12"
+        />
 
         <a
           href={`mailto:${SITE.email}`}

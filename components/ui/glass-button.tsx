@@ -195,8 +195,6 @@ interface Props {
   videoSelector?: string | null;
   /** Set for a file the visitor should get rather than a page to open. */
   download?: boolean;
-  /** Opens the link in a new tab, for addresses off the site. */
-  newTab?: boolean;
   onClick?: () => void;
   /** For the button form only: "submit" inside a form. */
   type?: "button" | "submit";
@@ -217,7 +215,6 @@ export function GlassButton({
   label,
   videoSelector = "video",
   download = false,
-  newTab = false,
   onClick,
   type = "button",
   disabled = false,
@@ -496,8 +493,6 @@ export function GlassButton({
       {...shared}
       href={href}
       download={download || undefined}
-      target={newTab ? "_blank" : undefined}
-      rel={newTab ? "noreferrer noopener" : undefined}
       onClick={onClick}
     >
       {inner}

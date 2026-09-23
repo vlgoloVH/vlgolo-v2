@@ -57,7 +57,6 @@ const en = {
     headline: ["Let’s talk about", "your product"],
     body: "If you have a product, team or challenge in mind, I’d be happy to hear about it.",
     email: "Email me",
-    linkedin: "LinkedIn",
     availability: "Available for Senior / Lead Product Design opportunities",
     /** The footer link back to the hero. */
     top: "Back to top",
@@ -69,35 +68,40 @@ const en = {
     rail: "Words",
     /** Read out to screen readers ahead of the list. */
     label: "Testimonials",
-    /** Pull quotes: one line lifted, word for word, from each recommendation
-     *  on the current site. `company` is left empty where it is not known. */
+    /** The recommendations from the current site, in full and word for word.
+     *  `company` is left empty where it is not known. */
     items: [
       {
-        quote: "Vlad has this quiet superpower: no matter how complex or undefined a design problem is, he finds his way through it.",
+        quote:
+          "Vlad has helped us enormously over five years, across a wide range of projects — and honestly, working with him has been one of the most consistent bright spots of that time. Vlad has this quiet superpower: no matter how complex or undefined a design problem is, he finds his way through it. I’ve seen him take on projects that felt almost impossible to scope and come back with solutions that were not only technically sound but genuinely beautiful to use. His eye for detail and his instinct for what users actually need are things you can’t teach. Vlad would be a tremendous asset to any product team lucky enough to work with him.",
         name: "Olesia Borshchova",
         role: "Senior PM & PO",
         company: "",
       },
       {
-        quote: "Vlad is, without a doubt, the best UI/UX designer I’ve had the opportunity to work with.",
+        quote:
+          "One of the most important qualities of a great UI/UX designer is the ability to create a real “wow” effect. While good design is often subjective, consistently exceeding the expectations of users and the team is what sets exceptional designers apart. I had the pleasure of working with Vlad for more than six years, and throughout that time he continued to impress me with his creativity and design skills. Even after years of working together, he always found new ways to surprise us with thoughtful and innovative solutions. He also taught me a lot about UX, and I’m truly grateful for everything I learned from him. Vlad is one of those rare professionals you hire because of his expertise — not simply to follow directions. He brings strategic thinking, sets the direction, proposes better solutions, and helps the team make smarter decisions, rather than waiting to be told what to do. I’ve worked with many designers throughout my career, but Vlad is, without a doubt, the best UI/UX designer I’ve had the opportunity to work with. His expertise, professionalism, and ability to create outstanding user experiences make him an exceptional designer and a valuable addition to any team.",
         name: "Igor Dmitriev",
         role: "Founder",
         company: "Softa",
       },
       {
-        quote: "He has the ability to put himself in the users’ shoes, asking the right questions…",
+        quote:
+          "I had the pleasure of working closely with Vlad, and I highly recommend him as a Sr. Product Designer. He has the ability to put himself in the users’ shoes, asking the right questions and consistently looking for ways to improve the user journey. He has a good combination of technical understanding, and attention to detail allows him to create effective solutions for the user journeys. He is also proactive in bringing new ideas to the table, works efficiently across multiple priorities, and delivers high-quality work at a fast pace. Any team would be lucky to have him, and I’m confident he will continue to make a strong impact wherever he goes.",
         name: "Ligia Gutierrez",
         role: "Product Manager",
         company: "",
       },
       {
-        quote: "…an incredibly reliable colleague, the kind of person who gets things done well without you having to worry about it.",
+        quote:
+          "I had the pleasure of managing Vlad since 2019 at BitterBrains, where he’s been part of the team since the very beginning. As our web designer, Vlad consistently delivered great work. Always on time with deadlines, always ready to support the team. What sets Vlad apart is his range. Beyond strong design skills, he’s a genuinely talented illustrator, and that creative depth elevated so many of our projects. He’s also just an incredibly reliable colleague, the kind of person who gets things done well without you having to worry about it. Vlad would be a fantastic addition to any team looking for a designer who combines strong craft, creativity, and real dependability. I’m grateful to have worked with him, and I highly recommend him.",
         name: "Maria Panagiotidou",
         role: "Director of Operations",
         company: "BitterBrains",
       },
       {
-        quote: "Vlad played a key role in shaping our design foundations.",
+        quote:
+          "Vlad played a key role in shaping our design foundations, most notably through his work on the refreshed SmartCrowd app and web experience, along with the creation of scalable design systems for our core brand and white-label products. His attention to detail and systems-thinking helped bring consistency across experiences while making it easier for the team to build quickly and at scale. He’s highly proactive, reliable, quick to iterate, and always eager to learn and improve. Vlad consistently delivered high-quality work while maintaining speed, making him a valuable partner on any product team.",
         name: "Maleeha Murad",
         role: "Product Manager",
         company: "SmartCrowd",
@@ -180,7 +184,6 @@ const uk: Dictionary = {
     headline: ["Поговорімо про", "твій продукт"],
     body: "Якщо в тебе є продукт, команда чи задача, буду радий про це почути.",
     email: "Написати мені",
-    linkedin: "LinkedIn",
     availability: "Відкритий до ролей Senior / Lead Product Designer",
     top: "Нагору",
     scene: "Той самий стіл уночі, крісло відсунуте, екран увімкнений.",
@@ -190,31 +193,36 @@ const uk: Dictionary = {
     label: "Відгуки",
     items: [
       {
-        quote: "У Влада є тиха суперсила: хоч якою складною чи розмитою була б дизайн-задача, він знаходить у ній шлях.",
+        quote:
+          "Влад дуже допоміг нам за п’ять років у найрізноманітніших проєктах, і, чесно кажучи, робота з ним була однією з найстабільніших світлих сторін цього часу. У Влада є тиха суперсила: хоч якою складною чи розмитою була б дизайн-задача, він знаходить у ній шлях. Я бачила, як він брався за проєкти, які здавалося майже неможливо окреслити, і повертався з рішеннями, що були не лише технічно продуманими, а й по-справжньому приємними у використанні. Його око на деталі й чуття того, що насправді потрібно користувачам, неможливо навчити. Влад стане величезним надбанням для будь-якої продуктової команди, якій пощастить із ним працювати.",
         name: "Olesia Borshchova",
         role: "Senior PM & PO",
         company: "",
       },
       {
-        quote: "Влад, без жодних сумнівів, найкращий UI/UX дизайнер, з яким мені випадало працювати.",
+        quote:
+          "Одна з найважливіших якостей сильного UI/UX дизайнера: уміння створювати справжній «вау»-ефект. Хороший дизайн часто суб’єктивний, але саме здатність постійно перевершувати очікування користувачів і команди вирізняє виняткових дизайнерів. Я мав задоволення працювати з Владом понад шість років, і весь цей час він продовжував вражати мене своєю креативністю та дизайнерськими навичками. Навіть після років спільної роботи він завжди знаходив нові способи здивувати нас продуманими й інноваційними рішеннями. Він також багато чого навчив мене в UX, і я щиро вдячний за все, чого від нього навчився. Влад з тих рідкісних професіоналів, яких наймають заради експертизи, а не просто щоб виконувати вказівки. Він приносить стратегічне мислення, задає напрям, пропонує кращі рішення й допомагає команді ухвалювати розумніші рішення, а не чекає, поки йому скажуть, що робити. За свою кар’єру я працював із багатьма дизайнерами, але Влад, без жодних сумнівів, найкращий UI/UX дизайнер, з яким мені випадало працювати. Його експертиза, професіоналізм і вміння створювати видатний користувацький досвід роблять його винятковим дизайнером і цінним поповненням для будь-якої команди.",
         name: "Igor Dmitriev",
         role: "Засновник",
         company: "Softa",
       },
       {
-        quote: "Він уміє поставити себе на місце користувачів і ставить правильні питання…",
+        quote:
+          "Я мала задоволення тісно працювати з Владом і щиро рекомендую його як Senior Product Designer. Він уміє поставити себе на місце користувачів, ставить правильні питання й постійно шукає, як покращити шлях користувача. Поєднання технічного розуміння та уваги до деталей дає йому змогу створювати ефективні рішення для користувацьких сценаріїв. Він також проактивно пропонує нові ідеї, ефективно працює з кількома пріоритетами одночасно й швидко видає якісний результат. Будь-якій команді пощастить мати його, і я впевнена, що він і далі матиме сильний вплив, де б не працював.",
         name: "Ligia Gutierrez",
         role: "Product Manager",
         company: "",
       },
       {
-        quote: "…неймовірно надійний колега, людина, яка робить усе добре, і тобі не треба про це хвилюватися.",
+        quote:
+          "Я мала задоволення керувати Владом із 2019 року в BitterBrains, де він був у команді з самого початку. Як наш вебдизайнер, Влад незмінно робив чудову роботу. Завжди вчасно, завжди готовий підтримати команду. Що вирізняє Влада, то це його діапазон. Окрім сильних дизайнерських навичок, він по-справжньому талановитий ілюстратор, і ця творча глибина підняла безліч наших проєктів. А ще він просто неймовірно надійний колега, людина, яка робить усе добре, і тобі не треба про це хвилюватися. Влад стане чудовим поповненням для будь-якої команди, якій потрібен дизайнер, що поєднує сильну майстерність, креативність і справжню надійність. Я вдячна, що працювала з ним, і щиро його рекомендую.",
         name: "Maria Panagiotidou",
         role: "Director of Operations",
         company: "BitterBrains",
       },
       {
-        quote: "Влад зіграв ключову роль у формуванні нашої дизайн-основи.",
+        quote:
+          "Влад зіграв ключову роль у формуванні нашої дизайн-основи, насамперед завдяки роботі над оновленим застосунком і вебдосвідом SmartCrowd, а також створенню масштабованих дизайн-систем для нашого основного бренду та white-label продуктів. Його увага до деталей і системне мислення допомогли досягти узгодженості між продуктами й водночас дали команді змогу будувати швидко та масштабно. Він дуже проактивний, надійний, швидко ітерує й завжди прагне вчитися та вдосконалюватися. Влад незмінно видавав якісну роботу, зберігаючи швидкість, і це робить його цінним партнером для будь-якої продуктової команди.",
         name: "Maleeha Murad",
         role: "Product Manager",
         company: "SmartCrowd",
