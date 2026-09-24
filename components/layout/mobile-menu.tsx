@@ -10,7 +10,7 @@ import { NAV_LINKS } from "@/lib/site";
 
 /** Phone only. The burger sits at the right end of the header and opens a
  *  full-screen sheet with the same links as the desktop nav, centred, and the
- *  language choice under them. The sheet is portalled to <body> one layer
+ *  language choice above them. The sheet is portalled to <body> one layer
  *  below the header, so the header stays on top and the burger itself turns
  *  into the close button. */
 export function MobileMenu({ lang, dict }: { lang: Locale; dict: Dictionary }) {
@@ -81,13 +81,20 @@ export function MobileMenu({ lang, dict }: { lang: Locale; dict: Dictionary }) {
             inert={!open}
             className="mobile-menu fixed inset-0 z-[45] flex flex-col items-center justify-center bg-bg/95 backdrop-blur-xl md:hidden"
           >
+            <div
+              className="mobile-menu-item mb-14"
+              style={{ "--menu-i": 0 } as React.CSSProperties}
+            >
+              <LanguageSwitcher lang={lang} label={dict.ui.language} large />
+            </div>
+
             <nav aria-label={dict.ui.mainNav}>
-              <ul className="flex flex-col items-center gap-8">
+              <ul className="flex flex-col items-center gap-11">
                 {NAV_LINKS.map((link, index) => (
                   <li
                     key={link.key}
                     className="mobile-menu-item"
-                    style={{ "--menu-i": index } as React.CSSProperties}
+                    style={{ "--menu-i": index + 1 } as React.CSSProperties}
                   >
                     <Link
                       href={localizePath(lang, link.href)}
@@ -100,13 +107,6 @@ export function MobileMenu({ lang, dict }: { lang: Locale; dict: Dictionary }) {
                 ))}
               </ul>
             </nav>
-
-            <div
-              className="mobile-menu-item mt-14"
-              style={{ "--menu-i": NAV_LINKS.length } as React.CSSProperties}
-            >
-              <LanguageSwitcher lang={lang} label={dict.ui.language} large />
-            </div>
           </div>,
           document.body,
         )}

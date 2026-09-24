@@ -125,7 +125,7 @@ export function TestimonialsStage({ label, fullLabel, closeLabel, items }: Props
           ))}
         </div>
 
-        <figcaption className="mt-6 flex shrink-0 items-center justify-center gap-5 md:mt-10 md:justify-start md:gap-8">
+        <figcaption className="mt-10 flex shrink-0 items-center justify-center gap-5 md:justify-start md:gap-8">
           <div className="t-meta">
             <span key={active} className="t-swap">
               <span className="block text-[13px] font-medium uppercase tracking-[0.19em] text-ink">
