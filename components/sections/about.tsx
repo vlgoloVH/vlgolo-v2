@@ -72,9 +72,11 @@ export function About({ lang, dict }: { lang: Locale; dict: Dictionary }) {
         </div>
       </div>
 
-      {/* Phone only: the button centred at the foot of the screen, over the
-          portrait, bending it the way the hero button bends the hero video. */}
-      <div className="absolute inset-x-0 bottom-32 z-20 flex justify-center md:hidden">
+      {/* Phone only: the button centred over the lower part of the portrait,
+          bending it the way the hero button bends the hero video. Measured in
+          vh like the portrait, so it keeps its place on the figure at any
+          screen height and stays clear of Safari's bottom bar. */}
+      <div className="absolute inset-x-0 bottom-[24vh] z-20 flex justify-center md:hidden">
         <GlassButton
           href={localizePath(lang, ABOUT.href)}
           label={dict.about.cta}
