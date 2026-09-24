@@ -1723,17 +1723,6 @@ html[data-hover-capable="true"] .ab-collage:hover {
   );
 }
 
-/* A faint grid of fine lines the light passes over, fading towards the
-   top so the title stays clean. */
-.cs-impact-grid {
-  --line: rgb(255 255 255 / 0.05);
-  background:
-    linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / calc((100% - var(--case-pad) * 2) / 8) 100%,
-    linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 100% calc((100% - var(--case-pad) * 2) / 8);
-  background-position: var(--case-pad) 0, 0 0;
-  mask-image: linear-gradient(transparent 20%, #000 70%);
-}
-
 .cs-figure {
   transform: translate3d(0, 110%, 0);
   transition: transform 0.9s var(--ease-soft);

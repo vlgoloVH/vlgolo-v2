@@ -18,9 +18,9 @@ const figure = (value: string) =>
  *  line that sums the work up sit at the top. The stage holds a single huge
  *  figure; as the page scrolls it is pushed up out of its mask and the next
  *  one rises in, the words beside it change with it, and the light in the
- *  room drifts across a faint grid. Along the bottom every figure waits in a
- *  row, the current one lit, its rule filling while it holds the stage. On a
- *  phone the figures follow one another. */
+ *  room drifts across. Along the bottom every figure waits in a row, the
+ *  current one lit, its rule filling while it holds the stage. On a phone
+ *  the figures follow one another. */
 export function CaseImpact({
   labels,
   impact,
@@ -40,7 +40,6 @@ export function CaseImpact({
       {(active) => (
         <div className="relative px-6 py-[14vh] md:sticky md:top-0 md:flex md:h-[100svh] md:flex-col md:overflow-hidden md:px-[var(--case-pad)] md:pb-[6svh] md:pt-[14svh]">
           <div aria-hidden="true" className="cs-impact-bg absolute inset-0 hidden md:block" />
-          <div aria-hidden="true" className="cs-impact-grid absolute inset-0 hidden md:block" />
 
           <div className="relative grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-start md:gap-[5vw]">
             <SectionTitle>{labels.label}</SectionTitle>
