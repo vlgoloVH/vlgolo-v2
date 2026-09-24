@@ -4,10 +4,21 @@ import { useEffect, useRef, useState } from "react";
 import { onScrollFrame } from "@/lib/scroll-progress";
 
 /** The About page's left rail: where the Home sections print their name, this
- *  one follows the reader. It shows the current section's number and name,
- *  set vertically like the Home rails, over a hairline that fills with the
- *  page. Each stop below it is a link to its section. Desktop only. */
-export function AboutRail({ ids, names, label }: { ids: readonly string[]; names: readonly string[]; label: string }) {
+ *  one follows the reader. It shows the current section's name, and its
+ *  number unless told not to, set vertically like the Home rails, over a
+ *  hairline that fills with the page. Each stop below it is a link to its section. Desktop only. */
+export function AboutRail({
+  ids,
+  names,
+  label,
+  numbered = true,
+}: {
+  ids: readonly string[];
+  names: readonly string[];
+  label: string;
+  /** Print the section's number above its name. */
+  numbered?: boolean;
+}) {
   const [active, setActive] = useState(0);
   const fillRef = useRef<HTMLSpanElement>(null);
 
@@ -30,7 +41,9 @@ export function AboutRail({ ids, names, label }: { ids: readonly string[]; names
       aria-label={label}
       className="ab-rail-in fixed left-0 top-1/2 z-40 hidden w-[var(--frame-line)] -translate-y-1/2 flex-col items-center gap-6 md:flex"
     >
-      <span className="font-mono text-[11px] tracking-[0.2em] text-ink">{String(active + 1).padStart(2, "0")}</span>
+      {numbered && (
+        <span className="font-mono text-[11px] tracking-[0.2em] text-ink">{String(active + 1).padStart(2, "0")}</span>
+      )}
       <span className="relative grid h-[11rem] place-items-start justify-center overflow-hidden">
         {names.map((name, i) => (
           <span

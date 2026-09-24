@@ -62,7 +62,6 @@ export const fozzyGroup: CaseStudy = {
       description:
         "Every product in Silpo’s catalog needs a consistent structure behind it. I improved existing tools and designed new ones for managing products, categories, modifier groups, product characteristics, and characteristic sets, giving merchandising teams a clear, connected way to manage what gets sold across hundreds of stores.",
       visual: `${dir}/chapter-1.webp`,
-      layout: "sticky",
       points: [
         "Products and categories: structure and management flows",
         "Modifier groups for configuring product variations",
@@ -76,7 +75,6 @@ export const fozzyGroup: CaseStudy = {
       description:
         "Beyond the catalog, I designed the tools that keep the business running day to day: offers, the order flow, merchant management, branch-level services, and access levels that control who can act on what. Each one had its own operational logic to work through.",
       visual: `${dir}/chapter-2.webp`,
-      layout: "flow",
       points: [
         "Offers: creation and management flows",
         "Order flow, from creation through fulfillment",
@@ -90,7 +88,6 @@ export const fozzyGroup: CaseStudy = {
       description:
         "Alongside the feature work, I contributed to a large design system: the shared components, patterns, and rules that keep this many tools, and this many teams, moving in the same direction.",
       visual: `${dir}/chapter-3.webp`,
-      layout: "focus",
       points: [
         "Contributed to a large-scale design system",
         "Shared components and patterns across the back-office",
@@ -105,8 +102,6 @@ export const fozzyGroup: CaseStudy = {
       { value: "1", label: "Design system", body: "A large, shared system unifying the whole back-office product." },
       { value: "3", label: "Focus areas", body: "Product catalog, commerce operations, and the design system that ties them together." },
     ],
-    summary:
-      "By improving the existing system, designing new flows across the catalog and commerce operations, and contributing to a large design system, the work made Silpo’s back-office faster, clearer, and more consistent for the teams who run the business every day.",
   },
   reflection: [
     "On a product this large, you can’t redesign everything at once. Real progress comes feature by feature, one clear flow at a time.",

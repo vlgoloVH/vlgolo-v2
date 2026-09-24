@@ -74,20 +74,21 @@ function build(motif: Motif, labels: string[]): Layout {
       break;
     }
     case "journey": {
-      // One visitor path through every touchpoint.
+      // One visitor path through every touchpoint, zigzagging so each label
+      // sits on the open side of its stop: above the high ones, under the low.
+      const stopAt = (i: number): [number, number] => [
+        50 + (i / (labels.length - 1)) * 300,
+        200 + (i % 2 ? 42 : -42),
+      ];
       let prev = -1;
       labels.forEach((label, i) => {
-        const x = 50 + (i / (labels.length - 1)) * 300;
-        const y = 200 + Math.sin(i * 1.1) * 46;
-        // Labels alternate above and below the path so neighbours never touch.
-        const stop = add([x, y], 5, label, i % 2 === 1);
+        const stop = add(stopAt(i), 5, label, i % 2 === 1);
         if (prev >= 0) links.push([prev, stop]);
         prev = stop;
       });
       for (let i = 0; i < labels.length - 1; i++) {
-        const x = 50 + ((i + 0.5) / (labels.length - 1)) * 300;
-        const y = 200 + Math.sin((i + 0.5) * 1.1) * 46;
-        add([x, y], 2);
+        const [a, b] = [stopAt(i), stopAt(i + 1)];
+        add([(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], 2);
       }
       break;
     }
@@ -95,7 +96,7 @@ function build(motif: Motif, labels: string[]): Layout {
       // Stages in a row, each with the items that pass through it.
       let prev = -1;
       labels.forEach((label, i) => {
-        const x = 70 + (i / (labels.length - 1)) * 260;
+        const x = 50 + (i / (labels.length - 1)) * 300;
         const stage = add([x, 150], 6, label);
         if (prev >= 0) links.push([prev, stage]);
         prev = stage;
@@ -129,8 +130,10 @@ function build(motif: Motif, labels: string[]): Layout {
         links.push([core, n]);
       }
       for (let i = 0; i < 9; i++) {
-        const n = add(polar(200, 200, 152, (i / 9) * Math.PI * 2 + 0.3), 3);
-        links.push([1 + (i % 6), n]);
+        const a = (i / 9) * Math.PI * 2 + 0.3;
+        const n = add(polar(200, 200, 152, a), 3);
+        // Each outer node grows from the inner one nearest to it.
+        links.push([1 + (Math.round((a / (Math.PI * 2)) * 6) % 6), n]);
       }
       break;
     }
@@ -145,12 +148,9 @@ function build(motif: Motif, labels: string[]): Layout {
   return { nodes, links, noise };
 }
 
-const stroke = {
-  fill: "none",
-  stroke: "currentColor",
-  strokeLinecap: "round" as const,
-  vectorEffect: "non-scaling-stroke" as const,
-};
+/** Labels near the edges hang inwards so they never run past the frame. */
+const anchor = (x: number) => (x < 90 ? "start" : x > 310 ? "end" : "middle");
+const nudge = (x: number, r: number) => (x < 90 ? -r - 2 : x > 310 ? r + 2 : 0);
 
 export function MotifArt({
   motif,
@@ -164,34 +164,48 @@ export function MotifArt({
   className?: string;
 }) {
   const { nodes, links, noise } = build(motif, labels);
+  const glow = `cs-motif-glow-${motif}`;
   return (
     <svg
       ref={ref}
       viewBox={`0 0 ${W} ${W}`}
-      className={`overflow-visible ${className}`}
+      className={`cs-motif overflow-visible ${className}`}
       aria-hidden="true"
       data-motif={motif}
       data-labels={labels.join("|")}
     >
+      <defs>
+        <radialGradient id={glow}>
+          <stop offset="0%" className="cs-motif-stop" stopOpacity={0.55} />
+          <stop offset="100%" className="cs-motif-stop" stopOpacity={0} />
+        </radialGradient>
+      </defs>
+      {/* The case's colour gathering behind the structure as it forms. */}
+      <circle data-halo cx={W / 2} cy={W / 2} r={W * 0.55} fill={`url(#${glow})`} opacity={0} />
       {noise.map(([a, b], i) => (
-        <line key={`n${i}`} data-noise={`${a},${b}`} {...stroke} strokeWidth={1} opacity={0} />
+        <line key={`n${i}`} data-noise={`${a},${b}`} className="cs-motif-noise" strokeWidth={1} strokeDasharray="2 4" opacity={0} />
       ))}
       {links.map(([a, b], i) => (
-        <line key={`l${i}`} data-link={`${a},${b}`} {...stroke} strokeWidth={1.3} opacity={0} />
+        <line key={`l${i}`} data-link={`${a},${b}`} className="cs-motif-link" strokeWidth={1.4} opacity={0} />
       ))}
       {nodes.map((node, i) => (
         <g key={`d${i}`} data-node={i}>
-          <circle r={node.r} fill="currentColor" />
-          {node.label && (
-            <text
-              y={node.below ? node.r + 20 : -node.r - 10}
-              textAnchor="middle"
-              fill="currentColor"
-              className="font-mono text-[11px] uppercase tracking-[0.12em]"
-              opacity={0}
-            >
-              {node.label}
-            </text>
+          {node.label ? (
+            <>
+              <circle data-ring r={node.r * 3.2} className="cs-motif-ring" opacity={0} />
+              <circle r={node.r + 1.5} className="cs-motif-key" />
+              <text
+                x={nudge(node.order[0], node.r)}
+                y={node.below ? node.r + 22 : -node.r - 14}
+                textAnchor={anchor(node.order[0])}
+                className="cs-motif-label font-mono text-[13px] uppercase tracking-[0.12em]"
+                opacity={0}
+              >
+                {node.label}
+              </text>
+            </>
+          ) : (
+            <circle r={node.r} className="cs-motif-dot" />
           )}
         </g>
       ))}
@@ -202,7 +216,7 @@ export function MotifArt({
 const cache = new WeakMap<SVGSVGElement, Layout>();
 
 /** Moves the drawing to t: 0 a few scattered points, 0.5 the full tangle,
- *  1 the finished structure. */
+ *  1 the finished structure, lit in the case's colour. */
 export function drawMotif(svg: SVGSVGElement, t: number) {
   let layout = cache.get(svg);
   if (!layout) {
@@ -212,6 +226,7 @@ export function drawMotif(svg: SVGSVGElement, t: number) {
   const { nodes } = layout;
   const appear = seg(t, 0, 0.42);
   const order = ease(seg(t, 0.5, 0.92));
+  const lit = seg(t, 0.8, 1);
   // A slow wobble while tangled, gone once in order.
   const wobble = (1 - order) * 7;
 
@@ -223,12 +238,14 @@ export function drawMotif(svg: SVGSVGElement, t: number) {
     ];
   });
 
+  svg.querySelector("[data-halo]")?.setAttribute("opacity", (order * 0.9).toFixed(3));
+
   svg.querySelectorAll<SVGGElement>("[data-node]").forEach((g, i) => {
     const on = seg(appear, i / nodes.length - 0.1, i / nodes.length + 0.15);
     g.setAttribute("transform", `translate(${pos[i][0].toFixed(1)} ${pos[i][1].toFixed(1)})`);
     g.setAttribute("opacity", (on * (0.45 + order * 0.55)).toFixed(3));
-    const text = g.querySelector("text");
-    if (text) text.setAttribute("opacity", seg(t, 0.86, 1).toFixed(3));
+    g.querySelector("text")?.setAttribute("opacity", lit.toFixed(3));
+    g.querySelector("[data-ring]")?.setAttribute("opacity", lit.toFixed(3));
   });
 
   const line = (el: SVGLineElement, pair: string, alpha: number) => {
@@ -243,8 +260,8 @@ export function drawMotif(svg: SVGSVGElement, t: number) {
   const tangle = seg(t, 0.22, 0.5) * (1 - seg(t, 0.55, 0.85));
   svg
     .querySelectorAll<SVGLineElement>("[data-noise]")
-    .forEach((el) => line(el, el.dataset.noise!, tangle * 0.3));
+    .forEach((el) => line(el, el.dataset.noise!, tangle * 0.45));
   svg
     .querySelectorAll<SVGLineElement>("[data-link]")
-    .forEach((el) => line(el, el.dataset.link!, seg(t, 0.7, 0.98) * 0.7));
+    .forEach((el) => line(el, el.dataset.link!, seg(t, 0.7, 0.98)));
 }

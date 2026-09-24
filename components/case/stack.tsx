@@ -57,7 +57,7 @@ export function CaseStack({ overview, label }: { overview: CaseStudy["overview"]
               </div>
             </div>
           ))}
-          <p className="absolute bottom-[3svh] left-[var(--frame-pad)] z-[20] font-mono text-[11px] uppercase tracking-[0.2em] text-ink/55">
+          <p className="absolute bottom-[3svh] left-[var(--case-pad)] z-[20] font-mono text-[11px] uppercase tracking-[0.2em] text-ink/55">
             <span ref={counter}>01</span> / {String(n).padStart(2, "0")}
           </p>
         </div>

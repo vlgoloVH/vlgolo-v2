@@ -51,6 +51,9 @@
      Figma frame. */
   --frame-line: clamp(20px, 7.22vw, 160px);
   --frame-pad: calc(var(--frame-line) + 32px);
+  /* A case study's content column: everything on the page shares these two
+     edges, the ones the opening mockup sits between. */
+  --case-pad: calc(var(--frame-line) + clamp(24px, 4vw, 80px));
 
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   /* Gentle in and out — no snap at the start, no crawl at the end. */
@@ -1468,13 +1471,12 @@ html[data-hover-capable="true"] .ab-collage:hover {
   perspective: 1600px;
 }
 
-/* Tipped back and cropped by the bottom edge at first, then upright, framed
-   and smaller. */
+/* Tipped back and cropped by the bottom edge at first, then upright and in
+   the content column, at the column's width all the way. */
 .cs-hero-mock {
   transform-origin: 50% 100%;
   transform: translate3d(0, calc((1 - var(--sp, 0)) * 26vh * var(--k)), 0)
-    rotateX(calc((1 - var(--sp, 0)) * 14deg * var(--k)))
-    scale(calc(1.06 - var(--sp, 0) * 0.3 * var(--k)));
+    rotateX(calc((1 - var(--sp, 0)) * 14deg * var(--k)));
   will-change: transform;
 }
 
@@ -1517,126 +1519,97 @@ html[data-hover-capable="true"] .ab-collage:hover {
   transform: scaleX(clamp(0, calc(var(--sp, 1) * 3 - var(--i)), 1));
 }
 
-/* ── My role: the branches draw, then fill ── */
-
-.cs-scope-root {
-  opacity: clamp(0.2, calc(var(--sp, 1) * 12), 1);
+/* The drawing's frame: a faint dot grid, fading out towards the corners. */
+.cs-motif-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgb(255 255 255 / 0.12) 1px, transparent 1.5px) center / 22px 22px;
+  mask-image: radial-gradient(circle at 50% 50%, #000 40%, transparent 72%);
 }
 
-.cs-scope-stem {
-  transform: scaleY(clamp(0, calc(var(--sp, 1) * 8), 1));
+/* The drawing in the case's colour, lifted towards white so it reads on the
+   dark ground; the stray links of the tangle stay white and dashed. */
+.cs-motif {
+  --ink-tint: color-mix(in srgb, rgb(var(--tint)) 55%, white);
 }
 
-.cs-scope-bar {
-  transform: scaleX(clamp(0, calc((var(--sp, 1) - 0.1) * 7), 1));
+.cs-motif-stop {
+  stop-color: rgb(var(--tint));
 }
 
-.cs-scope-branch {
-  transform: scaleY(clamp(0, calc((var(--sp, 1) - 0.22 - var(--g) * 0.04) * 1.5), 1));
+.cs-motif-noise {
+  stroke: rgb(255 255 255 / 0.6);
+  stroke-linecap: round;
 }
 
-.cs-scope-head {
-  opacity: clamp(0.15, calc((var(--sp, 1) - 0.2 - var(--g) * 0.05) * 8), 1);
+.cs-motif-link {
+  stroke: var(--ink-tint);
+  stroke-linecap: round;
 }
 
-.cs-scope-item {
-  --on: clamp(0, calc((var(--sp, 1) - var(--t)) * 14), 1);
-  opacity: calc(0.1 + var(--on) * 0.9);
-  transform: translate3d(calc((1 - var(--on)) * -10px), 0, 0);
+.cs-motif-dot {
+  fill: rgb(255 255 255 / 0.75);
 }
 
-.cs-scope-tick {
-  transform: scaleX(var(--on));
-  transform-origin: left;
+.cs-motif-key {
+  fill: #fff;
+  stroke: var(--ink-tint);
+  stroke-width: 3;
+  paint-order: stroke;
 }
 
-/* ── Chapters ── */
-
-/* Sticky: each point is lit while it crosses the middle of the screen. */
-.cs-point {
-  --d: max(var(--p, 0.5) - 0.5, 0.5 - var(--p, 0.5));
-  opacity: clamp(0.22, calc(1.7 - var(--d) * 5), 1);
-  transition: opacity 0.2s linear;
+.cs-motif-ring {
+  fill: rgb(var(--tint) / 0.18);
+  stroke: rgb(var(--tint) / 0.6);
+  stroke-width: 1;
 }
 
-.cs-sticky-visual img {
-  transform: scale(calc(1.08 - var(--p, 0.5) * 0.08));
+/* A halo of the section's own ground behind each letter, so a label stays
+   clean where a link runs under it. */
+.cs-motif-label {
+  fill: #fff;
+  stroke: var(--color-surface);
+  stroke-width: 5px;
+  stroke-linejoin: round;
+  paint-order: stroke;
 }
 
-/* Strip: the rail of screens slides left across the pinned stage. */
-.cs-strip-rail {
-  --h: min(62svh, 46vw);
-  height: var(--h);
-  width: calc(var(--h) * var(--ratio));
-  transform: translate3d(calc((100vw - var(--h) * var(--ratio) - var(--frame-pad)) * var(--sp, 0) + var(--frame-pad)), 0, 0);
-  will-change: transform;
+/* ── My role: the chips come in one after another ── */
+
+.cs-chip {
+  --o: clamp(0, calc((var(--p, 1) - 0.08 - var(--g) * 0.03 - var(--c) * 0.018) * 9), 1);
+  opacity: var(--o);
+  transform: translate3d(0, calc((1 - var(--o)) * 14px), 0);
 }
 
-.cs-strip-points {
-  transform: translate3d(calc(var(--sp, 0) * -60vw * var(--k)), 0, 0);
-}
+/* ── Product transformation: the chapter in the frame is lit ── */
 
-@media (max-width: 767px) {
-  .cs-strip-rail {
-    --h: 52vw;
+.cs-chapter {
+  opacity: 0.3;
+  transition: opacity 0.6s var(--ease-soft);
+
+  &.is-on {
+    opacity: 1;
   }
 }
 
-/* Flow: a line drawing down through the steps. */
-.cs-flow {
-  --f: clamp(0, calc((var(--p, 1) - 0.2) / 0.42), 1);
+.cs-chapter-visual {
+  opacity: 0;
+  transform: scale(1.04);
+  transition:
+    opacity 0.7s var(--ease-soft),
+    transform 1.2s var(--ease-soft);
+
+  &.is-on {
+    opacity: 1;
+    transform: none;
+  }
 }
 
-.cs-flow-line {
-  transform: scaleY(var(--f));
-}
-
-.cs-flow-step {
-  --on: clamp(0, calc((var(--f) * var(--n) - var(--i)) * 1.6), 1);
-  opacity: calc(0.22 + var(--on) * 0.78);
-}
-
-.cs-flow-dot {
-  background: rgb(var(--tint) / calc(var(--on) * 1));
-  border-color: rgb(255 255 255 / calc(0.3 + var(--on) * 0.6));
-  box-shadow: 0 0 0 calc(var(--on) * 6px) rgb(var(--tint) / 0.18);
-}
-
-/* Backdrop: the copy sits on a soft shade so it reads over the screen. */
-.cs-backdrop-copy {
-  background: linear-gradient(90deg, rgb(20 20 21 / 0.96) 55%, rgb(20 20 21 / 0.75) 80%, transparent);
-}
-
-.cs-backdrop-img {
-  transform: scale(calc(1.06 - var(--p, 0.5) * 0.08));
-}
-
-/* Reveal: the screen opens out from a vertical slit. */
-.cs-slit {
-  --o: clamp(0, calc((var(--p, 1) - 0.08) * 3), 1);
-  clip-path: inset(0 calc((1 - var(--o)) * 46%) round clamp(12px, 1.2vw, 20px));
-}
-
-.cs-slit-img {
-  transform: scale(calc(1.18 - var(--o) * 0.18));
-}
-
-/* Focus: the room takes the case's colour while the stage is pinned, and
-   the screen comes forward. */
-.cs-focus {
-  --glow: min(clamp(0, calc(var(--sp, 0) * 5), 1), clamp(0, calc((1 - var(--sp, 0)) * 5), 1));
-  --in: clamp(0, calc(var(--sp, 0) * 4), 1);
-}
-
-.cs-focus-bg {
-  background:
-    radial-gradient(ellipse 60% 75% at 72% 50%, rgb(var(--tint) / calc(var(--glow) * 0.4)), transparent 72%),
-    rgb(var(--tint) / calc(var(--glow) * 0.1));
-}
-
-@media (min-width: 768px) {
-  .cs-focus-visual {
-    transform: translate3d(0, calc((1 - var(--in)) * 12svh), 0) scale(calc(0.84 + var(--in) * 0.16));
+@media (max-width: 767px) {
+  .cs-chapter {
+    opacity: 1;
   }
 }
 
@@ -1650,7 +1623,7 @@ html[data-hover-capable="true"] .ab-collage:hover {
 }
 
 .cs-card {
-  --w: min(calc(100vw - var(--frame-line) * 2), calc(86svh * 2));
+  --w: min(calc(100vw - var(--case-pad) * 2), calc(86svh * 2));
   --a: clamp(0, calc(var(--pos) - var(--i) + 1), 1);
   --e: calc(var(--a) * var(--a) * (3 - 2 * var(--a)));
   --d: clamp(0, calc(var(--pos) - var(--i)), 3);
@@ -1667,27 +1640,23 @@ html[data-hover-capable="true"] .ab-collage:hover {
   opacity: calc(var(--d) * 0.24);
 }
 
-/* ── Impact: one figure at a time, pushed through a mask ── */
+/* ── Impact: the figures side by side, rising in turn ── */
 
 .cs-impact-bg {
-  background: radial-gradient(
-    circle at calc(12% + var(--sp, 0) * 76%) 90%,
-    rgb(var(--tint) / 0.3),
-    transparent 55vmax
-  );
+  background: radial-gradient(ellipse 70% 60% at 20% 100%, rgb(var(--tint) / 0.22), transparent 70%);
 }
 
-.cs-figure {
-  transform: translate3d(0, 110%, 0);
-  transition: transform 0.9s var(--ease-soft);
-
-  &.is-on {
-    transform: none;
+@media (min-width: 768px) {
+  .cs-impact {
+    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
   }
+}
 
-  &.is-past {
-    transform: translate3d(0, -110%, 0);
-  }
+.cs-impact-item,
+.cs-insight {
+  --o: clamp(0, calc((var(--p, 1) - 0.1 - var(--i) * 0.05) * 6), 1);
+  opacity: var(--o);
+  transform: translate3d(0, calc((1 - var(--o)) * 40px), 0);
 }
 
 /* ── Reflection ── */
@@ -1697,99 +1666,25 @@ html[data-hover-capable="true"] .ab-collage:hover {
   -webkit-text-stroke: 1px rgb(255 255 255 / 0.5);
 }
 
-.cs-insight {
-  pointer-events: none;
+/* ── Next case: the room shifts to the next case's colour ── */
 
-  &.is-on {
-    pointer-events: auto;
-  }
+.cs-next-bg {
+  background:
+    radial-gradient(
+      ellipse 80% 70% at 70% 50%,
+      rgb(var(--next) / calc(clamp(0, (var(--p, 1) - 0.1) * 1.6, 1) * 0.45)),
+      transparent 75%
+    ),
+    rgb(var(--tint) / calc((1 - clamp(0, (var(--p, 1) - 0.1) * 1.6, 1)) * 0.1));
 }
 
-.cs-insight-word {
-  opacity: 0;
-  transform: translate3d(0, 0.35em, 0);
-  transition:
-    opacity 0.45s var(--ease-soft),
-    transform 0.45s var(--ease-soft);
-}
-
-.cs-insight.is-on .cs-insight-word {
-  opacity: 1;
-  transform: none;
-  transition:
-    opacity 0.7s var(--ease-soft) calc(var(--w) * 30ms + 0.15s),
-    transform 0.9s var(--ease-soft) calc(var(--w) * 30ms + 0.15s);
-}
-
-/* ── Previous / next: colour, then the cover opening out from a slit ── */
-
-.cs-pager-tint {
-  background: rgb(var(--c) / 0);
-  transition: background-color 0.7s var(--ease-soft);
-}
-
-.cs-pager-img {
-  clip-path: inset(50% 0 50% 0);
-  opacity: 0.6;
-  transition: clip-path 0.9s var(--ease-soft);
-
-  & img {
-    transform: scale(1.12);
-    transition: transform 1.2s var(--ease-soft);
-  }
-}
-
-.cs-pager-name {
-  transition: transform 0.8s var(--ease-soft);
-}
-
-html[data-hover-capable="true"] {
-  .cs-pager:hover {
-    & .cs-pager-tint {
-      background: rgb(var(--c) / 0.45);
-    }
-
-    & .cs-pager-img {
-      clip-path: inset(0 0 0 0);
-
-      & img {
-        transform: none;
-      }
-    }
-
-    & .cs-pager-name {
-      transform: translate3d(calc(var(--dx) * 1.4vw), 0, 0);
-    }
-  }
-}
-
-/* Touch: nothing to hover, so the covers are simply there. */
-html:not([data-hover-capable="true"]) {
-  .cs-pager-tint {
-    background: rgb(var(--c) / 0.25);
-  }
-
-  .cs-pager-img {
-    clip-path: none;
-    opacity: 0.35;
-
-    & img {
-      transform: none;
-    }
-  }
-}
-
-/* ── Mini contact ── */
-
-.cs-contact {
-  --o: clamp(0, calc((var(--p, 1) - 0.08) * 4), 1);
-  opacity: var(--o);
-  transform: translate3d(0, calc((1 - var(--o)) * 28px), 0);
+.cs-next-cover {
+  transform: translate3d(0, calc((var(--p, 0.5) - 0.5) * -80px * var(--k)), 0);
 }
 
 /* Reduced motion: every stage at rest, in its finished state. */
 @media (prefers-reduced-motion: reduce) {
-  /* Track holds --sp at 1 here; the hero and the strip start from 0. */
+  /* Track holds --sp at 1 here; the hero starts from 0. */
   .cs-hero-copy,
   .cs-hero-meta {
     opacity: 1 !important;
@@ -1797,31 +1692,20 @@ html:not([data-hover-capable="true"]) {
   }
 
   .cs-hero-mock,
-  .cs-strip-rail,
-  .cs-strip-points {
+  .cs-next-cover {
     transform: none;
   }
 
-  /* The strip can still be browsed: sideways, by hand. */
-  .cs-strip > div {
-    overflow-x: auto;
-  }
-
-  .cs-point,
-  .cs-flow-step {
-    opacity: 1;
-    transition: none;
-  }
-
   .cs-beat,
-  .cs-figure,
-  .cs-insight-word {
+  .cs-chapter,
+  .cs-chapter-visual {
     transition: none;
   }
 
   .cs-title-line,
-  .cs-focus-visual,
-  .cs-contact {
+  .cs-chip,
+  .cs-impact-item,
+  .cs-insight {
     transform: none;
     opacity: 1;
   }

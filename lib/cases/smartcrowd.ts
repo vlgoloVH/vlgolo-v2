@@ -66,7 +66,6 @@ export const smartcrowd: CaseStudy = {
       description:
         "The existing app had no clear structural logic. Navigation was fragmented, sections overlapped, and the information architecture didn’t reflect how investors actually think. We mapped the entire product and rebuilt it from the ground up.",
       visual: `${dir}/chapter-1.webp`,
-      layout: "sticky",
       points: [
         "Conducted a full audit of the existing product structure and navigation",
         "Simplified from a fragmented multi-level system to a clear 5-tab architecture",
@@ -81,8 +80,6 @@ export const smartcrowd: CaseStudy = {
       description:
         "Rather than patching individual screens, we redesigned the entire investment experience as one connected product. Every flow, from discovering a property to tracking returns, was rethought to reduce friction, build confidence, and work consistently across mobile and web.",
       visual: `${dir}/chapter-2.webp`,
-      layout: "strip",
-      strip: { src: `${dir}/strip.webp`, width: 6487, height: 1100 },
       points: [
         "Full redesign of the mobile app across iOS and Android",
         "Web platform redesigned with consistent logic and patterns",
@@ -98,7 +95,6 @@ export const smartcrowd: CaseStudy = {
       description:
         "To support the redesign and all future work, I built a comprehensive design system from scratch. It wasn’t just a component library, but a shared language between design and engineering that works across all platforms and brands.",
       visual: `${dir}/chapter-3.webp`,
-      layout: "focus",
       points: [
         "100+ components covering all major UI patterns across mobile and web",
         "Semantic design tokens for color, spacing, typography, and elevation",
@@ -114,7 +110,6 @@ export const smartcrowd: CaseStudy = {
       description:
         "SmartCrowd’s platform logic powered partner products that required different branding and adapted feature sets. The design system’s token architecture made this possible without rebuilding from scratch, giving the team one foundation that could support multiple branded experiences.",
       visual: `${dir}/chapter-4.webp`,
-      layout: "backdrop",
       points: [
         "Adapted the core platform for multiple partner products",
         "Token-based theming enables full brand adaptation: colors, typography, components",
@@ -131,8 +126,6 @@ export const smartcrowd: CaseStudy = {
       { value: "100+", label: "Design system components", body: "Covering all major UI patterns across mobile and web with light and dark modes." },
       { value: "2", label: "Theme modes", body: "Full light and dark mode support across the entire product ecosystem." },
     ],
-    summary:
-      "The transformation created a unified, scalable product experience across SmartCrowd’s entire ecosystem.",
   },
   reflection: [
     "Real product leadership means holding the full picture at once: user needs, business goals, technical constraints, and compliance.",

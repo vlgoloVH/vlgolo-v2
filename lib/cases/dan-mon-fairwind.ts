@@ -62,7 +62,6 @@ export const danMonFairwind: CaseStudy = {
       description:
         "Enquiries used to live in inboxes with no shared status. We designed a pipeline that gives sales one view of every opportunity, from first enquiry to won or lost, with the context needed to move each deal forward.",
       visual: `${dir}/chapter-1.webp`,
-      layout: "flow",
       points: [
         "Capture every enquiry in one place, not scattered across inboxes",
         "Track each opportunity through clear pipeline stages",
@@ -75,7 +74,6 @@ export const danMonFairwind: CaseStudy = {
       description:
         "Building a quote meant sourcing prices, then re-keying everything into a document. We designed a quotation module that turns an opportunity into a professional quote without leaving the system.",
       visual: `${dir}/chapter-2.webp`,
-      layout: "sticky",
       points: [
         "Generate quotes directly from an opportunity",
         "Pull parts, pricing, and supplier data into one place",
@@ -88,7 +86,6 @@ export const danMonFairwind: CaseStudy = {
       description:
         "Once a quote was accepted, procurement re-entered the same data to order from suppliers, then tracked delivery separately. We connected the whole flow so an accepted quote moves straight into supplier orders and on to the customer.",
       visual: `${dir}/chapter-3.webp`,
-      layout: "backdrop",
       points: [
         "Convert accepted quotes into supplier purchase orders",
         "Source and compare across multiple suppliers",
@@ -102,7 +99,6 @@ export const danMonFairwind: CaseStudy = {
       description:
         "Customer information was spread across people and files. We built account management so every relationship carries its full history, including enquiries, quotes, and orders, in one place.",
       visual: `${dir}/chapter-4.webp`,
-      layout: "reveal",
       points: [
         "A single record for every customer and account",
         "Full history of enquiries, quotes, and orders per account",
@@ -117,8 +113,6 @@ export const danMonFairwind: CaseStudy = {
       { value: "100%", label: "Lifecycle coverage", body: "The full sales-to-supply journey designed, from enquiry to delivered order." },
       { value: "Global", label: "Operational reach", body: "Supports sourcing, fulfilment, and delivery to customers worldwide." },
     ],
-    summary:
-      "By designing the CRM around how the business truly runs, the team gained one connected view of every deal, along with the speed, clarity, and control to scale a complex global operation.",
   },
   reflection: [
     "For internal tools, clarity and speed beat visual polish. Every extra click and re-keyed field costs the team real time and margin.",

@@ -67,7 +67,6 @@ export const bitterbrains: CaseStudy = {
       description:
         "Vue School was the foundation everything else was built on. I designed and continuously evolved the platform experience, from course pages and lesson players to onboarding flows, subscription management, and the overall product UI, as the library grew to 1,500+ lessons serving developers in 156 countries.",
       visual: `${dir}/chapter-1.webp`,
-      layout: "backdrop",
       points: [
         "Full platform UI design across multiple product iterations",
         "Course discovery, lesson player, and learning progress experiences",
@@ -83,7 +82,6 @@ export const bitterbrains: CaseStudy = {
       description:
         "BitterBrains became the only official certification partner for Vue.js and Nuxt. I designed the full product experience for Certificates.dev, the platform that lets developers earn industry-recognized credentials trusted by over 350 companies worldwide.",
       visual: `${dir}/chapter-2.webp`,
-      layout: "sticky",
       points: [
         "Certificates.dev: full product UI for certification exams and credential management",
         "Vue.js and Nuxt official certifications trusted by 350+ companies",
@@ -99,7 +97,6 @@ export const bitterbrains: CaseStudy = {
       description:
         "BitterBrains runs four global developer conferences: Frontend Nation, Vue.js Nation, Nuxt Nation, and Vue.js Forge. I designed everything, including the conference websites, speaker and schedule UIs, live event experiences, social media campaigns, and physical materials for in-person events. What started as an online-only education product became something over 115,000 developers now travel and log in to be part of.",
       visual: `${dir}/chapter-3.webp`,
-      layout: "reveal",
       points: [
         "Frontend Nation: conference website, branding, and event UI",
         "Vue.js Nation: annual online conference design across multiple editions",
@@ -115,7 +112,6 @@ export const bitterbrains: CaseStudy = {
       description:
         "As BitterBrains matured, it launched business-facing products, including InstantDev, LevelUp, and developer hiring services, moving the company from pure B2C education into B2B territory. I designed these products from scratch, translating six years of consumer-facing product thinking into services built for companies rather than individual learners.",
       visual: `${dir}/chapter-4.webp`,
-      layout: "flow",
       points: [
         "InstantDev: product design for developer services platform",
         "LevelUp: business service product UI and experience",
@@ -131,7 +127,6 @@ export const bitterbrains: CaseStudy = {
       description:
         "As AI began reshaping how developers write and ship code, BitterBrains launched AIDD, an AI-Driven Development learning path designed to help developers build faster and smarter using AI tools. I designed the full product experience from scratch, positioning it as the company’s first product built for what comes after traditional courses, and a signal of where the platform is headed next.",
       visual: `${dir}/chapter-5.webp`,
-      layout: "focus",
       points: [
         "AIDD: AI-Driven Development hands-on learning path product",
         "Multi-module course experience with progressive skill building",
@@ -148,8 +143,6 @@ export const bitterbrains: CaseStudy = {
       { value: "4", label: "Conferences branded", body: "Frontend Nation, Vue.js Nation, Nuxt Nation, and Vue.js Forge, online and in-person." },
       { value: "5", label: "Years of growth", body: "From a small startup with a handful of people to a team of 50+ with global reach." },
     ],
-    summary:
-      "Six years of design work that helped turn a small Vue.js education project into a global developer education company, one product, one conference, one experience at a time.",
   },
   reflection: [
     "Being the first designer at a growing company means you don’t just design products. You build the design culture, the visual language, and the standard that everything after you is measured against.",

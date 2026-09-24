@@ -64,7 +64,6 @@ export const spaceNeedle: CaseStudy = {
       description:
         "My first project at Space Needle was designing tablet interfaces for three distinct in-tower camera experiences. Each had its own context, camera setup, and guest flow, but all shared the same constraint: it had to work for anyone, instantly, with no prior experience.",
       visual: `${dir}/chapter-1.webp`,
-      layout: "reveal",
       points: [
         "Oculus Selfie: overhead shot looking straight down through the iconic glass oculus stairs",
         "Halo Selfie: 360° camera experience on the outer observation ring",
@@ -80,7 +79,6 @@ export const spaceNeedle: CaseStudy = {
       description:
         "Self-service ticketing for one of Seattle’s busiest attractions, redesigned for speed, clarity, and two very different kiosk formats. The design had to handle everything from a single adult ticket to complex group bookings, without friction.",
       visual: `${dir}/chapter-2.webp`,
-      layout: "sticky",
       points: [
         "Full redesign of standard ticketing kiosk UI",
         "New large-format kiosk interface for high-traffic entry points",
@@ -96,7 +94,6 @@ export const spaceNeedle: CaseStudy = {
       description:
         "The web purchase flow had to convert visitors into buyers on desktop and mobile, for guests planning ahead and for last-minute purchases. Clear pricing, smooth checkout, and zero unnecessary steps.",
       visual: `${dir}/chapter-3.webp`,
-      layout: "flow",
       points: [
         "End-to-end web ticketing flow for Space Needle",
         "Responsive design across desktop and mobile",
@@ -112,7 +109,6 @@ export const spaceNeedle: CaseStudy = {
       description:
         "The box office interface is used by Space Needle staff every single day for selling tickets, handling modifications, managing groups, and processing payments at the counter. Speed and reliability were non-negotiable.",
       visual: `${dir}/chapter-4.webp`,
-      layout: "backdrop",
       points: [
         "POS interface designed for on-site staff at the ticket counter",
         "Fast ticket lookup, date and time modification, and cancellation flows",
@@ -128,7 +124,6 @@ export const spaceNeedle: CaseStudy = {
       description:
         "The management platform gives Space Needle operations teams full control over every variable that affects the guest experience: pricing, inventory, schedules, discounts, bundles, and real-time sales data across all channels.",
       visual: `${dir}/chapter-5.webp`,
-      layout: "focus",
       points: [
         "Pricing configuration by month, week, day, and individual time slot",
         "Ticket inventory and capacity management per channel",
@@ -144,7 +139,6 @@ export const spaceNeedle: CaseStudy = {
       description:
         "Every product designed for Space Needle was adapted for two partner attractions: Chihuly Garden and Glass, and Seattle Top Tix. Same underlying logic, same component architecture, completely different brand expressions.",
       visual: `${dir}/chapter-6.webp`,
-      layout: "sticky",
       points: [
         "Kiosk UI adapted for Chihuly Garden and Glass",
         "Kiosk UI adapted for Seattle Top Tix",
@@ -162,8 +156,6 @@ export const spaceNeedle: CaseStudy = {
       { value: "2", label: "Kiosk formats", body: "Standard and large-format ticketing kiosks, both redesigned from the ground up." },
       { value: "1", label: "Design system", body: "One unified foundation powering all touchpoints across all three brands." },
     ],
-    summary:
-      "What began as a tablet UI project became a full digital ecosystem redesign, spanning customer-facing experiences, partner platforms, and internal operations across one of America’s most iconic attractions.",
   },
   reflection: [
     "Designing for tourists means designing for people who have never used your product before, and may never use it again. Clarity and speed are everything.",
