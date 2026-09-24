@@ -5,11 +5,11 @@ import { RevealSection } from "@/components/layout/reveal-section";
 import { ContactDialog } from "@/components/ui/contact-dialog";
 import { GlassButton } from "@/components/ui/glass-button";
 
-/** The end of a case, and the home page's closing shot, filling the rest of
- *  the screen under the next case: the same desk after work, dimmed like the
- *  hero video, the question centred over it with the address above and the
- *  same two glass pills as on the home page. The copy rises in one line at a
- *  time; the site footer runs along the bottom. */
+/** The end of a case, and the home page's closing shot, under the next
+ *  case: the same desk after work, dimmed like the hero video, the question
+ *  centred over it with the address above and the same two glass pills as on
+ *  the home page. The copy rises in one line at a time; the site footer runs
+ *  along the bottom. */
 export function CaseContact({
   labels,
   dict,
@@ -38,7 +38,7 @@ export function CaseContact({
         <p className="reveal [--reveal-i:1] select-text text-[17px] font-medium tracking-[0.04em] text-ink/85 md:text-[22px]">
           {SITE.email}
         </p>
-        <h2 className="reveal [--reveal-i:2] mt-5 max-w-[14em] text-balance text-display text-ink md:mt-6">{labels.headline}</h2>
+        <h2 className="reveal [--reveal-i:2] mt-5 max-w-[16em] text-balance text-[clamp(34px,4.4vw,76px)] font-bold leading-[1.19] tracking-[-0.002em] text-ink md:mt-6">{labels.headline}</h2>
         <p className="reveal [--reveal-i:4] mt-5 max-w-[28rem] text-balance text-[17px] leading-relaxed text-ink/75 md:mt-6 md:text-[20px]">
           {labels.body}
         </p>

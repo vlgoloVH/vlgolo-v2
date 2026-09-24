@@ -112,6 +112,8 @@ export const danMonFairwind: CaseStudy = {
       { value: "100%", label: "Lifecycle coverage", body: "The full sales-to-supply journey designed, from enquiry to delivered order." },
       { value: "Global", label: "Operational reach", body: "Supports sourcing, fulfilment, and delivery to customers worldwide." },
     ],
+    summary:
+      "By designing the CRM around how the business truly runs, the team gained one connected view of every deal, along with the speed, clarity, and control to scale a complex global operation.",
   },
   reflection: [
     "For internal tools, clarity and speed beat visual polish. Every extra click and re-keyed field costs the team real time and margin.",

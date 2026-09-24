@@ -125,6 +125,8 @@ export const smartcrowd: CaseStudy = {
       { value: "100+", label: "Design system components", body: "Covering all major UI patterns across mobile and web with light and dark modes." },
       { value: "2", label: "Theme modes", body: "Full light and dark mode support across the entire product ecosystem." },
     ],
+    summary:
+      "The transformation created a unified, scalable product experience across SmartCrowd’s entire ecosystem.",
   },
   reflection: [
     "Real product leadership means holding the full picture at once: user needs, business goals, technical constraints, and compliance.",

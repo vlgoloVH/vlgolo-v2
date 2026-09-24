@@ -1713,63 +1713,44 @@ html[data-hover-capable="true"] .ab-collage:hover {
   opacity: calc(var(--d) * 0.24);
 }
 
-/* ── Impact: rules draw, figures rise and count, cells light under the
-   pointer ── */
+/* ── Impact: one figure at a time, pushed through a mask ── */
 
-@media (min-width: 768px) {
-  .cs-impact {
-    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
-  }
-}
-
-.cs-impact-rule {
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 1.1s var(--ease-soft) calc(var(--i) * 160ms);
-}
-
-.cs-impact-figure {
-  opacity: 0;
-  transform: translate3d(0, 40px, 0);
-  transition:
-    opacity 0.8s var(--ease-soft) calc(var(--i) * 160ms),
-    transform 0.9s var(--ease-soft) calc(var(--i) * 160ms);
-}
-
-.cs-impact.is-on {
-  & .cs-impact-rule {
-    transform: none;
-  }
-
-  & .cs-impact-figure {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.cs-impact-light {
+.cs-impact-bg {
   background: radial-gradient(
-    circle 22vw at var(--mx, 50%) var(--my, 50%),
-    rgb(var(--tint) / 0.28),
-    transparent 70%
+    circle at calc(12% + var(--sp, 0) * 76%) 90%,
+    rgb(var(--tint) / 0.3),
+    transparent 55vmax
   );
-  opacity: 0;
-  transition: opacity 0.5s var(--ease-soft);
 }
 
-html[data-hover-capable="true"] .cs-impact-item:hover {
-  & .cs-impact-light {
-    opacity: 1;
+/* A faint grid of fine lines the light passes over, fading towards the
+   top so the title stays clean. */
+.cs-impact-grid {
+  --line: rgb(255 255 255 / 0.05);
+  background:
+    linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / calc((100% - var(--case-pad) * 2) / 8) 100%,
+    linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 100% calc((100% - var(--case-pad) * 2) / 8);
+  background-position: var(--case-pad) 0, 0 0;
+  mask-image: linear-gradient(transparent 20%, #000 70%);
+}
+
+.cs-figure {
+  transform: translate3d(0, 110%, 0);
+  transition: transform 0.9s var(--ease-soft);
+
+  &.is-on {
+    transform: none;
   }
 
-  & .cs-impact-rule {
-    background: color-mix(in srgb, rgb(var(--tint)) 60%, white);
+  &.is-past {
+    transform: translate3d(0, -110%, 0);
   }
+}
 
-  & .cs-impact-figure {
-    transform: translate3d(calc(var(--lx, 0) * 8px), -4px, 0);
-    transition-delay: 0s;
-  }
+/* Each figure's rule in the row fills while that figure holds the stage. */
+.cs-impact-fill {
+  background: color-mix(in srgb, rgb(var(--tint)) 60%, white);
+  transform: scaleX(clamp(0, calc(var(--sp, 1) * var(--n) - var(--i)), 1));
 }
 
 /* ── Reflection: rise in turn; under the pointer one comes forward ── */
@@ -1849,6 +1830,7 @@ html:not([data-hover-capable="true"]) .cs-insight-fill {
   }
 
   .cs-beat,
+  .cs-figure,
   .cs-chapter,
   .cs-frame-layer,
   .cs-frame-img,
@@ -1862,8 +1844,6 @@ html:not([data-hover-capable="true"]) .cs-insight-fill {
 
   .cs-title-line,
   .cs-chip,
-  .cs-impact-rule,
-  .cs-impact-figure,
   .cs-insight {
     transform: none;
     opacity: 1;

@@ -46,6 +46,8 @@ export interface CaseStudy {
   chapters: Chapter[];
   impact: {
     items: { value: string; label: string; body: string }[];
+    /** The line that sums the work up. */
+    summary: string;
   };
   reflection: string[];
 }

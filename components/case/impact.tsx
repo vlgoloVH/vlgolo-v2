@@ -1,52 +1,26 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import type { Dictionary } from "@/lib/dictionaries";
 import type { CaseStudy } from "@/lib/cases/types";
-import { prefersReducedMotion } from "@/lib/scroll-progress";
+import { Track } from "@/components/case/track";
 import { SectionTitle } from "@/components/case/title";
 
-/** A figure that counts up from zero once, when it first comes into view,
- *  keeping what follows the number ("+", "M+", "%", "nd"). A figure with no
- *  number in front ("Global") simply shows. */
-function Figure({ value, start, delay }: { value: string; start: boolean; delay: number }) {
-  const match = value.match(/^(\d+)(.*)$/);
-  const [shown, setShown] = useState(match ? `0${match[2]}` : value);
+/** Size of the big figure by its length, so "3" and "Global" both fill the
+ *  stage without running off it. */
+const figure = (value: string) =>
+  value.length <= 2
+    ? "md:text-[min(20vw,36svh)]"
+    : value.length <= 4
+      ? "md:text-[min(15vw,30svh)]"
+      : "md:text-[min(11vw,23svh)]";
 
-  useEffect(() => {
-    if (!start || !match) return;
-    const target = Number(match[1]);
-    if (prefersReducedMotion()) {
-      setShown(value);
-      return;
-    }
-    let raf = 0;
-    const t0 = performance.now() + delay;
-    const tick = (now: number) => {
-      const t = Math.min(Math.max((now - t0) / 1400, 0), 1);
-      const eased = 1 - Math.pow(1 - t, 4);
-      setShown(`${Math.round(target * eased)}${match[2]}`);
-      if (t < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-    // match is derived from value.
-  }, [start, value, delay]);
-
-  return (
-    <>
-      <span className="sr-only">{value}</span>
-      <span aria-hidden="true" className="tabular-nums">
-        {shown}
-      </span>
-    </>
-  );
-}
-
-/** Impact on one screen: the title, then every figure side by side. As the
- *  row comes up each cell's rule draws across, its figure rises and counts
- *  up, one cell after another. Under the pointer a cell lights from where
- *  the pointer is, in the case's colour, and its figure leans towards it. */
+/** Impact as one figure at a time, on a full pinned screen. The title and the
+ *  line that sums the work up sit at the top. The stage holds a single huge
+ *  figure; as the page scrolls it is pushed up out of its mask and the next
+ *  one rises in, the words beside it change with it, and the light in the
+ *  room drifts across a faint grid. Along the bottom every figure waits in a
+ *  row, the current one lit, its rule filling while it holds the stage. On a
+ *  phone the figures follow one another. */
 export function CaseImpact({
   labels,
   impact,
@@ -55,58 +29,86 @@ export function CaseImpact({
   impact: CaseStudy["impact"];
 }) {
   const { items } = impact;
-  const list = useRef<HTMLOListElement>(null);
-  const [start, setStart] = useState(false);
-
-  useEffect(() => {
-    const el = list.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        setStart(true);
-        io.disconnect();
-      },
-      { threshold: 0.4 },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
-  const light = (e: React.PointerEvent<HTMLLIElement>) => {
-    if (e.pointerType !== "mouse") return;
-    const r = e.currentTarget.getBoundingClientRect();
-    e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
-    e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
-    e.currentTarget.style.setProperty("--lx", (((e.clientX - r.left) / r.width) * 2 - 1).toFixed(3));
-  };
-
+  const n = items.length;
   return (
-    <section id="impact" className="relative px-6 py-[14vh] md:px-[var(--case-pad)] md:py-[18vh]">
-      <SectionTitle>{labels.label}</SectionTitle>
+    <Track
+      id="impact"
+      steps={n}
+      className="cs-impact relative md:h-[calc(var(--n)*75vh+100vh)]"
+      style={{ "--n": n } as React.CSSProperties}
+    >
+      {(active) => (
+        <div className="relative px-6 py-[14vh] md:sticky md:top-0 md:flex md:h-[100svh] md:flex-col md:overflow-hidden md:px-[var(--case-pad)] md:pb-[6svh] md:pt-[14svh]">
+          <div aria-hidden="true" className="cs-impact-bg absolute inset-0 hidden md:block" />
+          <div aria-hidden="true" className="cs-impact-grid absolute inset-0 hidden md:block" />
 
-      <ol
-        ref={list}
-        className={`cs-impact relative mt-12 grid sm:grid-cols-2 md:mt-[9vh] ${start ? "is-on" : ""}`}
-        style={{ "--n": items.length } as React.CSSProperties}
-      >
-        {items.map((item, i) => (
-          <li
-            key={item.label}
-            onPointerMove={light}
-            className="cs-impact-item group relative overflow-hidden py-8 md:pb-10 md:pr-[2.4vw] md:pt-9"
-            style={{ "--i": i } as React.CSSProperties}
-          >
-            <span aria-hidden="true" className="cs-impact-rule absolute inset-x-0 top-0 h-px bg-white/20" />
-            <span aria-hidden="true" className="cs-impact-light pointer-events-none absolute inset-0" />
-            <p className="cs-impact-figure relative text-[clamp(56px,16vw,88px)] font-bold leading-[0.9] tracking-[-0.05em] text-ink md:text-[clamp(56px,5.6vw,108px)]">
-              <Figure value={item.value} start={start} delay={i * 160} />
+          <div className="relative grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-start md:gap-[5vw]">
+            <SectionTitle>{labels.label}</SectionTitle>
+            <p className="max-w-[34rem] text-[19px] font-medium leading-[1.45] tracking-[-0.01em] text-ink/85 md:justify-self-end md:text-[clamp(18px,1.5vw,25px)]">
+              {impact.summary}
             </p>
-            <p className="relative mt-6 font-mono text-[12px] uppercase tracking-[0.2em] text-ink">{item.label}</p>
-            <p className="relative mt-3 max-w-[22rem] text-[16px] leading-[1.55] text-ink/65 md:text-[17px]">{item.body}</p>
-          </li>
-        ))}
-      </ol>
-    </section>
+          </div>
+
+          {/* Desktop: the stage. */}
+          <div className="relative mt-auto hidden grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] items-end gap-[5vw] md:grid">
+            <div className="grid">
+              {items.map((item, i) => (
+                <span
+                  key={item.label}
+                  aria-hidden={i !== active}
+                  className="col-start-1 row-start-1 block self-end overflow-hidden pb-[0.02em]"
+                >
+                  <span
+                    className={`cs-figure block font-bold leading-[0.8] tracking-[-0.06em] text-ink ${figure(item.value)} ${
+                      i === active ? "is-on" : i < active ? "is-past" : ""
+                    }`}
+                  >
+                    {item.value}
+                  </span>
+                </span>
+              ))}
+            </div>
+            <div className="grid pb-[1svh]">
+              {items.map((item, i) => (
+                <div key={item.label} className={`cs-beat col-start-1 row-start-1 ${i === active ? "is-on" : ""}`}>
+                  <p className="cs-accent font-mono text-[13px] uppercase tracking-[0.22em]">{item.label}</p>
+                  <p className="mt-5 text-[clamp(20px,1.7vw,28px)] font-medium leading-[1.4] tracking-[-0.01em] text-ink">{item.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Desktop: every figure in a row, the one on stage lit. */}
+          <ol className="relative mt-[6svh] hidden gap-[2vw] md:grid md:grid-cols-[repeat(var(--n),minmax(0,1fr))]">
+            {items.map((item, i) => (
+              <li
+                key={item.label}
+                className={`transition-opacity duration-500 ${i === active ? "opacity-100" : "opacity-40"}`}
+                style={{ "--i": i } as React.CSSProperties}
+              >
+                <span aria-hidden="true" className="block h-px bg-white/20">
+                  <span className="cs-impact-fill block h-full origin-left" />
+                </span>
+                <p className="mt-4 flex items-baseline gap-3">
+                  <span className="text-[22px] font-bold tracking-[-0.03em] text-ink">{item.value}</span>
+                  <span className="truncate font-mono text-[11px] uppercase tracking-[0.18em] text-ink/70">{item.label}</span>
+                </p>
+              </li>
+            ))}
+          </ol>
+
+          {/* Phone: one after another. */}
+          <ol className="mt-10 flex flex-col md:hidden">
+            {items.map((item) => (
+              <li key={item.label} className="border-t border-white/12 py-8">
+                <p className="text-[clamp(64px,22vw,110px)] font-bold leading-[0.85] tracking-[-0.05em] text-ink">{item.value}</p>
+                <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.22em] text-ink">{item.label}</p>
+                <p className="mt-3 text-[17px] leading-[1.5] text-ink/70">{item.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
+    </Track>
   );
 }

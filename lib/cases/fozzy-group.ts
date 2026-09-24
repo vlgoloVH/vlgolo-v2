@@ -101,6 +101,8 @@ export const fozzyGroup: CaseStudy = {
       { value: "1", label: "Design system", body: "A large, shared system unifying the whole back-office product." },
       { value: "3", label: "Focus areas", body: "Product catalog, commerce operations, and the design system that ties them together." },
     ],
+    summary:
+      "By improving the existing system, designing new flows across the catalog and commerce operations, and contributing to a large design system, the work made Silpo’s back-office faster, clearer, and more consistent for the teams who run the business every day.",
   },
   reflection: [
     "On a product this large, you can’t redesign everything at once. Real progress comes feature by feature, one clear flow at a time.",

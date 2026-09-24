@@ -142,6 +142,8 @@ export const bitterbrains: CaseStudy = {
       { value: "4", label: "Conferences branded", body: "Frontend Nation, Vue.js Nation, Nuxt Nation, and Vue.js Forge, online and in-person." },
       { value: "5", label: "Years of growth", body: "From a small startup with a handful of people to a team of 50+ with global reach." },
     ],
+    summary:
+      "Six years of design work that helped turn a small Vue.js education project into a global developer education company, one product, one conference, one experience at a time.",
   },
   reflection: [
     "Being the first designer at a growing company means you don’t just design products. You build the design culture, the visual language, and the standard that everything after you is measured against.",

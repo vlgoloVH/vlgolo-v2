@@ -155,6 +155,8 @@ export const spaceNeedle: CaseStudy = {
       { value: "2", label: "Kiosk formats", body: "Standard and large-format ticketing kiosks, both redesigned from the ground up." },
       { value: "1", label: "Design system", body: "One unified foundation powering all touchpoints across all three brands." },
     ],
+    summary:
+      "What began as a tablet UI project became a full digital ecosystem redesign, spanning customer-facing experiences, partner platforms, and internal operations across one of America’s most iconic attractions.",
   },
   reflection: [
     "Designing for tourists means designing for people who have never used your product before, and may never use it again. Clarity and speed are everything.",
