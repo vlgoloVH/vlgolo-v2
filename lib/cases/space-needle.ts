@@ -49,7 +49,6 @@ export const spaceNeedle: CaseStudy = {
     ],
   },
   overview: {
-    tagline: "One ecosystem. Six products. Three brands.",
     images: [
       { src: `${dir}/wide-1.webp`, alt: "Space Needle ticketing kiosks" },
       { src: `${dir}/wide-2.webp`, alt: "Space Needle in-tower experiences" },

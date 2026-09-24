@@ -5,10 +5,11 @@ import { RevealSection } from "@/components/layout/reveal-section";
 import { ContactDialog } from "@/components/ui/contact-dialog";
 import { GlassButton } from "@/components/ui/glass-button";
 
-/** The end of a case, and the home page's closing shot: the same desk after
- *  work, dimmed like the hero video, the question centred over it with the
- *  address above and the same two glass pills as on the home page. The copy
- *  rises in one line at a time; the site footer runs along the bottom. */
+/** The end of a case, and the home page's closing shot, filling the rest of
+ *  the screen under the next case: the same desk after work, dimmed like the
+ *  hero video, the question centred over it with the address above and the
+ *  same two glass pills as on the home page. The copy rises in one line at a
+ *  time; the site footer runs along the bottom. */
 export function CaseContact({
   labels,
   dict,
@@ -18,7 +19,7 @@ export function CaseContact({
 }) {
   const copy = dict.contacts;
   return (
-    <RevealSection id="contact" className="relative flex min-h-[100svh] flex-col overflow-hidden bg-bg">
+    <RevealSection id="contact" className="relative flex min-h-[70svh] flex-col overflow-hidden bg-bg">
       <Image
         id="case-contact-scene"
         src="/contact/workspace.jpg"
@@ -33,15 +34,15 @@ export function CaseContact({
         className="pointer-events-none absolute inset-y-0 right-0 hidden w-[calc(var(--frame-line)*3)] bg-[linear-gradient(270deg,rgba(0,0,0,0.88),rgba(0,0,0,0.65)_33%,transparent)] md:block"
       />
 
-      <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 pb-28 pt-24 text-center md:px-[var(--case-pad)]">
+      <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 pb-24 pt-14 text-center md:px-[var(--case-pad)]">
         <p className="reveal [--reveal-i:1] select-text text-[17px] font-medium tracking-[0.04em] text-ink/85 md:text-[22px]">
           {SITE.email}
         </p>
-        <h2 className="reveal [--reveal-i:2] mt-6 max-w-[14em] text-balance text-display text-ink md:mt-8">{labels.headline}</h2>
-        <p className="reveal [--reveal-i:4] mt-6 max-w-[28rem] text-balance text-[17px] leading-relaxed text-ink/75 md:mt-7 md:text-[20px]">
+        <h2 className="reveal [--reveal-i:2] mt-5 max-w-[14em] text-balance text-display text-ink md:mt-6">{labels.headline}</h2>
+        <p className="reveal [--reveal-i:4] mt-5 max-w-[28rem] text-balance text-[17px] leading-relaxed text-ink/75 md:mt-6 md:text-[20px]">
           {labels.body}
         </p>
-        <div className="reveal [--reveal-i:6] mt-10 grid gap-4 sm:grid-cols-2 md:mt-12">
+        <div className="reveal [--reveal-i:6] mt-8 grid gap-4 sm:grid-cols-2 md:mt-10">
           <ContactDialog label={copy.email} copy={dict.contact} glassSource="#case-contact-scene" className="w-full" />
           <GlassButton href={SITE.resume} label={copy.resume} download videoSelector="#case-contact-scene" className="w-full" />
         </div>

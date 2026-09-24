@@ -3,8 +3,8 @@ import type { CaseStudy } from "@/lib/cases/types";
 import { Track } from "@/components/case/track";
 
 /** The opening shot. The mockup starts tipped back and cropped by the
- *  bottom of the screen; as the page scrolls it rights itself and rises into
- *  the content column, while the title runs ahead and the details fade, and
+ *  bottom of the screen; as the page scrolls it rights itself, settles into
+ *  frame and scales down, while the title runs ahead and the details fade, and
  *  the room takes on the case's colour. It reads as the product opening the
  *  story rather than a picture under a heading. */
 export function CaseHero({

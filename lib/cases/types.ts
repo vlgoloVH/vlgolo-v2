@@ -39,10 +39,8 @@ export interface CaseStudy {
     withWhom: string[];
     howIWorked: string[];
   };
-  /** The full-screen images between My Role and the transformation, and the
-   *  line that opens the transformation. */
+  /** The full-screen images between My Role and the transformation. */
   overview: {
-    tagline: string;
     images: { src: string; alt: string }[];
   };
   chapters: Chapter[];

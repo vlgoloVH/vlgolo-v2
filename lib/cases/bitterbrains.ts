@@ -51,7 +51,6 @@ export const bitterbrains: CaseStudy = {
     ],
   },
   overview: {
-    tagline: "One team. Six years. Fifteen products.",
     images: [
       { src: `${dir}/wide-1.webp`, alt: "BitterBrains products" },
       { src: `${dir}/wide-2.webp`, alt: "Vue School platform" },

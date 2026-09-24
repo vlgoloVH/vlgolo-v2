@@ -47,7 +47,6 @@ export const danMonFairwind: CaseStudy = {
     ],
   },
   overview: {
-    tagline: "One CRM for the entire sales lifecycle.",
     images: [
       { src: `${dir}/wide-1.webp`, alt: "Dan-Mon Fairwind CRM" },
       { src: `${dir}/wide-2.webp`, alt: "Dan-Mon Fairwind pipeline" },

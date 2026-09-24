@@ -1,7 +1,4 @@
-"use client";
-
 import Image from "next/image";
-import { useCallback, useRef } from "react";
 import type { CaseStudy } from "@/lib/cases/types";
 import { Track } from "@/components/case/track";
 
@@ -19,21 +16,10 @@ export function CaseStack({ overview, label }: { overview: CaseStudy["overview"]
   const { images } = overview;
   const n = images.length;
   const steps = n - 1 + HOLD;
-  const counter = useRef<HTMLSpanElement>(null);
-  const onProgress = useCallback(
-    (p: number) => {
-      if (counter.current) {
-        const i = Math.min(Math.round(p * steps), n - 1);
-        counter.current.textContent = String(i + 1).padStart(2, "0");
-      }
-    },
-    [n, steps],
-  );
 
   return (
     <section id="overview" aria-label={label} className="relative">
       <Track
-        onProgress={onProgress}
         className="cs-stack relative hidden md:block"
         style={{ height: `${(steps * PER + 1) * 100}vh`, "--steps": steps } as React.CSSProperties}
       >
@@ -57,9 +43,6 @@ export function CaseStack({ overview, label }: { overview: CaseStudy["overview"]
               </div>
             </div>
           ))}
-          <p className="absolute bottom-[3svh] left-[var(--case-pad)] z-[20] font-mono text-[11px] uppercase tracking-[0.2em] text-ink/55">
-            <span ref={counter}>01</span> / {String(n).padStart(2, "0")}
-          </p>
         </div>
       </Track>
 

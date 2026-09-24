@@ -51,7 +51,6 @@ export const smartcrowd: CaseStudy = {
     ],
   },
   overview: {
-    tagline: "Not a redesign. A full platform transformation.",
     images: [
       { src: `${dir}/wide-1.webp`, alt: "SmartCrowd mobile screens" },
       { src: `${dir}/wide-2.webp`, alt: "SmartCrowd investment flows" },

@@ -1471,12 +1471,13 @@ html[data-hover-capable="true"] .ab-collage:hover {
   perspective: 1600px;
 }
 
-/* Tipped back and cropped by the bottom edge at first, then upright and in
-   the content column, at the column's width all the way. */
+/* Tipped back, a touch wider than the column and cropped by the bottom edge
+   at first, then upright, framed and smaller. */
 .cs-hero-mock {
   transform-origin: 50% 100%;
   transform: translate3d(0, calc((1 - var(--sp, 0)) * 26vh * var(--k)), 0)
-    rotateX(calc((1 - var(--sp, 0)) * 14deg * var(--k)));
+    rotateX(calc((1 - var(--sp, 0)) * 14deg * var(--k)))
+    scale(calc(1.06 - var(--sp, 0) * 0.3 * var(--k)));
   will-change: transform;
 }
 
@@ -1528,40 +1529,38 @@ html[data-hover-capable="true"] .ab-collage:hover {
   mask-image: radial-gradient(circle at 50% 50%, #000 40%, transparent 72%);
 }
 
-/* The drawing in the case's colour, lifted towards white so it reads on the
-   dark ground; the stray links of the tangle stay white and dashed. */
+/* The colour lives in the drawing itself, not behind it: the points take the
+   case's colour, lifted towards white so they read on the dark ground, and
+   the structure's links a quieter shade of it. The stray links of the tangle
+   stay white and dashed. */
 .cs-motif {
-  --ink-tint: color-mix(in srgb, rgb(var(--tint)) 55%, white);
-}
-
-.cs-motif-stop {
-  stop-color: rgb(var(--tint));
+  --ink-tint: color-mix(in srgb, rgb(var(--tint)) 62%, white);
 }
 
 .cs-motif-noise {
-  stroke: rgb(255 255 255 / 0.6);
+  stroke: rgb(255 255 255 / 0.5);
   stroke-linecap: round;
 }
 
 .cs-motif-link {
-  stroke: var(--ink-tint);
+  stroke: color-mix(in srgb, var(--ink-tint) 80%, transparent);
   stroke-linecap: round;
 }
 
 .cs-motif-dot {
-  fill: rgb(255 255 255 / 0.75);
+  fill: var(--ink-tint);
 }
 
 .cs-motif-key {
-  fill: #fff;
-  stroke: var(--ink-tint);
+  fill: var(--ink-tint);
+  stroke: var(--color-surface);
   stroke-width: 3;
   paint-order: stroke;
 }
 
 .cs-motif-ring {
-  fill: rgb(var(--tint) / 0.18);
-  stroke: rgb(var(--tint) / 0.6);
+  fill: rgb(var(--tint) / 0.16);
+  stroke: var(--ink-tint);
   stroke-width: 1;
 }
 
@@ -1583,10 +1582,11 @@ html[data-hover-capable="true"] .ab-collage:hover {
   transform: translate3d(0, calc((1 - var(--o)) * 14px), 0);
 }
 
-/* ── Product transformation: the chapter in the frame is lit ── */
+/* ── Product transformation ──
+   --cp is a chapter's own progress past the middle of the screen. */
 
 .cs-chapter {
-  opacity: 0.3;
+  opacity: 0.35;
   transition: opacity 0.6s var(--ease-soft);
 
   &.is-on {
@@ -1594,22 +1594,95 @@ html[data-hover-capable="true"] .ab-collage:hover {
   }
 }
 
-.cs-chapter-visual {
+/* The title rises out of its mask word by word, the first time the chapter
+   takes the frame. */
+.cs-chapter-word {
+  transform: translate3d(0, 105%, 0);
+  transition: transform 0.9s var(--ease-soft) calc(var(--w) * 45ms);
+}
+
+.cs-chapter.is-seen .cs-chapter-word {
+  transform: none;
+}
+
+/* The points light one after another as the chapter is read: each mark
+   fills with the case's colour and its words come up to full white. */
+.cs-chapter-point {
+  --on: clamp(0, calc((var(--cp, 0) * 1.35 + 0.08) * var(--n) - var(--pi)), 1);
+  color: rgb(255 255 255 / calc(0.4 + var(--on) * 0.6));
+  transform: translate3d(calc((1 - var(--on)) * -6px), 0, 0);
+}
+
+.cs-chapter-mark {
+  border: 1px solid rgb(255 255 255 / 0.35);
+  background: color-mix(in srgb, rgb(var(--tint)) 60%, white);
+  background-clip: padding-box;
+  transform: rotate(calc(var(--on) * 45deg)) scale(calc(0.7 + var(--on) * 0.3));
+  box-shadow: 0 0 0 calc(var(--on) * 4px) rgb(var(--tint) / 0.25);
+  opacity: calc(0.3 + var(--on) * 0.7);
+}
+
+/* The frame leans towards the pointer (--tx, --ty run −1 → 1). */
+.cs-frame {
+  perspective: 1400px;
+}
+
+.cs-frame-inner {
+  transform: rotateY(calc(var(--tx, 0) * 4deg)) rotateX(calc(var(--ty, 0) * -4deg));
+  transition: transform 0.8s var(--ease-soft);
+}
+
+/* Each picture wipes up over the one before and settles from a slight zoom;
+   going back, it wipes down off the one beneath. While its chapter is read
+   it drifts a little. */
+.cs-frame-layer {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1s var(--ease-soft);
+
+  &.is-in {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.cs-frame-img {
+  transform: scale(1.18) translate3d(0, calc((0.5 - var(--cp, 0.5)) * 3%), 0);
+  transition: transform 1.2s var(--ease-soft);
+}
+
+.cs-frame-layer.is-in .cs-frame-img {
+  transform: scale(1.08) translate3d(0, calc((0.5 - var(--cp, 0.5)) * 3%), 0);
+}
+
+.cs-frame-name {
   opacity: 0;
-  transform: scale(1.04);
+  transform: translate3d(0, 10px, 0);
   transition:
-    opacity 0.7s var(--ease-soft),
-    transform 1.2s var(--ease-soft);
+    opacity 0.5s var(--ease-soft),
+    transform 0.5s var(--ease-soft);
 
   &.is-on {
     opacity: 1;
     transform: none;
+    transition-delay: 0.3s;
   }
+}
+
+.cs-frame-bar {
+  background: color-mix(in srgb, rgb(var(--tint)) 60%, white);
+  transform: scaleX(var(--cp, 0));
 }
 
 @media (max-width: 767px) {
   .cs-chapter {
     opacity: 1;
+  }
+
+  .cs-chapter-word {
+    transform: none;
+  }
+
+  .cs-chapter-point {
+    --on: 1;
   }
 }
 
@@ -1640,11 +1713,8 @@ html[data-hover-capable="true"] .ab-collage:hover {
   opacity: calc(var(--d) * 0.24);
 }
 
-/* ── Impact: the figures side by side, rising in turn ── */
-
-.cs-impact-bg {
-  background: radial-gradient(ellipse 70% 60% at 20% 100%, rgb(var(--tint) / 0.22), transparent 70%);
-}
+/* ── Impact: rules draw, figures rise and count, cells light under the
+   pointer ── */
 
 @media (min-width: 768px) {
   .cs-impact {
@@ -1652,18 +1722,100 @@ html[data-hover-capable="true"] .ab-collage:hover {
   }
 }
 
-.cs-impact-item,
-.cs-insight {
-  --o: clamp(0, calc((var(--p, 1) - 0.1 - var(--i) * 0.05) * 6), 1);
-  opacity: var(--o);
-  transform: translate3d(0, calc((1 - var(--o)) * 40px), 0);
+.cs-impact-rule {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.1s var(--ease-soft) calc(var(--i) * 160ms);
 }
 
-/* ── Reflection ── */
+.cs-impact-figure {
+  opacity: 0;
+  transform: translate3d(0, 40px, 0);
+  transition:
+    opacity 0.8s var(--ease-soft) calc(var(--i) * 160ms),
+    transform 0.9s var(--ease-soft) calc(var(--i) * 160ms);
+}
+
+.cs-impact.is-on {
+  & .cs-impact-rule {
+    transform: none;
+  }
+
+  & .cs-impact-figure {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.cs-impact-light {
+  background: radial-gradient(
+    circle 22vw at var(--mx, 50%) var(--my, 50%),
+    rgb(var(--tint) / 0.28),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-soft);
+}
+
+html[data-hover-capable="true"] .cs-impact-item:hover {
+  & .cs-impact-light {
+    opacity: 1;
+  }
+
+  & .cs-impact-rule {
+    background: color-mix(in srgb, rgb(var(--tint)) 60%, white);
+  }
+
+  & .cs-impact-figure {
+    transform: translate3d(calc(var(--lx, 0) * 8px), -4px, 0);
+    transition-delay: 0s;
+  }
+}
+
+/* ── Reflection: rise in turn; under the pointer one comes forward ── */
 
 .cs-outline {
   color: transparent;
   -webkit-text-stroke: 1px rgb(255 255 255 / 0.5);
+}
+
+.cs-insight {
+  --o: clamp(0, calc((var(--p, 1) - 0.1 - var(--i) * 0.05) * 6), 1);
+  opacity: var(--o);
+  transform: translate3d(0, calc((1 - var(--o)) * 40px), 0);
+  transition: opacity 0.5s var(--ease-soft);
+}
+
+.cs-insight-rule {
+  background: rgb(255 255 255 / 0.15);
+  transition: background-color 0.5s var(--ease-soft);
+}
+
+.cs-insight-fill {
+  color: color-mix(in srgb, rgb(var(--tint)) 60%, white);
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 0.8s var(--ease-soft);
+}
+
+html[data-hover-capable="true"] {
+  .cs-insights:hover .cs-insight:not(:hover) {
+    opacity: 0.35;
+  }
+
+  .cs-insight:hover {
+    & .cs-insight-fill {
+      clip-path: inset(0 0 0 0);
+    }
+
+    & .cs-insight-rule {
+      background: color-mix(in srgb, rgb(var(--tint)) 60%, white);
+    }
+  }
+}
+
+/* Touch: nothing to hover, so the numbers fill as the row arrives. */
+html:not([data-hover-capable="true"]) .cs-insight-fill {
+  clip-path: inset(calc((1 - clamp(0, (var(--p, 1) - 0.25 - var(--i) * 0.06) * 5, 1)) * 100%) 0 0 0);
 }
 
 /* ── Next case: the room shifts to the next case's colour ── */
@@ -1679,7 +1831,7 @@ html[data-hover-capable="true"] .ab-collage:hover {
 }
 
 .cs-next-cover {
-  transform: translate3d(0, calc((var(--p, 0.5) - 0.5) * -80px * var(--k)), 0);
+  transform: translate3d(0, calc((var(--p, 0.5) - 0.5) * -24px * var(--k)), 0);
 }
 
 /* Reduced motion: every stage at rest, in its finished state. */
@@ -1698,13 +1850,20 @@ html[data-hover-capable="true"] .ab-collage:hover {
 
   .cs-beat,
   .cs-chapter,
-  .cs-chapter-visual {
+  .cs-frame-layer,
+  .cs-frame-img,
+  .cs-frame-inner {
     transition: none;
+  }
+
+  .cs-chapter-word {
+    transform: none;
   }
 
   .cs-title-line,
   .cs-chip,
-  .cs-impact-item,
+  .cs-impact-rule,
+  .cs-impact-figure,
   .cs-insight {
     transform: none;
     opacity: 1;

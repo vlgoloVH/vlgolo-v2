@@ -47,7 +47,6 @@ export const fozzyGroup: CaseStudy = {
     ],
   },
   overview: {
-    tagline: "Improving the system Silpo runs on, and the design system behind it.",
     images: [
       { src: `${dir}/wide-1.webp`, alt: "Silpo back-office" },
       { src: `${dir}/wide-2.webp`, alt: "Silpo product catalog" },

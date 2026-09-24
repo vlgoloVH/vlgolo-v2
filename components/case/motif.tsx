@@ -164,7 +164,6 @@ export function MotifArt({
   className?: string;
 }) {
   const { nodes, links, noise } = build(motif, labels);
-  const glow = `cs-motif-glow-${motif}`;
   return (
     <svg
       ref={ref}
@@ -174,14 +173,6 @@ export function MotifArt({
       data-motif={motif}
       data-labels={labels.join("|")}
     >
-      <defs>
-        <radialGradient id={glow}>
-          <stop offset="0%" className="cs-motif-stop" stopOpacity={0.55} />
-          <stop offset="100%" className="cs-motif-stop" stopOpacity={0} />
-        </radialGradient>
-      </defs>
-      {/* The case's colour gathering behind the structure as it forms. */}
-      <circle data-halo cx={W / 2} cy={W / 2} r={W * 0.55} fill={`url(#${glow})`} opacity={0} />
       {noise.map(([a, b], i) => (
         <line key={`n${i}`} data-noise={`${a},${b}`} className="cs-motif-noise" strokeWidth={1} strokeDasharray="2 4" opacity={0} />
       ))}
@@ -192,8 +183,8 @@ export function MotifArt({
         <g key={`d${i}`} data-node={i}>
           {node.label ? (
             <>
-              <circle data-ring r={node.r * 3.2} className="cs-motif-ring" opacity={0} />
-              <circle r={node.r + 1.5} className="cs-motif-key" />
+              <circle data-ring r={node.r * 2.8} className="cs-motif-ring" opacity={0} />
+              <circle r={node.r + 2.5} className="cs-motif-key" />
               <text
                 x={nudge(node.order[0], node.r)}
                 y={node.below ? node.r + 22 : -node.r - 14}
@@ -205,7 +196,7 @@ export function MotifArt({
               </text>
             </>
           ) : (
-            <circle r={node.r} className="cs-motif-dot" />
+            <circle r={node.r + 0.8} className="cs-motif-dot" />
           )}
         </g>
       ))}
@@ -216,7 +207,7 @@ export function MotifArt({
 const cache = new WeakMap<SVGSVGElement, Layout>();
 
 /** Moves the drawing to t: 0 a few scattered points, 0.5 the full tangle,
- *  1 the finished structure, lit in the case's colour. */
+ *  1 the finished structure, its points lit in the case's colour. */
 export function drawMotif(svg: SVGSVGElement, t: number) {
   let layout = cache.get(svg);
   if (!layout) {
@@ -237,8 +228,6 @@ export function drawMotif(svg: SVGSVGElement, t: number) {
       lerp(node.chaos[1] - w, node.order[1], order),
     ];
   });
-
-  svg.querySelector("[data-halo]")?.setAttribute("opacity", (order * 0.9).toFixed(3));
 
   svg.querySelectorAll<SVGGElement>("[data-node]").forEach((g, i) => {
     const on = seg(appear, i / nodes.length - 0.1, i / nodes.length + 0.15);

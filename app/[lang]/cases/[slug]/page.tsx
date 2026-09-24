@@ -78,7 +78,7 @@ export default async function CasePage({ params }: { params: Params }) {
       <CaseContext labels={labels.context} context={study.context} />
       <CaseRole labels={labels.role} role={study.role} />
       <CaseStack overview={study.overview} label={labels.overview.label} />
-      <CaseTransformation labels={labels.transformation} overview={study.overview} chapters={study.chapters} />
+      <CaseTransformation labels={labels.transformation} chapters={study.chapters} />
       <CaseImpact labels={labels.impact} impact={study.impact} />
       <CaseReflection labels={labels.reflection} insights={study.reflection} />
       <CaseNext

@@ -2,10 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Dictionary } from "@/lib/dictionaries";
 
-/** The way on: the next case, full size. The room shifts from this case's
- *  colour to the next one's as the section comes up, so the step to the next
- *  page is already half taken; its cover grows a touch under the pointer, and
- *  the whole section is the link. */
+/** The way on: the next case as a band across the bottom of the page, about
+ *  a third of a screen, with the contact scene filling the rest. The room
+ *  shifts from this case's colour to the next one's as the band comes up;
+ *  under the pointer the name steps aside and the cover grows a touch. The
+ *  whole band is the link. */
 export function CaseNext({
   labels,
   href,
@@ -23,34 +24,34 @@ export function CaseNext({
   tint: string;
 }) {
   return (
-    <section data-p className="cs-next relative overflow-hidden" style={{ "--next": tint } as React.CSSProperties}>
+    <section data-p className="cs-next relative overflow-hidden border-t border-white/12" style={{ "--next": tint } as React.CSSProperties}>
       <div aria-hidden="true" className="cs-next-bg absolute inset-0" />
       <Link
         href={href}
         data-cursor={labels.view}
-        className="group relative grid min-h-[100svh] items-center gap-12 px-6 py-[14vh] md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-[5vw] md:px-[var(--case-pad)]"
+        className="group relative flex min-h-[30svh] items-center justify-between gap-8 px-6 py-10 md:px-[var(--case-pad)] md:py-[4svh]"
       >
         <div>
           <p className="font-mono text-[12px] uppercase tracking-[0.3em] text-ink/60">{labels.label}</p>
-          <p aria-label={title} className="mt-8 text-[clamp(56px,8.4vw,160px)] font-bold uppercase leading-[0.84] tracking-[-0.045em] text-ink">
+          <p
+            aria-label={title}
+            className="mt-4 text-[clamp(40px,5.6vw,108px)] font-bold uppercase leading-[0.86] tracking-[-0.045em] text-ink transition-transform duration-700 ease-[var(--ease-soft)] group-can-hover:translate-x-3"
+          >
             {lines.map((line) => (
               <span key={line} aria-hidden="true" className="block">
                 {line}
               </span>
             ))}
           </p>
-          <span className="mt-10 inline-block text-[12px] uppercase tracking-[0.3em] text-ink/70 md:hidden">
-            {labels.view}
-          </span>
         </div>
-        <div className="cs-next-cover overflow-hidden rounded-[clamp(12px,1.4vw,24px)]">
+        <div className="cs-next-cover hidden aspect-[4/3] h-[22svh] shrink-0 overflow-hidden rounded-[clamp(10px,1vw,18px)] sm:block">
           <Image
             src={cover}
             alt=""
-            width={3600}
-            height={2700}
-            sizes="(min-width: 768px) 40vw, 90vw"
-            className="h-auto w-full transition-transform duration-700 ease-[var(--ease-soft)] group-can-hover:scale-[1.04]"
+            width={1200}
+            height={900}
+            sizes="(min-width: 768px) 24vw, 40vw"
+            className="h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-soft)] group-can-hover:scale-[1.06]"
           />
         </div>
       </Link>
