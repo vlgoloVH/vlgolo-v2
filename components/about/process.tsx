@@ -4,13 +4,14 @@ import { useRef } from "react";
 import type { Dictionary } from "@/lib/dictionaries";
 import { Art, type ArtKind } from "@/components/about/art";
 import { useSteps } from "@/components/about/use-steps";
+import { SectionTitle } from "@/components/case/title";
 
 type Copy = Dictionary["aboutPage"]["process"];
 
 const KINDS: ArtKind[] = ["understand", "smaller", "people", "evidence", "loop"];
 const WEIGHTS = [1, 1, 1, 1, 1];
 
-/** 05 · Process. Five statements pinned to the screen; the scroll walks
+/** How I work. Five statements pinned to the screen; the scroll walks
  *  through them one at a time, the active one at full strength and full size,
  *  the rest faint. On the right, one drawing per statement plays out as its
  *  statement is read. On a phone the statements simply stack. */
@@ -19,22 +20,12 @@ export function AboutProcess({ copy }: { copy: Copy }) {
   const stageRef = useRef<HTMLDivElement>(null);
   const active = useSteps(trackRef, stageRef, WEIGHTS);
 
-  const heading = (
-    <>
-      <p className="ab-label">
-        <span>05</span>
-        {copy.label}
-      </p>
-      <h2 className="mt-8 text-[clamp(40px,4.6vw,84px)] font-bold leading-[1] tracking-[-0.035em] text-ink">
-        {copy.heading}
-      </h2>
-    </>
-  );
+  const heading = <SectionTitle>{copy.label}</SectionTitle>;
 
   return (
-    <section id="process" data-section className="relative">
+    <section id="process" className="relative">
       <div ref={trackRef} className="relative hidden h-[420vh] md:block">
-        <div className="sticky top-0 flex h-[100svh] items-center px-[var(--frame-pad)]">
+        <div className="sticky top-0 flex h-[100svh] items-center px-[var(--case-pad)]">
           <div className="grid w-full grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] items-center gap-[5vw]">
             <div>
               {heading}

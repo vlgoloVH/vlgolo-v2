@@ -2,17 +2,13 @@ import type { Ref } from "react";
 
 /** Line drawings for the About page that are driven by scroll. Each one is a
  *  400×400 SVG rendered once by <Art>, then moved by drawArt(svg, t) with t
- *  running 0 → 1: the caller owns the progress (a sticky track, or the
- *  drawing's own trip through the viewport) and this only sets attributes.
+ *  running 0 → 1: the caller (a pinned track, see useSteps) owns the
+ *  progress and this only sets attributes.
  *  Plain lines and dots in the ink colour, so they sit with the frame lines
  *  and the type rather than reading as icons from a library. */
 
+/** One drawing per How I work statement. */
 export type ArtKind =
-  // Product philosophy
-  | "network"
-  | "reduce"
-  | "scale"
-  // How I work
   | "understand"
   | "smaller"
   | "people"
@@ -41,43 +37,6 @@ function seeded(seed: number) {
 const range = (n: number) => Array.from({ length: n }, (_, i) => i);
 
 /* ── Geometry ─────────────────────────────────────────────────────────── */
-
-const NET_NODES = [
-  [200, 200],
-  [112, 122],
-  [206, 72],
-  [298, 118],
-  [334, 226],
-  [270, 318],
-  [150, 322],
-  [70, 232],
-] as const;
-const NET_EDGES = [
-  [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7],
-  [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 1],
-] as const;
-
-/** Reduce complexity: sixteen strokes thrown across the square settle into
- *  four clean rows of a simple list, each row four strokes laid on top of one
- *  another, so many lines become few. */
-const REDUCE = (() => {
-  const rand = seeded(7);
-  const rowsY = [128, 176, 224, 272];
-  const rowsLen = [228, 168, 248, 132];
-  return range(16).map((i) => {
-    const row = i % 4;
-    return {
-      from: [40 + rand() * 320, 40 + rand() * 320, 40 + rand() * 320, 40 + rand() * 320],
-      to: [96, rowsY[row], 96 + rowsLen[row], rowsY[row]],
-    };
-  });
-})();
-
-const SCALE_CELLS = range(25).map((i) => {
-  const col = i % 5;
-  const row = Math.floor(i / 5);
-  return { x: 60 + col * 58, y: 60 + row * 58, d: Math.abs(col - 2) + Math.abs(row - 2) };
-});
 
 const SMALLER = (() => {
   const rand = seeded(11);
@@ -124,59 +83,6 @@ const drawn = { ...stroke, pathLength: 1, strokeDasharray: 1, strokeDashoffset: 
 
 function Shapes({ kind }: { kind: ArtKind }) {
   switch (kind) {
-    case "network":
-      return (
-        <>
-          <circle data-ring cx={200} cy={200} r={14} {...stroke} opacity={0} />
-          {NET_EDGES.map(([a, b], i) => (
-            <line
-              key={`e${i}`}
-              data-edge={i}
-              x1={NET_NODES[a][0]}
-              y1={NET_NODES[a][1]}
-              x2={NET_NODES[b][0]}
-              y2={NET_NODES[b][1]}
-              {...drawn}
-              opacity={0.55}
-            />
-          ))}
-          {NET_NODES.map(([x, y], i) => (
-            <circle key={`n${i}`} data-node={i} cx={x} cy={y} r={0} fill="currentColor" />
-          ))}
-        </>
-      );
-    case "reduce":
-      return (
-        <>
-          <line data-guide x1={72} y1={110} x2={72} y2={290} {...drawn} opacity={0.5} />
-          {REDUCE.map(({ from }, i) => (
-            <g key={i} data-stroke={i}>
-              <line x1={from[0]} y1={from[1]} x2={from[2]} y2={from[3]} {...stroke} />
-              <circle cx={from[0]} cy={from[1]} r={3.2} fill="currentColor" />
-            </g>
-          ))}
-        </>
-      );
-    case "scale":
-      return (
-        <>
-          {SCALE_CELLS.map(({ x, y, d }, i) => (
-            <rect
-              key={i}
-              data-cell={i}
-              x={x}
-              y={y}
-              width={46}
-              height={46}
-              rx={7}
-              {...stroke}
-              fill={d === 0 ? "currentColor" : "none"}
-              fillOpacity={d === 0 ? 0.9 : 0}
-              style={{ transformBox: "fill-box", transformOrigin: "center", transform: "scale(0)" }}
-            />
-          ))}
-        </>
-      );
     case "understand":
       return (
         <>
@@ -276,49 +182,6 @@ export function drawArt(svg: SVGSVGElement, t: number) {
   const kind = svg.dataset.art as ArtKind;
 
   switch (kind) {
-    case "network": {
-      q(svg, "[data-node]").forEach((el, i) => {
-        const s = ease(seg(t, i * 0.035, i * 0.035 + 0.22));
-        set(el, { r: (i === 0 ? 7 : 4) * s, opacity: s });
-      });
-      q(svg, "[data-edge]").forEach((el, i) => {
-        const s = ease(seg(t, 0.22 + i * 0.025, 0.5 + i * 0.025));
-        set(el, { "stroke-dashoffset": 1 - s });
-      });
-      const ring = svg.querySelector("[data-ring]");
-      if (ring) {
-        const s = seg(t, 0.55, 1);
-        set(ring, { r: 14 + s * 90, opacity: (1 - s) * 0.45 * (s > 0 ? 1 : 0) });
-      }
-      break;
-    }
-
-    case "reduce": {
-      // The signature moment: hold the mess a beat, then let it settle.
-      const e = ease(seg(t, 0.12, 0.82));
-      q(svg, "[data-stroke]").forEach((g, i) => {
-        const { from, to } = REDUCE[i];
-        const [x1, y1, x2, y2] = from.map((v, k) => lerp(v, to[k], e));
-        const line = g.firstElementChild!;
-        const dot = g.lastElementChild!;
-        set(line, { x1, y1, x2, y2, opacity: 0.32 + e * 0.68 });
-        set(dot, { cx: lerp(x1, 72, e), cy: y1, opacity: 0.5 + e * 0.5 });
-      });
-      const guide = svg.querySelector("[data-guide]");
-      if (guide) set(guide, { "stroke-dashoffset": 1 - ease(seg(t, 0.78, 1)) });
-      break;
-    }
-
-    case "scale": {
-      q<SVGRectElement>(svg, "[data-cell]").forEach((el, i) => {
-        const { d } = SCALE_CELLS[i];
-        const s = ease(seg(t, d * 0.17, d * 0.17 + 0.26));
-        el.style.transform = `scale(${s})`;
-        el.setAttribute("opacity", String(s));
-      });
-      break;
-    }
-
     case "understand": {
       const lens = svg.querySelector("[data-lens]");
       const handle = svg.querySelector("[data-handle]");

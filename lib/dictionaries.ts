@@ -76,88 +76,94 @@ const en = {
       body: "Tell me what you’re working on.",
     },
   },
-  /** The About page (app/[lang]/about). */
+  /** The About page (app/[lang]/about), in the order of the current site. */
   aboutPage: {
     title: "About",
     description:
-      "Product Designer with 10+ years of experience turning complex workflows, business rules and product constraints into clear, scalable experiences.",
+      "Product designer with 10+ years of experience across fintech, proptech, SaaS and enterprise platforms.",
     /** The left rail's names for the sections, in page order. */
-    nav: ["Intro", "Story", "Thinking", "Experience", "Process", "Capabilities", "Personal"],
+    nav: ["Intro", "About me", "Numbers", "Experience", "How I work", "Stack", "Photos"],
     hero: {
-      eyebrow: "About · Product Designer since 2015",
-      headline: ["I work where", "products get complex."],
-      body: "I’m a Product Designer with 10+ years of experience turning complex workflows, business rules and product constraints into clear, scalable experiences.",
-      /** The oversized word behind the portrait. */
-      backdrop: "Holoborodko",
-      scroll: "Scroll",
-      portrait: "Vlad Holoborodko, black and white portrait",
+      status: "Based in Europe · Available for new projects",
+      headline: ["Designing", "products where", "clarity meets", "complexity."],
+      resume: "Download resume",
+      cover: "Vlad at work, laptop open in a shared office",
     },
     story: {
-      label: "Story",
-      headline: ["From craft", "to systems."],
-      body: "I started with visual design. Over time, I became more interested in why products work, how systems behave and how design decisions affect people and business.",
-      /** The path, one step at a time; the last is where it has led. */
-      path: [
-        "Art",
-        "Graphic design",
-        "Digital design",
-        "Product design",
-        "Complex SaaS, enterprise, fintech",
-        "Lead-level product ownership",
-      ],
-      fragments: ["2015", "10+ years", "Product design"],
-      images: ["At work, laptop open in a shared office", "Portrait, sitting, smiling"],
-    },
-    philosophy: {
-      label: "Thinking",
-      statement:
-        "Good product design is not about making screens look simpler. It’s about making the product itself simpler.",
-      principles: [
-        { title: "Understand the system", body: "Users, business, constraints and data." },
-        {
-          title: "Reduce complexity",
-          body: "Find what matters, remove friction and create clear structure.",
-        },
-        {
-          title: "Build for scale",
-          body: "Create decisions, patterns and systems that survive beyond one screen.",
-        },
+      label: "About me",
+      body: [
+        "My path into design started with a strong visual foundation. I studied at an art school before earning a Bachelor’s degree in Graphic Design, where I developed an understanding of visual communication, composition, and problem-solving through design.",
+        "While still at university, I began my career as a freelance designer, working with clients across different industries and learning how to transform ideas into real products. Those early experiences taught me adaptability, ownership, and the importance of designing for both people and business outcomes.",
+        "Over the last 10+ years, I’ve collaborated with startups, scale-ups, and international companies, designing products across fintech, proptech, SaaS, LegalTech, retail, and enterprise software. Along the way, my focus naturally evolved from visual design to product design. That shift meant combining research, strategy, systems thinking, and user experience to solve increasingly complex challenges.",
+        "Today, I help teams turn complexity into clarity by creating digital products that are intuitive, scalable, and aligned with both user needs and business goals.",
       ],
     },
+    stats: [
+      {
+        value: "10+",
+        label: "Years of experience",
+        body: "A proven track record of designing and launching digital products across multiple industries.",
+      },
+      {
+        value: "40+",
+        label: "Projects launched",
+        body: "Delivered web and mobile products from concept to launch in startups and enterprise teams.",
+      },
+      {
+        value: "15+",
+        label: "Industries shaped",
+        body: "From investment platforms and retail systems to SaaS products, education platforms and enterprise solutions.",
+      },
+      {
+        value: "Lead",
+        label: "Product Designer",
+        body: "Driving product strategy, UX direction and execution.",
+      },
+    ],
     experience: {
       label: "Experience",
-      range: "2015 → 2026",
+      range: "2015 → Now",
       years: "10+ years",
       chapters: [
         {
-          years: "2025–2026",
-          role: "Lead Product Designer",
-          company: "SmartCrowd",
-          note: "Lead-level ownership: a full product transformation across mobile, web and partner platforms, and a design system built from scratch.",
-        },
-        {
-          years: "2023–2025",
-          role: "Lead Product Designer · Product Designer",
-          company: "SPD Tech · Fozzy Group",
-          note: "Complexity at enterprise scale: retail back-office workflows for one of Ukraine’s largest retailers, and lead-level work on multi-platform products.",
+          years: "2016–2018",
+          company: "Wandr",
+          role: ["UX/UI Designer", "Remote"],
+          note: "Designed UI and UX solutions for multiple client projects across web and mobile platforms, creating user flows, wireframes, prototypes, and high-fidelity interfaces.",
+          tags: ["UX Design", "User Flows", "Information Architecture", "Wireframing", "Prototyping", "Web & Mobile"],
         },
         {
           years: "2018–2023",
-          role: "Product Designer",
           company: "BitterBrains",
-          note: "Growing with a company from early stage to 50+ people as its main designer, across 15 products and 4 conferences, from research to design systems.",
+          role: ["Product Designer", "Remote"],
+          note: "Designed end-to-end user experiences for educational and SaaS products, from research and wireframes to polished interfaces, design systems, and developer handoff.",
+          tags: ["EdTech", "SaaS", "User Research", "Design Systems", "Developer Handoff", "End-to-End Design"],
         },
         {
-          years: "2015–2018",
-          role: "UX/UI Designer",
-          company: "Wandr · Freelance",
-          note: "Where it started: freelance work while still at university, then UX and UI for client products on web and mobile.",
+          years: "2023–2025",
+          company: "SPD Tech",
+          role: ["Lead Product Designer", "Part-time"],
+          note: "Led end-to-end product design for complex digital products, shaping user experiences, influencing product decisions, and driving successful product launches across multiple platforms.",
+          tags: ["Product Design", "Complex Workflows", "Cross-platform", "Design Leadership", "Product Strategy", "Digital Products"],
+        },
+        {
+          years: "2024–2025",
+          company: "Fozzy Group",
+          role: ["Product Designer", "Part-time"],
+          note: "Designed scalable enterprise solutions for one of Ukraine’s largest retail groups, simplifying complex processes, improving user productivity, and enhancing operational efficiency.",
+          tags: ["Enterprise Products", "Retail Operations", "Workflow Optimization", "Process Simplification", "Data-heavy Interfaces", "Scalable Systems"],
+        },
+        {
+          years: "2025–2026",
+          company: "SmartCrowd",
+          role: ["Lead Product Designer", "Remote"],
+          note: "Led product design for a regulated real estate investment platform, shaping core investment experiences across web and mobile products while driving product innovation and business growth.",
+          tags: ["Product Leadership", "Fintech", "Investment Platform", "Cross-platform", "Product Innovation", "Business Growth"],
         },
       ],
     },
     process: {
-      label: "Process",
-      heading: "How I work",
+      label: "How I work",
       statements: [
         "Understand before designing.",
         "Make the problem smaller.",
@@ -166,52 +172,38 @@ const en = {
         "Ship, learn, improve.",
       ],
     },
-    capabilities: {
-      label: "Capabilities",
+    stack: {
+      label: "Product design stack",
       groups: [
         {
-          title: "Product thinking",
-          items: ["Discovery", "Research", "Product strategy", "Analytics", "Validation"],
+          title: "Design",
+          items: ["Figma", "FigJam", "Framer", "Mobbin", "Protopie", "Principle", "Adobe Creative Suite"],
         },
         {
-          title: "Experience design",
-          items: [
-            "Information architecture",
-            "UX",
-            "Interaction design",
-            "Prototyping",
-            "Complex workflows",
-          ],
+          title: "Design Systems",
+          items: ["Storybook", "Design Tokens", "Variables", "Component Libraries", "Documentation", "Accessibility"],
         },
         {
-          title: "Systems & scale",
-          items: [
-            "Design systems",
-            "Tokens",
-            "Multi-platform products",
-            "Collaboration",
-            "Design leadership",
-          ],
+          title: "Research",
+          items: ["User Interviews", "Maze", "Usability Testing", "Surveys", "Competitive Analysis", "Journey Mapping"],
         },
+        { title: "Analytics", items: ["Amplitude", "SQL", "A/B Testing"] },
+        {
+          title: "Collaboration",
+          items: ["Jira", "Notion", "Confluence", "Slack", "Workshop Facilitation", "Stakeholder Management"],
+        },
+        { title: "AI", items: ["ChatGPT", "Claude", "Figma Make", "Generative AI Tools"] },
       ],
-      toolsLabel: "Tools",
     },
-    personal: {
-      label: "Personal",
-      headline: "Before product design, there was design.",
-      body: "Art school, then a degree in graphic design, then years of freelance visual work. Composition, type and detail still shape how I design products today.",
+    photos: {
+      label: "Photos",
       images: [
+        "Portrait, sitting, smiling",
         "On the slopes, snowboard in hand",
         "At the Louvre pyramid in Paris",
         "Sitting under the arches in Valencia",
         "Looking over the bay in Kotor",
       ],
-    },
-    cta: {
-      headline: ["Still curious?", "Here’s the formal version."],
-      resume: "Download resume",
-      body: "Or let’s talk about a product, a role or a complex problem.",
-      contact: "Contact me",
     },
   },
   contacts: {
@@ -386,81 +378,89 @@ const uk: Dictionary = {
   aboutPage: {
     title: "Про мене",
     description:
-      "Продуктовий дизайнер з досвідом понад 10 років: перетворюю складні процеси, бізнес-правила й обмеження продукту на зрозумілий масштабований досвід.",
-    nav: ["Вступ", "Історія", "Мислення", "Досвід", "Процес", "Навички", "Особисте"],
+      "Продуктовий дизайнер з досвідом понад 10 років у Fintech, Proptech, SaaS та enterprise-платформах.",
+    nav: ["Вступ", "Про мене", "Цифри", "Досвід", "Як я працюю", "Стек", "Фото"],
     hero: {
-      eyebrow: "Про мене · Продуктовий дизайнер з 2015",
-      headline: ["Я працюю там,", "де продукт стає складним."],
-      body: "Я продуктовий дизайнер з досвідом понад 10 років: перетворюю складні процеси, бізнес-правила й обмеження продукту на зрозумілий масштабований досвід.",
-      backdrop: "Holoborodko",
-      scroll: "Гортай",
-      portrait: "Влад Голобородько, чорно-білий портрет",
+      status: "Живу в Європі · Відкритий до нових проєктів",
+      headline: ["Проєктую", "продукти, де", "ясність зустрічає", "складність."],
+      resume: "Завантажити резюме",
+      cover: "Влад за роботою, з ноутбуком у спільному офісі",
     },
     story: {
-      label: "Історія",
-      headline: ["Від ремесла", "до систем."],
-      body: "Я починав із візуального дизайну. З часом мене все більше цікавило, чому продукти працюють, як поводяться системи і як дизайн-рішення впливають на людей і бізнес.",
-      path: [
-        "Мистецтво",
-        "Графічний дизайн",
-        "Цифровий дизайн",
-        "Продуктовий дизайн",
-        "Складні SaaS, enterprise, фінтех",
-        "Відповідальність за продукт на рівні lead",
-      ],
-      fragments: ["2015", "10+ років", "Product design"],
-      images: ["За роботою, з ноутбуком у спільному офісі", "Портрет, сидить і усміхається"],
-    },
-    philosophy: {
-      label: "Мислення",
-      statement:
-        "Хороший продуктовий дизайн не про те, щоб екрани виглядали простіше. Він про те, щоб простішим став сам продукт.",
-      principles: [
-        { title: "Зрозуміти систему", body: "Користувачі, бізнес, обмеження й дані." },
-        {
-          title: "Зменшити складність",
-          body: "Знайти головне, прибрати тертя й створити ясну структуру.",
-        },
-        {
-          title: "Будувати на масштаб",
-          body: "Рішення, патерни й системи, які живуть довше за один екран.",
-        },
+      label: "Про мене",
+      body: [
+        "Мій шлях у дизайн почався з міцної візуальної основи. Я навчався в художній школі, а потім здобув бакалавра з графічного дизайну, де зрозумів візуальну комунікацію, композицію і те, як розв’язувати задачі через дизайн.",
+        "Ще під час навчання в університеті я почав працювати дизайнером на фрилансі, з клієнтами з різних галузей, і вчився перетворювати ідеї на справжні продукти. Цей ранній досвід навчив мене гнучкості, відповідальності й того, що дизайн має працювати і для людей, і для бізнесу.",
+        "За останні 10+ років я працював зі стартапами, scale-up і міжнародними компаніями, проєктуючи продукти у Fintech, Proptech, SaaS, LegalTech, Retail та enterprise-софті. З часом мій фокус природно змістився з візуального дизайну на продуктовий. Це означало поєднати дослідження, стратегію, системне мислення й UX, щоб розв’язувати дедалі складніші задачі.",
+        "Сьогодні я допомагаю командам перетворювати складне на зрозуміле: створюю цифрові продукти, інтуїтивні, масштабовані й узгоджені і з потребами користувачів, і з цілями бізнесу.",
       ],
     },
+    stats: [
+      {
+        value: "10+",
+        label: "Років досвіду",
+        body: "Підтверджений досвід проєктування і запуску цифрових продуктів у багатьох галузях.",
+      },
+      {
+        value: "40+",
+        label: "Запущених проєктів",
+        body: "Веб- і мобільні продукти від концепції до запуску, у стартапах і enterprise-командах.",
+      },
+      {
+        value: "15+",
+        label: "Галузей",
+        body: "Від інвестиційних платформ і ритейл-систем до SaaS, освітніх платформ і enterprise-рішень.",
+      },
+      {
+        value: "Lead",
+        label: "Product Designer",
+        body: "Продуктова стратегія, UX-напрям і втілення.",
+      },
+    ],
     experience: {
       label: "Досвід",
-      range: "2015 → 2026",
+      range: "2015 → Сьогодні",
       years: "10+ років",
       chapters: [
         {
-          years: "2025–2026",
-          role: "Lead Product Designer",
-          company: "SmartCrowd",
-          note: "Відповідальність на рівні lead: повна трансформація продукту на мобільних, веб- і партнерських платформах та дизайн-система з нуля.",
-        },
-        {
-          years: "2023–2025",
-          role: "Lead Product Designer · Product Designer",
-          company: "SPD Tech · Fozzy Group",
-          note: "Складність корпоративного масштабу: бек-офісні процеси одного з найбільших ритейлерів України та lead-робота над мультиплатформними продуктами.",
+          years: "2016–2018",
+          company: "Wandr",
+          role: ["UX/UI Designer", "Remote"],
+          note: "Проєктував UI та UX для клієнтських проєктів у вебі й мобільних: user flows, вайрфрейми, прототипи та фінальні інтерфейси.",
+          tags: ["UX Design", "User Flows", "Information Architecture", "Wireframing", "Prototyping", "Web & Mobile"],
         },
         {
           years: "2018–2023",
-          role: "Product Designer",
           company: "BitterBrains",
-          note: "Ріс разом із компанією від раннього етапу до 50+ людей як її головний дизайнер: 15 продуктів і 4 конференції, від досліджень до дизайн-систем.",
+          role: ["Product Designer", "Remote"],
+          note: "Проєктував повний користувацький досвід для освітніх і SaaS-продуктів: від досліджень і вайрфреймів до готових інтерфейсів, дизайн-систем і передачі в розробку.",
+          tags: ["EdTech", "SaaS", "User Research", "Design Systems", "Developer Handoff", "End-to-End Design"],
         },
         {
-          years: "2015–2018",
-          role: "UX/UI Designer",
-          company: "Wandr · Фриланс",
-          note: "З чого все почалося: фриланс ще під час навчання в університеті, потім UX і UI для клієнтських продуктів у вебі та мобільних.",
+          years: "2023–2025",
+          company: "SPD Tech",
+          role: ["Lead Product Designer", "Part-time"],
+          note: "Вів продуктовий дизайн складних цифрових продуктів від початку до кінця: формував досвід користувачів, впливав на продуктові рішення й доводив запуски до успіху на кількох платформах.",
+          tags: ["Product Design", "Complex Workflows", "Cross-platform", "Design Leadership", "Product Strategy", "Digital Products"],
+        },
+        {
+          years: "2024–2025",
+          company: "Fozzy Group",
+          role: ["Product Designer", "Part-time"],
+          note: "Проєктував масштабовані enterprise-рішення для однієї з найбільших ритейл-груп України: спрощував складні процеси, підвищував продуктивність користувачів і операційну ефективність.",
+          tags: ["Enterprise Products", "Retail Operations", "Workflow Optimization", "Process Simplification", "Data-heavy Interfaces", "Scalable Systems"],
+        },
+        {
+          years: "2025–2026",
+          company: "SmartCrowd",
+          role: ["Lead Product Designer", "Remote"],
+          note: "Вів продуктовий дизайн регульованої платформи інвестицій у нерухомість: формував ключовий інвестиційний досвід у веб- і мобільних продуктах, рухаючи інновації та зростання бізнесу.",
+          tags: ["Product Leadership", "Fintech", "Investment Platform", "Cross-platform", "Product Innovation", "Business Growth"],
         },
       ],
     },
     process: {
-      label: "Процес",
-      heading: "Як я працюю",
+      label: "Як я працюю",
       statements: [
         "Зрозуміти, перш ніж проєктувати.",
         "Зробити проблему меншою.",
@@ -469,52 +469,38 @@ const uk: Dictionary = {
         "Запускати, вчитися, покращувати.",
       ],
     },
-    capabilities: {
-      label: "Навички",
+    stack: {
+      label: "Стек продуктового дизайну",
       groups: [
         {
-          title: "Продуктове мислення",
-          items: ["Discovery", "Дослідження", "Продуктова стратегія", "Аналітика", "Валідація"],
+          title: "Design",
+          items: ["Figma", "FigJam", "Framer", "Mobbin", "Protopie", "Principle", "Adobe Creative Suite"],
         },
         {
-          title: "Дизайн досвіду",
-          items: [
-            "Інформаційна архітектура",
-            "UX",
-            "Interaction design",
-            "Прототипування",
-            "Складні процеси",
-          ],
+          title: "Design Systems",
+          items: ["Storybook", "Design Tokens", "Variables", "Component Libraries", "Documentation", "Accessibility"],
         },
         {
-          title: "Системи й масштаб",
-          items: [
-            "Дизайн-системи",
-            "Токени",
-            "Мультиплатформні продукти",
-            "Співпраця",
-            "Лідерство в дизайні",
-          ],
+          title: "Research",
+          items: ["User Interviews", "Maze", "Usability Testing", "Surveys", "Competitive Analysis", "Journey Mapping"],
         },
+        { title: "Analytics", items: ["Amplitude", "SQL", "A/B Testing"] },
+        {
+          title: "Collaboration",
+          items: ["Jira", "Notion", "Confluence", "Slack", "Workshop Facilitation", "Stakeholder Management"],
+        },
+        { title: "AI", items: ["ChatGPT", "Claude", "Figma Make", "Generative AI Tools"] },
       ],
-      toolsLabel: "Інструменти",
     },
-    personal: {
-      label: "Особисте",
-      headline: "До продуктового дизайну був просто дизайн.",
-      body: "Художня школа, потім диплом графічного дизайнера, потім роки візуальної роботи на фрилансі. Композиція, типографіка й деталі досі визначають, як я проєктую продукти.",
+    photos: {
+      label: "Фото",
       images: [
+        "Портрет, сидить і усміхається",
         "На схилі, зі сноубордом",
         "Біля піраміди Лувру в Парижі",
         "Під арками у Валенсії",
         "З видом на затоку в Которі",
       ],
-    },
-    cta: {
-      headline: ["Досі цікаво?", "Ось офіційна версія."],
-      resume: "Завантажити резюме",
-      body: "Або поговорімо про продукт, роль чи складну задачу.",
-      contact: "Написати мені",
     },
   },
   contacts: {

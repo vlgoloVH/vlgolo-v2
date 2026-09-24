@@ -49,23 +49,3 @@ export function useSteps(
 
   return active;
 }
-
-/** For a drawing that is not pinned (the phone layout): it plays as it
- *  travels up the screen, finished by the time it reaches the upper third. */
-export function useViewArt(ref: RefObject<SVGSVGElement | null>) {
-  useEffect(() => {
-    const svg = ref.current;
-    if (!svg) return;
-    if (prefersReducedMotion()) {
-      drawArt(svg, 1);
-      return;
-    }
-    return onScrollFrame(() => {
-      if (!svg.getClientRects().length) return;
-      const rect = svg.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const t = (vh - rect.top) / (vh * 0.7);
-      drawArt(svg, Math.min(Math.max(t, 0), 1));
-    });
-  }, [ref]);
-}
