@@ -3,7 +3,6 @@ import type { CaseCopy } from "@/lib/cases/types";
 export const smartcrowd: CaseCopy = {
   hero: {
     statement: "Перетворення розрізненої інвестиційної платформи на одну масштабовану екосистему.",
-    meta: ["Фінтех / Проптех", "2025–2026", "Lead Product Designer", "Веб / iOS / Android"],
   },
   context: {
     invite:
@@ -12,7 +11,6 @@ export const smartcrowd: CaseCopy = {
       "Платформа роками росла стихійно. У результаті шляхи користувачів розпалися на фрагменти, патерни стали непослідовними, а сам продукт уже не відповідав ні амбіціям компанії, ні очікуванням користувачів.",
     outcome:
       "Після презентації результатів аудиту я приєднався до SmartCrowd як Lead Product Designer. Те, що починалося як аудит, переросло в повну трансформацію платформи: мобільний застосунок, веб, партнерські платформи і дизайн-система.",
-    labels: ["Explore", "Invest", "Portfolio", "Wallet", "Account"],
   },
   role: {
     title: "Lead Product Designer",

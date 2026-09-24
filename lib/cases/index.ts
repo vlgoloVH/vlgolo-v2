@@ -29,7 +29,7 @@ const UK: Record<CaseSlug, CaseCopy> = {
 function localize(en: CaseStudy, copy: CaseCopy): CaseStudy {
   return {
     ...en,
-    hero: copy.hero,
+    hero: { ...en.hero, ...copy.hero },
     context: { ...en.context, ...copy.context },
     role: copy.role,
     overview: { images: en.overview.images.map((image, i) => ({ ...image, alt: copy.overview[i] })) },

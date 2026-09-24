@@ -53,11 +53,13 @@ export interface CaseStudy {
 }
 
 /** A case's words in another language, in the order of its English data
- *  (lib/cases/uk). The pictures, the colour and the drawing's shape come
- *  from the English case. */
+ *  (lib/cases/uk). The pictures, the colour and the drawing come from the
+ *  English case, and so do the technical terms that stay in English: the
+ *  details under the statement (industry, years, role, platforms) and the
+ *  names on the drawing. */
 export interface CaseCopy {
-  hero: CaseStudy["hero"];
-  context: Pick<CaseStudy["context"], "invite" | "situation" | "outcome" | "labels">;
+  hero: Pick<CaseStudy["hero"], "statement">;
+  context: Pick<CaseStudy["context"], "invite" | "situation" | "outcome">;
   role: CaseStudy["role"];
   /** The overview images' descriptions, in order. */
   overview: string[];
