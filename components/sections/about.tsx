@@ -33,7 +33,7 @@ export function About({ lang, dict }: { lang: Locale; dict: Dictionary }) {
 
       {/* The copy starts further in than the rule, at the proportion of the
           layout: 22% of the width, which is 317px on a 1440 screen. */}
-      <div className="relative z-10 w-full px-6 pb-[64vh] pt-28 md:px-0 md:py-0 md:pl-[clamp(var(--frame-pad),22vw,470px)]">
+      <div className="relative z-10 w-full px-6 pb-[72vh] pt-28 md:px-0 md:py-0 md:pl-[clamp(var(--frame-pad),22vw,470px)]">
         <div className="mx-auto max-w-[34rem] text-center md:mx-0 md:text-left">
           <p className="reveal [--reveal-i:1] flex items-center justify-center gap-3 text-eyebrow font-medium uppercase text-ink md:justify-start">
             <span
@@ -66,7 +66,7 @@ export function About({ lang, dict }: { lang: Locale; dict: Dictionary }) {
       {/* Standing on the floor of the section, at the clip's own 9:16 ratio so
           the graded fade meets the section edge to edge. It resolves rather than
           slides: something this large sliding in reads as heavy. */}
-      <div className="pointer-events-none absolute bottom-0 right-1/2 aspect-[9/16] h-[54vh] translate-x-1/2 md:right-[15%] md:h-[min(96vh,62vw)] md:translate-x-0">
+      <div className="pointer-events-none absolute bottom-0 right-1/2 aspect-[9/16] h-[66vh] translate-x-1/2 md:right-[15%] md:h-[min(96vh,62vw)] md:translate-x-0">
         <div className="reveal-soft h-full w-full">
           <AboutVideo />
         </div>
@@ -74,7 +74,7 @@ export function About({ lang, dict }: { lang: Locale; dict: Dictionary }) {
 
       {/* Phone only: the button centred at the foot of the screen, over the
           portrait, bending it the way the hero button bends the hero video. */}
-      <div className="absolute inset-x-0 bottom-24 z-20 flex justify-center md:hidden">
+      <div className="absolute inset-x-0 bottom-32 z-20 flex justify-center md:hidden">
         <GlassButton
           href={localizePath(lang, ABOUT.href)}
           label={dict.about.cta}
