@@ -51,3 +51,17 @@ export interface CaseStudy {
   };
   reflection: string[];
 }
+
+/** A case's words in another language, in the order of its English data
+ *  (lib/cases/uk). The pictures, the colour and the drawing's shape come
+ *  from the English case. */
+export interface CaseCopy {
+  hero: CaseStudy["hero"];
+  context: Pick<CaseStudy["context"], "invite" | "situation" | "outcome" | "labels">;
+  role: CaseStudy["role"];
+  /** The overview images' descriptions, in order. */
+  overview: string[];
+  chapters: Pick<Chapter, "name" | "title" | "description" | "points">[];
+  impact: CaseStudy["impact"];
+  reflection: string[];
+}

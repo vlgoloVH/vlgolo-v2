@@ -34,9 +34,19 @@ export function CaseHero({
               </span>
             ))}
           </h1>
-          <p className="ab-load ab-rise [--d:1.1s] mt-6 max-w-[26rem] text-[18px] leading-[1.5] text-ink/80 md:absolute md:right-[var(--case-pad)] md:top-[15svh] md:mt-0 md:max-w-[22rem] md:text-[21px]">
-            {study.hero.statement}
-          </p>
+          {/* The statement with the details under it, so a longer statement
+              (the Ukrainian ones) pushes the details down instead of running
+              into them. */}
+          <div className="mt-6 md:absolute md:right-[var(--case-pad)] md:top-[15svh] md:mt-0 md:w-[25rem]">
+            <p className="ab-load ab-rise [--d:1.1s] max-w-[26rem] text-[18px] leading-[1.5] text-ink/80 md:text-[21px]">
+              {study.hero.statement}
+            </p>
+            <ul className="cs-hero-meta ab-load ab-rise [--d:1.35s] mt-6 flex flex-wrap gap-x-8 gap-y-2 font-mono text-[12px] uppercase tracking-[0.16em] text-ink/85 md:mt-8 md:flex-col md:gap-y-2.5 md:text-[14px]">
+              {study.hero.meta.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         <div className="cs-hero-visual relative z-0 mt-10 flex flex-1 items-start justify-center px-6 md:absolute md:inset-x-0 md:bottom-0 md:mt-0 md:h-[78svh] md:px-[var(--case-pad)]">
@@ -54,12 +64,6 @@ export function CaseHero({
             </div>
           </div>
         </div>
-
-        <ul className="cs-hero-meta ab-load ab-rise [--d:1.35s] relative z-10 mt-8 flex flex-wrap gap-x-8 gap-y-2 px-6 pb-10 font-mono text-[12px] uppercase tracking-[0.16em] text-ink/85 md:absolute md:right-[var(--case-pad)] md:top-[calc(15svh+9rem)] md:mt-0 md:w-[22rem] md:flex-col md:gap-y-2.5 md:text-[14px] md:px-0 md:pb-0">
-          {study.hero.meta.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
       </div>
     </Track>
   );

@@ -34,7 +34,7 @@ export const dynamicParams = false;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { lang, slug } = await params;
-  const found = getCase(slug);
+  const found = getCase(slug, lang as Locale);
   if (!found) return {};
   const path = `/cases/${slug}`;
   return {
@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
  *  colour and its Context drawing, set in its data (lib/cases). */
 export default async function CasePage({ params }: { params: Params }) {
   const { lang, slug } = await params;
-  const found = getCase(slug);
+  const found = getCase(slug, lang as Locale);
   if (!found) notFound();
   const { card, study, next } = found;
   const locale = lang as Locale;

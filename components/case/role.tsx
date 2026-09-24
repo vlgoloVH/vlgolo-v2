@@ -48,7 +48,7 @@ export function CaseRole({
               {group.items.map((item, i) => (
                 <li
                   key={item}
-                  className="cs-chip rounded-full border border-white/15 bg-white/[0.03] px-4 py-2 text-[15px] leading-[1.3] text-ink/90 md:text-[16px]"
+                  className="cs-chip rounded-[20px] border border-white/15 bg-white/[0.03] px-4 py-2 text-[15px] leading-[1.3] text-ink/90 md:text-[16px]"
                   style={{ "--c": i } as React.CSSProperties}
                 >
                   {item}
