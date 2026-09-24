@@ -35,7 +35,7 @@ export function Contacts({ dict }: { dict: Dictionary }) {
         className="pointer-events-none absolute inset-y-0 right-0 hidden w-[calc(var(--frame-line)*3)] bg-[linear-gradient(270deg,rgba(0,0,0,0.88),rgba(0,0,0,0.65)_33%,transparent)] md:block"
       />
 
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden md:block">
         <span className="reveal-line absolute inset-y-0 left-[var(--frame-line)] w-px bg-white/12" />
         <span className="reveal-line absolute inset-y-0 right-[var(--frame-line)] w-px bg-white/12" />
       </div>
@@ -52,10 +52,12 @@ export function Contacts({ dict }: { dict: Dictionary }) {
 
       {/* Centred on the screen like the hero, with the hero's headline type,
           so the page closes on the shape it opened with. */}
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 pb-28 pt-24 text-center md:px-[var(--frame-pad)] md:pb-24 md:pt-24">
+      {/* A phone's slide is a min-height, not a height, so there the block
+          takes the full screen itself to be centred in it. */}
+      <div className="relative z-10 flex h-full min-h-[var(--app-vh,100svh)] flex-col items-center justify-center px-6 pb-28 pt-24 md:min-h-0 text-center md:px-[var(--frame-pad)] md:pb-24 md:pt-24">
         {/* The address as plain text, where the hero has its eyebrow: to read
             or copy, not to click. The button below is the way to write. */}
-        <p className="reveal [--reveal-i:2] select-text text-[17px] font-medium tracking-[0.04em] text-ink/85 md:text-[22px]">
+        <p className="reveal [--reveal-i:2] select-text text-[18px] font-medium tracking-[0.04em] text-ink/85 md:text-[22px]">
           {SITE.email}
         </p>
 
@@ -67,7 +69,7 @@ export function Contacts({ dict }: { dict: Dictionary }) {
           ))}
         </h2>
 
-        <p className="reveal [--reveal-i:5] mt-6 max-w-[28rem] text-balance text-[17px] leading-relaxed text-ink/75 md:mt-7 md:text-[20px]">
+        <p className="reveal [--reveal-i:5] mt-6 max-w-[28rem] text-balance text-[20px] leading-relaxed text-ink/75 md:mt-7">
           {copy.body}
         </p>
 

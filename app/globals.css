@@ -69,6 +69,15 @@
   --video-dim: 0.48;
 }
 
+/* On a phone the vw scale bottoms out at its clamp floor, which reads small, so
+   the two sizes are set a step up there. Desktop keeps the Figma scale above. */
+@media (max-width: 767px) {
+  :root {
+    --text-display: 2.75rem;
+    --text-eyebrow: 0.75rem;
+  }
+}
+
 @layer base {
   html {
     color-scheme: dark;
@@ -703,6 +712,47 @@ html:has(.contact-dialog[open]) {
 }
 
 /* ──────────────────────────────────────────────
+   Phone menu (see MobileMenu). The sheet fades in, then the links rise in one
+   after another; closing is a plain, quicker fade.
+   ────────────────────────────────────────────── */
+.mobile-menu {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.35s var(--ease-soft),
+    visibility 0s linear 0.35s;
+
+  &[data-open] {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.45s var(--ease-soft);
+  }
+}
+
+.mobile-menu-item {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.3s var(--ease-soft),
+    transform 0.3s var(--ease-soft);
+
+  [data-open] & {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.7s var(--ease-soft),
+      transform 0.7s var(--ease-soft);
+    transition-delay: calc(0.12s + var(--menu-i, 0) * 0.07s);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu-item {
+    transform: none;
+  }
+}
+
+/* ──────────────────────────────────────────────
    Testimonials
    ────────────────────────────────────────────── */
 
@@ -877,12 +927,21 @@ html:has(.contact-dialog[open]) {
 }
 
 @media (max-width: 767px) {
+  /* On a phone the quote sits centred, just above its author, and the mark
+     goes back into the line: hanging in the margin only works flush left. */
   .t-quote {
-    font-size: clamp(24px, 7vw, 30px);
+    align-self: end;
+    text-align: center;
+    font-size: clamp(27px, 7.8vw, 34px);
 
     &[data-size="m"] {
-      font-size: clamp(22px, 6.2vw, 27px);
+      font-size: clamp(24px, 6.9vw, 30px);
     }
+  }
+
+  .t-mark {
+    position: static;
+    margin-right: 0;
   }
 
   .t-author {

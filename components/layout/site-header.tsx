@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
+import { MobileMenu } from "@/components/layout/mobile-menu";
 import type { Dictionary } from "@/lib/dictionaries";
 import { localizePath, type Locale } from "@/lib/i18n";
 import { NAV_LINKS, SITE } from "@/lib/site";
@@ -53,7 +54,10 @@ export function SiteHeader({ lang, dict }: { lang: Locale; dict: Dictionary }) {
         </nav>
 
         <div className="flex items-center gap-5 md:gap-8">
-          <LanguageSwitcher lang={lang} label={dict.ui.language} />
+          {/* On a phone the language choice lives in the menu instead. */}
+          <div className="hidden md:block">
+            <LanguageSwitcher lang={lang} label={dict.ui.language} />
+          </div>
 
           <a
             href={SITE.resume}
@@ -80,6 +84,8 @@ export function SiteHeader({ lang, dict }: { lang: Locale; dict: Dictionary }) {
               <path d="M2 12.5h10" />
             </svg>
           </a>
+
+          <MobileMenu lang={lang} dict={dict} />
         </div>
       </div>
     </header>

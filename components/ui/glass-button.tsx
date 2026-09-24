@@ -189,8 +189,8 @@ interface Props {
   /** A link when set; without it the pill is a button (see onClick, type). */
   href?: string;
   label: string;
-  /** What the lens refracts: a video, or a still picture (an <img>, e.g. the
-   *  contact scene). Defaults to the first video on the page; null means
+  /** What the lens refracts: a video, a canvas (e.g. the About portrait), or
+   *  a still picture (an <img>, e.g. the contact scene). Defaults to the first video on the page; null means
    *  there is nothing to refract, and the lens runs flat — the sheen, the
    *  glare and the hover colour still play. */
   videoSelector?: string | null;
@@ -234,11 +234,16 @@ export function GlassButton({
     if (!root || !canvas) return;
 
     const found = videoSelector
-      ? document.querySelector<HTMLVideoElement | HTMLImageElement>(videoSelector)
+      ? document.querySelector<HTMLVideoElement | HTMLImageElement | HTMLCanvasElement>(videoSelector)
       : null;
-    // The picture behind the pill: a video is uploaded every frame, a still
-    // image once, as soon as it has loaded.
-    const video = found instanceof HTMLVideoElement || found instanceof HTMLImageElement ? found : null;
+    // The picture behind the pill: a video or a canvas is uploaded every
+    // frame, a still image once, as soon as it has loaded.
+    const video =
+      found instanceof HTMLVideoElement ||
+      found instanceof HTMLImageElement ||
+      found instanceof HTMLCanvasElement
+        ? found
+        : null;
     const still = video instanceof HTMLImageElement;
     let uploaded = false;
 
@@ -389,6 +394,7 @@ export function GlassButton({
       if (!onScreen) return;
       if (video instanceof HTMLVideoElement && video.readyState < 2) return;
       if (video instanceof HTMLImageElement && !(video.complete && video.naturalWidth)) return;
+      if (video instanceof HTMLCanvasElement && !video.width) return;
 
       const pill = root.getBoundingClientRect();
       if (!pill.width) return;
@@ -397,8 +403,14 @@ export function GlassButton({
       // object-fit and object-position (the hero video is contained, the
       // contact scene covers and sits to one side).
       const box = video?.getBoundingClientRect();
-      const natW = video ? (still ? video.naturalWidth : (video as HTMLVideoElement).videoWidth) : 0;
-      const natH = video ? (still ? video.naturalHeight : (video as HTMLVideoElement).videoHeight) : 0;
+      const natW =
+        video instanceof HTMLImageElement ? video.naturalWidth
+        : video instanceof HTMLVideoElement ? video.videoWidth
+        : video?.width ?? 0;
+      const natH =
+        video instanceof HTMLImageElement ? video.naturalHeight
+        : video instanceof HTMLVideoElement ? video.videoHeight
+        : video?.height ?? 0;
       const style = video ? getComputedStyle(video) : null;
       const fit = style?.objectFit === "cover" ? Math.max : Math.min;
       const scale = video && box ? fit(box.width / natW, box.height / natH) : 1;

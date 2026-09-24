@@ -15,7 +15,7 @@ export function About({ lang, dict }: { lang: Locale; dict: Dictionary }) {
       className="section-slide relative z-10 flex items-center overflow-hidden bg-surface"
     >
       {/* The hero's rules carry on through the section. */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden md:block">
         <span className="reveal-line absolute inset-y-0 left-[var(--frame-line)] w-px bg-white/12" />
         <span className="reveal-line absolute inset-y-0 right-[var(--frame-line)] w-px bg-white/12" />
       </div>
@@ -34,8 +34,8 @@ export function About({ lang, dict }: { lang: Locale; dict: Dictionary }) {
       {/* The copy starts further in than the rule, at the proportion of the
           layout: 22% of the width, which is 317px on a 1440 screen. */}
       <div className="relative z-10 w-full px-6 pb-[58vh] pt-28 md:px-0 md:py-0 md:pl-[clamp(var(--frame-pad),22vw,470px)]">
-        <div className="max-w-[34rem]">
-          <p className="reveal [--reveal-i:1] flex items-center gap-3 text-eyebrow font-medium uppercase text-ink">
+        <div className="mx-auto max-w-[34rem] text-center md:mx-0 md:text-left">
+          <p className="reveal [--reveal-i:1] flex items-center justify-center gap-3 text-eyebrow font-medium uppercase text-ink md:justify-start">
             <span
               aria-hidden="true"
               className="hand-wave inline-block origin-[70%_80%] tracking-normal [animation:hand-wave_4.5s_var(--ease-soft)_infinite]"
@@ -51,12 +51,15 @@ export function About({ lang, dict }: { lang: Locale; dict: Dictionary }) {
             ))}
           </div>
 
-          <GlassButton
-            href={localizePath(lang, ABOUT.href)}
-            label={dict.about.cta}
-            videoSelector={null}
-            className="reveal [--reveal-i:3] mt-14"
-          />
+          {/* On a phone the button stands on the portrait instead, see below. */}
+          <div className="hidden md:block">
+            <GlassButton
+              href={localizePath(lang, ABOUT.href)}
+              label={dict.about.cta}
+              videoSelector={null}
+              className="reveal [--reveal-i:3] mt-14"
+            />
+          </div>
         </div>
       </div>
 
@@ -67,6 +70,17 @@ export function About({ lang, dict }: { lang: Locale; dict: Dictionary }) {
         <div className="reveal-soft h-full w-full">
           <AboutVideo />
         </div>
+      </div>
+
+      {/* Phone only: the button centred at the foot of the screen, over the
+          portrait, bending it the way the hero button bends the hero video. */}
+      <div className="absolute inset-x-0 bottom-12 z-20 flex justify-center md:hidden">
+        <GlassButton
+          href={localizePath(lang, ABOUT.href)}
+          label={dict.about.cta}
+          videoSelector="[data-portrait-canvas]"
+          className="reveal [--reveal-i:3]"
+        />
       </div>
     </RevealSection>
   );

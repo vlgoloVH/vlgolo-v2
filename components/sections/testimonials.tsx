@@ -12,7 +12,7 @@ export function Testimonials({ dict }: { dict: Dictionary }) {
       id="testimonials"
       className="section-slide relative z-30 overflow-hidden bg-surface"
     >
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden md:block">
         <span className="reveal-line absolute inset-y-0 left-[var(--frame-line)] w-px bg-white/12" />
         <span className="reveal-line absolute inset-y-0 right-[var(--frame-line)] w-px bg-white/12" />
       </div>

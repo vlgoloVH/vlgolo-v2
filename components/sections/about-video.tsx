@@ -74,10 +74,13 @@ export function AboutVideo() {
     );
     visibility.observe(canvas);
 
+    // The buffer is kept between frames because the phone's About button
+    // samples this canvas for its refraction, on its own frame loop.
     const gl = canvas.getContext("webgl", {
       alpha: true,
       premultipliedAlpha: false,
       antialias: false,
+      preserveDrawingBuffer: true,
     });
     if (!gl) return () => visibility.disconnect();
 
@@ -215,6 +218,7 @@ export function AboutVideo() {
 
       <canvas
         ref={canvasRef}
+        data-portrait-canvas=""
         aria-hidden="true"
         className="absolute inset-0 h-full w-full opacity-0 transition-opacity duration-500 group-data-[live=true]:opacity-100"
       />

@@ -65,9 +65,11 @@ export function HeroVideo() {
   return (
     <video
       ref={ref}
-      /* `contain` keeps the whole frame and its aspect ratio at every viewport
-         shape — never cropped, never stretched — and centres it. */
-      className="enter-video absolute inset-0 h-full w-full object-contain object-center"
+      /* From tablet up, `contain` keeps the whole frame and its aspect ratio,
+         never cropped, never stretched, and centres it. A phone is too narrow
+         for that, so there the footage covers the screen instead, framed on
+         the figure at the desk rather than on the middle of the room. */
+      className="enter-video absolute inset-0 h-full w-full object-cover object-[36%_50%] md:object-contain md:object-center"
       poster={HERO.video.poster}
       preload="auto"
       playsInline

@@ -91,11 +91,14 @@ export function TestimonialsStage({ label, fullLabel, closeLabel, items }: Props
   const current = items[active];
 
   return (
-    <div className="reveal [--reveal-i:2] absolute inset-y-0 left-[var(--frame-line)] right-[var(--frame-line)] flex flex-col gap-6 px-6 pb-8 pt-24 md:grid md:grid-cols-[minmax(0,1.9fr)_minmax(0,1fr)] md:grid-rows-[minmax(0,1fr)] md:gap-[5vw] md:px-[clamp(32px,5vw,104px)] md:pb-[clamp(48px,9vh,104px)] md:pt-[clamp(112px,16vh,160px)]">
-      <figure aria-live="polite" className="flex min-h-0 flex-1 flex-col">
+    <div className="reveal [--reveal-i:2] absolute inset-0 flex flex-col gap-6 px-6 pb-20 pt-24 md:left-[var(--frame-line)] md:right-[var(--frame-line)] md:grid md:grid-cols-[minmax(0,1.9fr)_minmax(0,1fr)] md:grid-rows-[minmax(0,1fr)] md:gap-[5vw] md:px-[clamp(32px,5vw,104px)] md:pb-[clamp(48px,9vh,104px)] md:pt-[clamp(112px,16vh,160px)]">
+      <figure aria-live="polite" className="flex min-h-0 flex-1 flex-col justify-center">
         {/* The quotes share one cell of this box and are each sized to fill
-            it, so the name below stays put whichever one is showing. */}
-        <div ref={boxRef} className="grid min-h-0 flex-1 grid-rows-[minmax(0,1fr)]">
+            it, so the name below stays put whichever one is showing. On a
+            phone the box is only as tall as the longest quote (and shrinks
+            with it on a short screen), so the name sits right under the quote
+            and the pair is centred on the screen. */}
+        <div ref={boxRef} className="grid min-h-0 flex-initial grid-rows-[minmax(0,1fr)] md:flex-1">
           {items.map((item, index) => (
             <blockquote
               key={index}
@@ -114,7 +117,7 @@ export function TestimonialsStage({ label, fullLabel, closeLabel, items }: Props
                 type="button"
                 tabIndex={index === active ? 0 : -1}
                 onClick={() => dialogRef.current?.showModal()}
-                className="mt-5 block text-[11px] font-normal uppercase leading-none tracking-[0.2em] text-ink/45 underline-offset-4 transition-colors duration-300 can-hover:text-ink can-hover:underline md:mt-7 md:text-[12px]"
+                className="mx-auto mt-5 block text-[11px] font-normal uppercase leading-none tracking-[0.2em] text-ink/45 underline-offset-4 transition-colors duration-300 can-hover:text-ink can-hover:underline md:mx-0 md:mt-7 md:text-[12px]"
               >
                 {fullLabel}
               </button>
@@ -122,7 +125,7 @@ export function TestimonialsStage({ label, fullLabel, closeLabel, items }: Props
           ))}
         </div>
 
-        <figcaption className="mt-6 flex shrink-0 items-center gap-5 md:mt-10 md:gap-8">
+        <figcaption className="mt-6 flex shrink-0 items-center justify-center gap-5 md:mt-10 md:justify-start md:gap-8">
           <div className="t-meta">
             <span key={active} className="t-swap">
               <span className="block text-[13px] font-medium uppercase tracking-[0.19em] text-ink">
@@ -134,7 +137,8 @@ export function TestimonialsStage({ label, fullLabel, closeLabel, items }: Props
             </span>
           </div>
 
-          <span className="flex shrink-0 items-center gap-2 whitespace-nowrap font-mono text-[12px] tracking-[0.2em] text-ink/45">
+          {/* A phone has the same count in the row of numbers below. */}
+          <span className="hidden shrink-0 items-center gap-2 whitespace-nowrap font-mono md:flex text-[12px] tracking-[0.2em] text-ink/45">
             <span className="inline-block overflow-hidden text-ink">
               <span key={active} className="t-swap">
                 {pad(active + 1)}

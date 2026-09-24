@@ -12,8 +12,9 @@ export function Hero({ dict }: { dict: Dictionary }) {
       {/* No vignette layer here: the footage carries its own falloff to black,
           which is also why letterboxing the full frame is invisible. */}
 
-      {/* The two rules, pinned --frame-line in from the viewport edges. */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+      {/* The two rules, pinned --frame-line in from the viewport edges. A
+          phone has no margin to spare for them, so they start at tablet. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden md:block">
         <span className="enter-line absolute inset-y-0 left-[var(--frame-line)] w-px bg-white/12" />
         <span className="enter-line absolute inset-y-0 right-[var(--frame-line)] w-px bg-white/12" />
       </div>
@@ -35,7 +36,7 @@ export function Hero({ dict }: { dict: Dictionary }) {
           ))}
         </h1>
 
-        <p className="enter-sub mt-6 max-w-[34em] text-balance text-[18px] leading-relaxed text-ink md:mt-8 md:text-[23px]">
+        <p className="enter-sub mt-6 max-w-[34em] text-balance text-[20px] leading-relaxed text-ink md:mt-8 md:text-[23px]">
           {dict.hero.sub}
         </p>
 

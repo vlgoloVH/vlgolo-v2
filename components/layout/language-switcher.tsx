@@ -13,7 +13,16 @@ import {
 /** Each option is a real link to the same page in the other language, so the
  *  choice lives in the address and can be shared or bookmarked. The page stays
  *  where it is scrolled to: only the words change. */
-export function LanguageSwitcher({ lang, label }: { lang: Locale; label: string }) {
+export function LanguageSwitcher({
+  lang,
+  label,
+  large = false,
+}: {
+  lang: Locale;
+  label: string;
+  /** The phone menu sets it a size up, to match the links above it. */
+  large?: boolean;
+}) {
   const path = stripLocale(usePathname());
 
   return (
@@ -28,7 +37,7 @@ export function LanguageSwitcher({ lang, label }: { lang: Locale; label: string 
             hrefLang={code}
             scroll={false}
             aria-current={code === lang ? "true" : undefined}
-            className={`text-[13px] tracking-[0.06em] transition-opacity duration-300 md:text-[15px] ${
+            className={`${large ? "text-[17px]" : "text-[13px] md:text-[15px]"} tracking-[0.06em] transition-opacity duration-300 ${
               code === lang
                 ? "pointer-events-none text-ink opacity-100"
                 : "text-ink opacity-40 can-hover:opacity-70"

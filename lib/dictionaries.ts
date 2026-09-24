@@ -14,6 +14,8 @@ const en = {
   ui: {
     mainNav: "Main",
     language: "Language",
+    openMenu: "Open menu",
+    closeMenu: "Close menu",
   },
   nav: {
     works: "Works",
@@ -318,6 +320,8 @@ const uk: Dictionary = {
   ui: {
     mainNav: "Головне меню",
     language: "Мова",
+    openMenu: "Відкрити меню",
+    closeMenu: "Закрити меню",
   },
   nav: {
     works: "Проєкти",
