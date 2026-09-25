@@ -4,6 +4,7 @@ import { ABOUT } from "@/lib/site";
 import { AboutVideo } from "@/components/sections/about-video";
 import { RevealSection } from "@/components/layout/reveal-section";
 import { GlassButton } from "@/components/ui/glass-button";
+import { AboutMore } from "@/components/sections/about-more";
 
 /** Rides up over the pinned hero: its own background is opaque, which is what
  *  makes the two sections read as stacked slides. Everything inside arrives in
@@ -32,8 +33,10 @@ export function About({ lang, dict }: { lang: Locale; dict: Dictionary }) {
       </div>
 
       {/* The copy starts further in than the rule, at the proportion of the
-          layout: 22% of the width, which is 317px on a 1440 screen. */}
-      <div className="relative z-10 w-full px-6 pb-[72vh] pt-28 md:px-0 md:py-0 md:pl-[clamp(var(--frame-pad),22vw,470px)]">
+          layout: 22% of the width, which is 317px on a 1440 screen. On a phone
+          the section is exactly one screen: the copy on top, the portrait
+          taking the lower 56% of the window. */}
+      <div className="relative z-10 w-full px-6 pb-[calc(var(--app-vh,100svh)*0.56)] pt-20 md:px-0 md:py-0 md:pl-[clamp(var(--frame-pad),22vw,470px)]">
         <div className="mx-auto max-w-[34rem] text-center md:mx-0 md:text-left">
           <p className="reveal [--reveal-i:1] flex items-center justify-center gap-3 text-eyebrow font-medium uppercase text-ink md:justify-start">
             <span
@@ -45,10 +48,22 @@ export function About({ lang, dict }: { lang: Locale; dict: Dictionary }) {
             {dict.about.eyebrow}
           </p>
 
-          <div className="reveal [--reveal-i:2] mt-10 space-y-5 text-[17px] leading-[1.75] text-muted md:text-[18px]">
-            {dict.about.body.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
+          {/* On a phone only the opening lines show, and the rest opens in a
+              dialog, the way a testimonial opens in full. */}
+          <div className="reveal [--reveal-i:2] mt-8 space-y-5 text-[17px] leading-[1.75] text-muted md:mt-10 md:text-[18px]">
+            {dict.about.body.map((paragraph, i) => (
+              <p key={paragraph} className={i === 0 ? "max-md:line-clamp-4 max-md:[@media(max-height:620px)]:line-clamp-3" : "hidden md:block"}>
+                {paragraph}
+              </p>
             ))}
+          </div>
+          <div className="reveal [--reveal-i:2] md:hidden">
+            <AboutMore
+              label={dict.about.more}
+              closeLabel={dict.testimonials.close}
+              title={dict.about.eyebrow}
+              body={dict.about.body}
+            />
           </div>
 
           {/* On a phone the button stands on the portrait instead, see below. */}
@@ -66,17 +81,17 @@ export function About({ lang, dict }: { lang: Locale; dict: Dictionary }) {
       {/* Standing on the floor of the section, at the clip's own 9:16 ratio so
           the graded fade meets the section edge to edge. It resolves rather than
           slides: something this large sliding in reads as heavy. */}
-      <div className="pointer-events-none absolute bottom-0 right-1/2 aspect-[9/16] h-[66vh] translate-x-1/2 md:right-[15%] md:h-[min(96vh,62vw)] md:translate-x-0">
+      <div className="pointer-events-none absolute bottom-0 right-1/2 aspect-[9/16] h-[calc(var(--app-vh,100svh)*0.56)] translate-x-1/2 md:right-[15%] md:h-[min(96vh,62vw)] md:translate-x-0">
         <div className="reveal-soft h-full w-full">
           <AboutVideo />
         </div>
       </div>
 
       {/* Phone only: the button centred over the lower part of the portrait,
-          bending it the way the hero button bends the hero video. Measured in
-          vh like the portrait, so it keeps its place on the figure at any
-          screen height and stays clear of Safari's bottom bar. */}
-      <div className="absolute inset-x-0 bottom-[24vh] z-20 flex justify-center md:hidden">
+          bending it the way the hero button bends the hero video. Measured off
+          the window like the portrait, so it keeps its place on the figure at
+          any screen height and stays clear of Safari's bottom bar. */}
+      <div className="absolute inset-x-0 bottom-[calc(var(--app-vh,100svh)*0.14)] z-20 flex justify-center md:hidden">
         <GlassButton
           href={localizePath(lang, ABOUT.href)}
           label={dict.about.cta}

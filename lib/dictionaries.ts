@@ -46,6 +46,8 @@ const en = {
     /** Set vertically in the left margin, the way the hero rules frame the page. */
     rail: "About",
     eyebrow: "Hey there, I'm Vlad!",
+    /** Phone only: opens the whole text when it is cut short. */
+    more: "Read more",
     /** One entry per paragraph. */
     body: [
       "I’m a Product Designer with 10+ years of experience solving complex product problems. I turn complicated workflows, business requirements and user needs into products that feel clear and simple.",
@@ -382,6 +384,7 @@ const uk: Dictionary = {
   about: {
     rail: "Про мене",
     eyebrow: "Привіт, я Влад!",
+    more: "Читати далі",
     body: [
       "Я продуктовий дизайнер з досвідом понад 10 років у розв’язанні складних продуктових задач. Перетворюю заплутані процеси, бізнес-вимоги й потреби користувачів на продукти, які сприймаються зрозумілими і простими.",
       "Працював із фінтехом, SaaS, enterprise і споживчими продуктами, допомагаючи командам перетворювати ранні ідеї на масштабовані запущені продукти. Моя робота лежить на перетині користувачів, бізнесу й технологій. Я зосереджуюсь на тому, щоб зрозуміти проблему, знайти правильний напрямок, спростити складне і побудувати системи, які ростуть разом із продуктом.",
