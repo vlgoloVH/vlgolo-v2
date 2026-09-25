@@ -8,7 +8,8 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { SocialRail } from "@/components/layout/social-rail";
 import { getDictionary } from "@/lib/dictionaries";
 import { LOCALES, isLocale, localizePath } from "@/lib/i18n";
-import { SITE } from "@/lib/site";
+import { SITE_URL } from "@/lib/site";
+import { sharing } from "@/lib/seo";
 
 type Params = Promise<{ lang: string }>;
 
@@ -29,7 +30,7 @@ export async function generateMetadata({
   const title = `${meta.name} — ${meta.role}`;
 
   return {
-    metadataBase: new URL(SITE.url),
+    metadataBase: new URL(SITE_URL),
     title: { default: title, template: `%s — ${meta.name}` },
     description: meta.description,
     alternates: {
@@ -40,14 +41,7 @@ export async function generateMetadata({
         "x-default": "/",
       },
     },
-    openGraph: {
-      title,
-      description: meta.description,
-      url: localizePath(lang, "/"),
-      siteName: meta.name,
-      locale: lang === "uk" ? "uk_UA" : "en_US",
-      type: "website",
-    },
+    ...sharing({ lang, path: "/", title, description: meta.description, image: "home" }),
   };
 }
 

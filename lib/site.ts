@@ -10,6 +10,14 @@ export const SITE = {
   formspree: "https://formspree.io/f/mvznjbod",
 } as const;
 
+/** The address the site is actually served from, for canonical links, share
+ *  previews, robots.txt and the sitemap. On Vercel this is the project's
+ *  production domain (vlgolo-v2.vercel.app today, vlgolo.com once the domain
+ *  moves over); anywhere else it falls back to SITE.url. */
+export const SITE_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : SITE.url;
+
 /** Labels for these come from the dictionary, under the same keys. */
 export const NAV_LINKS = [
   { key: "works", href: "/#works" },

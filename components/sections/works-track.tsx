@@ -105,11 +105,11 @@ export function WorksTrack({ items, explore, progressLabel }: Props) {
       >
         {items.map((item, index) => {
           const body = (
-            <div className="grid w-full items-center gap-10 px-6 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:gap-[4vw] md:px-[clamp(32px,5vw,104px)]">
+            <div className="grid w-full items-center gap-6 px-6 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:gap-[4vw] md:px-[clamp(32px,5vw,104px)]">
               <div className="order-2 md:order-1">
                 <h3
                   aria-label={item.title}
-                  className="text-[clamp(48px,6.4vw,112px)] font-bold leading-[0.98] tracking-[-0.025em] text-ink"
+                  className="text-[40px] font-bold leading-[0.98] tracking-[-0.025em] text-ink md:text-[clamp(48px,6.4vw,112px)]"
                 >
                   {item.lines.map((line) => (
                     <span key={line} aria-hidden="true" className="block">
@@ -117,14 +117,15 @@ export function WorksTrack({ items, explore, progressLabel }: Props) {
                     </span>
                   ))}
                 </h3>
-                <p className="mt-6 max-w-[25rem] text-[17px] leading-[1.9] text-ink md:mt-10 md:text-[clamp(17px,1.4vw,21px)]">
+                <p className="mt-4 max-w-[25rem] text-[16px] leading-[1.6] text-ink md:mt-10 md:text-[clamp(17px,1.4vw,21px)] md:leading-[1.9]">
                   {item.description}
                 </p>
-                <ul className="mt-6 flex flex-wrap gap-3 md:mt-10">
+                {/* On a short phone the tags give way, so the slide still fits. */}
+                <ul className="mt-5 flex flex-wrap gap-2 md:mt-10 md:gap-3 [@media(max-width:767px)_and_(max-height:700px)]:hidden">
                   {item.tags.map((tag) => (
                     <li
                       key={tag}
-                      className="rounded-full border border-white/15 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.18em] text-ink/55"
+                      className="rounded-full border border-white/15 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-ink/55 md:px-4 md:py-2 md:text-[11px]"
                     >
                       {tag}
                     </li>
@@ -143,7 +144,7 @@ export function WorksTrack({ items, explore, progressLabel }: Props) {
                       lighter than the section, so it reads as the background
                       colour, only lighter. */}
                   <div className="rounded-[clamp(22px,2.6vw,44px)] bg-[color-mix(in_srgb,rgb(var(--tint))_34%,#2e2e30)] p-[clamp(8px,0.85vw,14px)] shadow-[0_50px_100px_-30px_rgba(0,0,0,0.7)]">
-                    <div className="relative aspect-[4/3] overflow-hidden rounded-[clamp(14px,1.8vw,30px)] bg-[#1c1c1e]">
+                    <div className="relative aspect-[16/10] overflow-hidden rounded-[clamp(14px,1.8vw,30px)] bg-[#1c1c1e] md:aspect-[4/3]">
                       <Image
                         src={item.cover}
                         alt={item.title}
@@ -167,7 +168,9 @@ export function WorksTrack({ items, explore, progressLabel }: Props) {
               data-cursor={explore}
               // The case's own colour, laid thinly over the section surface.
               style={{ "--tint": hexToRgb(item.tint).join(" ") } as React.CSSProperties}
-              className="works-tint relative flex h-full w-full shrink-0 items-center"
+              // On a phone the slide keeps clear of the header above and the
+              // counter below.
+              className="works-tint relative flex h-full w-full shrink-0 items-center pb-14 pt-16 md:py-0"
             >
               {body}
             </Link>

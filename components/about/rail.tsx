@@ -44,12 +44,13 @@ export function AboutRail({
       {numbered && (
         <span className="font-mono text-[11px] tracking-[0.2em] text-ink">{String(active + 1).padStart(2, "0")}</span>
       )}
-      <span className="relative grid h-[11rem] place-items-start justify-center overflow-hidden">
+      {/* Tall enough for the longest name ("Transformation") on one line. */}
+      <span className="relative grid h-[17rem] place-items-start justify-center overflow-hidden">
         {names.map((name, i) => (
           <span
             key={name}
             aria-hidden={i !== active}
-            className={`ab-rail-name col-start-1 row-start-1 text-[13px] uppercase tracking-[0.34em] text-ink/60 [text-orientation:upright] [writing-mode:vertical-rl] ${
+            className={`ab-rail-name col-start-1 row-start-1 whitespace-nowrap text-[13px] uppercase tracking-[0.34em] text-ink/60 [text-orientation:upright] [writing-mode:vertical-rl] ${
               i === active ? "is-on" : ""
             }`}
           >

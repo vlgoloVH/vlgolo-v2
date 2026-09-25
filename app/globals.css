@@ -540,7 +540,14 @@ html:not([data-ready]) .enter-line {
   html:not([data-ready]) .enter-headline,
   html:not([data-ready]) .enter-sub,
   html:not([data-ready]) .enter-cta,
-  html:not([data-ready]) .enter-chrome {
+  html:not([data-ready]) .enter-chrome,
+  [data-ready] .enter-video,
+  [data-ready] .enter-line,
+  [data-ready] .enter-eyebrow,
+  [data-ready] .enter-headline,
+  [data-ready] .enter-sub,
+  [data-ready] .enter-cta,
+  [data-ready] .enter-chrome {
     animation: none;
     opacity: 1;
     filter: none;
@@ -548,7 +555,8 @@ html:not([data-ready]) .enter-line {
   }
 
   /* Skipping the sequence must not skip the dim, or the type loses contrast. */
-  .enter-video {
+  .enter-video,
+  [data-ready] .enter-video {
     opacity: var(--video-dim);
   }
 
@@ -1731,6 +1739,15 @@ html:not([data-hover-capable="true"]) .cs-insight-fill {
   .cs-hero-mock,
   .cs-next-cover {
     transform: none;
+  }
+
+  /* With nothing moving, the opening picture rests where it starts: lowered
+     into the bottom of the screen, clear of the title and the details, only
+     without the tilt. */
+  @media (min-width: 768px) {
+    .cs-hero-mock {
+      transform: translate3d(0, 26vh, 0);
+    }
   }
 
   .cs-beat,

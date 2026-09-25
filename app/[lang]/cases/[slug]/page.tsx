@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getDictionary } from "@/lib/dictionaries";
 import { LOCALES, localizePath, type Locale } from "@/lib/i18n";
 import { CASE_SLUGS, getCase } from "@/lib/cases";
+import { sharing } from "@/lib/seo";
 import { ScrollDriver } from "@/components/about/scroll-driver";
 import { AboutRail } from "@/components/about/rail";
 import { ExploreCursor } from "@/components/ui/explore-cursor";
@@ -37,9 +38,17 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const found = getCase(slug, lang as Locale);
   if (!found) return {};
   const path = `/cases/${slug}`;
+  const { meta } = getDictionary(lang as Locale);
   return {
     title: found.card.title,
     description: found.study.hero.statement,
+    ...sharing({
+      lang: lang as Locale,
+      path,
+      title: `${found.card.title} — ${meta.name}`,
+      description: found.study.hero.statement,
+      image: `cases/${slug}`,
+    }),
     alternates: {
       canonical: localizePath(lang as Locale, path),
       languages: { en: path, uk: `/uk${path}`, "x-default": path },

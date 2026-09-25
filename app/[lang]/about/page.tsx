@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionaries";
 import { localizePath, type Locale } from "@/lib/i18n";
 import { ABOUT_PAGE } from "@/lib/site";
+import { sharing } from "@/lib/seo";
 import { ScrollDriver } from "@/components/about/scroll-driver";
 import { AboutRail } from "@/components/about/rail";
 import { AboutHero } from "@/components/about/hero";
@@ -21,9 +22,16 @@ const TINT = "150 152 160";
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const lang = (await params).lang as Locale;
-  const { aboutPage } = getDictionary(lang);
+  const { aboutPage, meta } = getDictionary(lang);
   return {
     title: aboutPage.title,
+    ...sharing({
+      lang,
+      path: "/about",
+      title: `${aboutPage.title} — ${meta.name}`,
+      description: aboutPage.description,
+      image: "about",
+    }),
     description: aboutPage.description,
     alternates: {
       canonical: localizePath(lang, "/about"),
