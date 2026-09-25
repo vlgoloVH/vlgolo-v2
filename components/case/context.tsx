@@ -82,7 +82,11 @@ export function CaseContext({
 
             <div className="cs-motif-frame relative mx-auto aspect-square w-full max-w-[min(520px,62svh)] md:mr-0">
               <span aria-hidden="true" className="ab-corners pointer-events-none absolute inset-0" />
-              <MotifArt ref={artRef} motif={context.motif} labels={context.labels} className="absolute inset-[10%]" />
+              {/* Width and height are set as well as the inset: an absolutely
+                  placed <svg> is a replaced element, and Safari sizes it from
+                  its own intrinsic width instead of stretching it between the
+                  insets, which pushed the drawing off centre to the right. */}
+              <MotifArt ref={artRef} motif={context.motif} labels={context.labels} className="absolute inset-[10%] h-[80%] w-[80%]" />
             </div>
           </div>
         </div>
