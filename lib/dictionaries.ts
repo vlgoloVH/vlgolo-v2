@@ -127,11 +127,12 @@ const en = {
     },
     glance: {
       label: "At a glance",
+      /** The numbers from the current site's About page. */
       items: [
-        { value: "10+", label: "Years in design", body: "From visual design and freelance work to leading product design on complex platforms." },
-        { value: "Web & Mobile", label: "Platforms", body: "Responsive web platforms and native iOS and Android apps, designed as one system." },
-        { value: "Fintech · SaaS", label: "Domains", body: "And enterprise, proptech, retail and edtech: regulated, data-heavy, multi-role products." },
-        { value: "End-to-end", label: "Product design", body: "From discovery and research to systems, delivery and measuring what shipped." },
+        { value: "10+", label: "Years of experience", body: "A proven track record of designing and launching digital products across multiple industries." },
+        { value: "40+", label: "Projects launched", body: "Delivered web and mobile products from concept to launch in startups and enterprise teams." },
+        { value: "15+", label: "Industries shaped", body: "From investment platforms and retail systems to SaaS products, education platforms and enterprise solutions." },
+        { value: "Lead", label: "Product Designer", body: "Driving product strategy, UX direction and execution." },
       ],
     },
     experience: {
@@ -454,10 +455,10 @@ const uk: Dictionary = {
     glance: {
       label: "Коротко",
       items: [
-        { value: "10+", label: "Років у дизайні", body: "Від візуального дизайну і фрилансу до лідерства в продуктовому дизайні складних платформ." },
-        { value: "Web і Mobile", label: "Платформи", body: "Адаптивні веб-платформи і нативні iOS та Android застосунки, спроєктовані як одна система." },
-        { value: "Fintech · SaaS", label: "Галузі", body: "А ще enterprise, Proptech, Retail та EdTech: регульовані продукти з великими даними і багатьма ролями." },
-        { value: "End-to-end", label: "Продуктовий дизайн", body: "Від discovery і досліджень до систем, запуску й вимірювання результату." },
+        { value: "10+", label: "Років досвіду", body: "Підтверджений досвід проєктування і запуску цифрових продуктів у багатьох галузях." },
+        { value: "40+", label: "Запущених проєктів", body: "Веб- і мобільні продукти від концепції до запуску, у стартапах і enterprise-командах." },
+        { value: "15+", label: "Галузей", body: "Від інвестиційних платформ і ритейл-систем до SaaS, освітніх платформ і enterprise-рішень." },
+        { value: "Lead", label: "Product Designer", body: "Продуктова стратегія, UX-напрям і втілення." },
       ],
     },
     experience: {
