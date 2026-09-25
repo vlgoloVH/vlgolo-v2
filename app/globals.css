@@ -95,11 +95,15 @@
   html {
     color-scheme: dark;
     overflow-x: clip;
-    /* Without this, Safari/Chrome's trackpad gesture recognizer still
-       latches onto the elastic-bounce affordance at the very top/bottom of
-       the page; once a gesture ends there, it won't dispatch the next one
-       until the pointer physically moves and forces a fresh hit-test —
-       which reads as "scroll stops working". */
+  }
+
+  /* Home only, where SlideScroll answers every wheel gesture itself: without
+     this the trackpad's gesture recogniser latches onto the elastic bounce at
+     the top or bottom and waits for the pointer to move. On the About and case
+     pages the browser scrolls natively, and there Safari does the opposite: a
+     root that refuses to overscroll holds the wheel gesture at the end of each
+     momentum run until the pointer moves. So they keep the default. */
+  html:has(.section-slide) {
     overscroll-behavior-y: none;
   }
 
@@ -1620,11 +1624,17 @@ html[data-hover-capable="true"] .ab-photos:hover .ab-photo:not(:hover) {
 
 /* ── Impact: one figure at a time, pushed through a mask ── */
 
+/* The light drifting across the room. A soft ellipse that fades to nothing
+   well inside its own layer, and the layer reaches past the section above and
+   below, so there is no edge anywhere: the colour simply comes and goes with
+   the section as it scrolls in and out. */
 .cs-impact-bg {
   background: radial-gradient(
-    circle at calc(12% + var(--sp, 0) * 76%) 90%,
-    rgb(var(--tint) / 0.3),
-    transparent 55vmax
+    ellipse 36% 32% at calc(18% + var(--sp, 0) * 64%) 56%,
+    rgb(var(--tint) / 0.3) 0%,
+    rgb(var(--tint) / 0.14) 45%,
+    rgb(var(--tint) / 0.04) 75%,
+    transparent 100%
   );
 }
 

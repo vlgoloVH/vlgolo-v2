@@ -220,7 +220,7 @@ const en = {
           title: "Research",
           items: ["User Interviews", "Maze", "Usability Testing", "Surveys", "Competitive Analysis", "Journey Mapping"],
         },
-        { title: "Analytics", items: ["Amplitude", "SQL", "A/B Testing"] },
+        { title: "Analytics", items: ["PostHog", "SQL", "A/B Testing"] },
         {
           title: "Collaboration",
           items: ["Jira", "Notion", "Confluence", "Slack", "Workshop Facilitation", "Stakeholder Management"],
@@ -544,7 +544,7 @@ const uk: Dictionary = {
           title: "Research",
           items: ["User Interviews", "Maze", "Usability Testing", "Surveys", "Competitive Analysis", "Journey Mapping"],
         },
-        { title: "Analytics", items: ["Amplitude", "SQL", "A/B Testing"] },
+        { title: "Analytics", items: ["PostHog", "SQL", "A/B Testing"] },
         {
           title: "Collaboration",
           items: ["Jira", "Notion", "Confluence", "Slack", "Workshop Facilitation", "Stakeholder Management"],

@@ -44,11 +44,16 @@ export function Track({ className = "", style, id, steps = 0, onProgress, fit = 
     if (!el) return;
     const pin = fit ? el.querySelector<HTMLElement>("[data-pin]") : null;
 
-    // Fit: keep --pin-h and --pin-top in step with the child and the window.
+    // Fit: keep --pin-h and --pin-top in step with the child and the window,
+    // and note whether the child actually sticks (not on a phone, not while
+    // hidden). Read here, on resize, rather than on every scroll frame.
     let resize: ResizeObserver | undefined;
+    let h = 0;
+    let sticks = false;
     const measure = () => {
       if (!pin) return;
-      const h = pin.offsetHeight;
+      h = pin.offsetHeight;
+      sticks = h > 0 && getComputedStyle(pin).position === "sticky";
       el.style.setProperty("--pin-h", `${h}px`);
       el.style.setProperty("--pin-top", `${Math.max((window.innerHeight - h) / 2, 0)}px`);
     };
@@ -74,13 +79,10 @@ export function Track({ className = "", style, id, steps = 0, onProgress, fit = 
       if (rect.bottom < -200 || rect.top > window.innerHeight + 200) return;
       let p: number;
       if (pin) {
-        // Pinned only where the child really sticks (not on a phone, and not
-        // while it is hidden): then the trip is from its top reaching
+        // Where the child sticks, the trip runs from its top reaching
         // --pin-top to its bottom meeting the track's end.
-        const h = pin.offsetHeight;
-        const sticks = h > 0 && getComputedStyle(pin).position === "sticky" && rect.height > h + 4;
         const top = Math.max((window.innerHeight - h) / 2, 0);
-        p = sticks
+        p = sticks && rect.height > h + 4
           ? Math.min(Math.max((top - rect.top) / (rect.height - h), 0), 1)
           : Math.min(Math.max((viewProgress(el) - 0.15) / 0.5, 0), 1);
       } else {
