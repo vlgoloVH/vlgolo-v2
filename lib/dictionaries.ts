@@ -7,9 +7,9 @@ import type { CaseSlug } from "@/lib/site";
 const en = {
   meta: {
     name: "Vlad Holoborodko",
-    role: "Product Designer",
+    role: "Senior Product Designer",
     description:
-      "Product Designer since 2015. I take ideas from a rough problem statement to a shipped product: research, UX, UI and the business case behind every screen.",
+      "Senior Product Designer, designing products since 2015. I take ideas from a rough problem statement to a shipped product: research, UX, UI and the business case behind every screen.",
   },
   ui: {
     mainNav: "Main",
@@ -82,7 +82,7 @@ const en = {
   aboutPage: {
     title: "About",
     description:
-      "Product designer with 10+ years of experience across fintech, proptech, SaaS and enterprise platforms.",
+      "Senior Product Designer with 10+ years of experience across fintech, proptech, SaaS and enterprise platforms.",
     /** The left rail's names for the sections, in page order. */
     nav: ["Intro", "My story", "At a glance", "Experience", "How I work", "Stack", "Photos"],
     hero: {
@@ -90,7 +90,7 @@ const en = {
       /** Placeholder until the final wording is in. Two lines, like a case. */
       headline: ["Hi, I’m", "Vlad."],
       statement: "A product designer who started with a sketchbook and grew into leading complex, multi-platform products.",
-      meta: ["Based in Europe", "Lead Product Designer", "10+ years · Web / Mobile"],
+      meta: ["Based in Europe", "Senior Product Designer", "10+ years · Web / Mobile"],
       cover: "Vlad at work, laptop open in a shared office",
     },
     story: {
@@ -132,7 +132,7 @@ const en = {
         { value: "10+", label: "Years of experience", body: "A proven track record of designing and launching digital products across multiple industries." },
         { value: "40+", label: "Projects launched", body: "Delivered web and mobile products from concept to launch in startups and enterprise teams." },
         { value: "15+", label: "Industries shaped", body: "From investment platforms and retail systems to SaaS products, education platforms and enterprise solutions." },
-        { value: "Lead", label: "Product Designer", body: "Driving product strategy, UX direction and execution." },
+        { value: "Senior", label: "Product Designer", body: "Driving product strategy, UX direction and execution." },
       ],
     },
     experience: {
@@ -344,9 +344,9 @@ export type Dictionary = Widen<typeof en>;
 const uk: Dictionary = {
   meta: {
     name: "Влад Голобородько",
-    role: "Продуктовий дизайнер",
+    role: "Senior Product Designer",
     description:
-      "Продуктовий дизайнер з 2015 року. Веду ідею від сирої постановки задачі до запущеного продукту: дослідження, UX, UI і бізнес-логіка за кожним екраном.",
+      "Senior Product Designer, проєктую продукти з 2015 року. Веду ідею від сирої постановки задачі до запущеного продукту: дослідження, UX, UI і бізнес-логіка за кожним екраном.",
   },
   ui: {
     mainNav: "Головне меню",
@@ -413,13 +413,13 @@ const uk: Dictionary = {
   aboutPage: {
     title: "Про мене",
     description:
-      "Продуктовий дизайнер з досвідом понад 10 років у Fintech, Proptech, SaaS та enterprise-платформах.",
+      "Senior Product Designer з досвідом понад 10 років у Fintech, Proptech, SaaS та enterprise-платформах.",
     nav: ["Вступ", "Моя історія", "Коротко", "Досвід", "Як я працюю", "Стек", "Фото"],
     hero: {
       status: "Відкритий до нових проєктів",
       headline: ["Привіт,", "я Влад."],
       statement: "Продуктовий дизайнер, який почав зі скетчбука і виріс до лідерства у складних мультиплатформних продуктах.",
-      meta: ["Живу в Європі", "Lead Product Designer", "10+ років · Web / Mobile"],
+      meta: ["Живу в Європі", "Senior Product Designer", "10+ років · Web / Mobile"],
       cover: "Влад за роботою, з ноутбуком у спільному офісі",
     },
     story: {
@@ -458,7 +458,7 @@ const uk: Dictionary = {
         { value: "10+", label: "Років досвіду", body: "Підтверджений досвід проєктування і запуску цифрових продуктів у багатьох галузях." },
         { value: "40+", label: "Запущених проєктів", body: "Веб- і мобільні продукти від концепції до запуску, у стартапах і enterprise-командах." },
         { value: "15+", label: "Галузей", body: "Від інвестиційних платформ і ритейл-систем до SaaS, освітніх платформ і enterprise-рішень." },
-        { value: "Lead", label: "Product Designer", body: "Продуктова стратегія, UX-напрям і втілення." },
+        { value: "Senior", label: "Product Designer", body: "Продуктова стратегія, UX-напрям і втілення." },
       ],
     },
     experience: {

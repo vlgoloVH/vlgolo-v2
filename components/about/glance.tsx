@@ -23,7 +23,7 @@ export function AboutGlance({ copy }: { copy: Dictionary["aboutPage"]["glance"] 
               <span>{String(i + 1).padStart(2, "0")}</span>
               {item.label}
             </p>
-            <p className="mt-6 grid text-[64px] font-bold leading-[0.9] tracking-[-0.05em] md:text-[clamp(64px,6vw,112px)]">
+            <p className="mt-6 grid text-[64px] font-bold leading-[0.9] tracking-[-0.05em] md:text-[clamp(56px,5.4vw,104px)]">
               <span className="cs-outline col-start-1 row-start-1">{item.value}</span>
               <span aria-hidden="true" className="cs-insight-fill col-start-1 row-start-1">{item.value}</span>
             </p>
