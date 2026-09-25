@@ -23,7 +23,9 @@ const en = {
     contacts: "Contacts",
   },
   status: "Available",
-  resume: "Resume",
+  resume: "Download CV",
+  /** The same link on the narrowest phones, where the full label will not fit. */
+  resumeShort: "CV",
   hero: {
     eyebrow: "Senior Product Designer",
     headline: ["Making complex", "products feel simple"],
@@ -247,7 +249,7 @@ const en = {
     headline: ["Let’s talk about", "your product"],
     body: "If you have a product, team or challenge in mind, I’d be happy to hear about it.",
     email: "Email me",
-    resume: "Download resume",
+    resume: "Download CV",
     /** The footer link back to the hero. */
     top: "Back to top",
     /** Alt text for the background picture. */
@@ -363,6 +365,7 @@ const uk: Dictionary = {
   },
   status: "Відкритий до роботи",
   resume: "Резюме",
+  resumeShort: "Резюме",
   hero: {
     eyebrow: "Senior Product Designer",
     headline: ["Роблю складні", "продукти простими"],

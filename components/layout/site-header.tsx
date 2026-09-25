@@ -64,9 +64,12 @@ export function SiteHeader({ lang, dict }: { lang: Locale; dict: Dictionary }) {
           <a
             href={SITE.resume}
             download
-            className="flex items-center gap-2 text-[13px] text-ink/85 transition-colors duration-300 can-hover:text-ink md:text-[15px]"
+            className="flex items-center gap-2 whitespace-nowrap text-[13px] text-ink/85 transition-colors duration-300 can-hover:text-ink md:text-[15px]"
           >
-            {dict.resume}
+            {/* The full label, cut to the short one on the narrowest phones
+                (an iPhone SE), where it would not fit beside the name. */}
+            <span className="hidden min-[380px]:inline">{dict.resume}</span>
+            <span className="min-[380px]:hidden">{dict.resumeShort}</span>
             {/* The arrow keeps dropping into the tray, on a slow loop. */}
             <svg
               viewBox="0 0 14 14"
