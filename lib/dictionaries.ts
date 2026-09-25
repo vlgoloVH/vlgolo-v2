@@ -86,32 +86,35 @@ const en = {
     /** The left rail's names for the sections, in page order. */
     nav: ["Intro", "My story", "At a glance", "Experience", "How I work", "Stack", "Photos"],
     hero: {
-      status: "Based in Europe · Available for new projects",
-      /** Placeholder until the final wording is in. */
-      headline: ["I’m Vlad.", "A designer who", "started with", "a sketchbook."],
-      resume: "Download resume",
+      status: "Available for new projects",
+      /** Placeholder until the final wording is in. Two lines, like a case. */
+      headline: ["Hi, I’m", "Vlad."],
+      statement: "A product designer who started with a sketchbook and grew into leading complex, multi-platform products.",
+      meta: ["Based in Europe", "Lead Product Designer", "10+ years · Web / Mobile"],
       cover: "Vlad at work, laptop open in a shared office",
     },
     story: {
       label: "My story",
       lead: "I came to product design through art. Composition and craft came first; product, systems and business thinking grew out of them, one project at a time.",
-      /** The path, oldest first: each stage with one line on what it added. */
+      /** The path, oldest first: each stage with one line on what it added,
+       *  and a short name for its point in the drawing. */
       path: [
-        { name: "Art school", note: "Learning to see: drawing, composition, light." },
-        { name: "Graphic Design", note: "A degree in visual communication, and design as a way to solve problems." },
-        { name: "Freelance", note: "Real clients while still at university. Ideas turned into shipped work." },
-        { name: "Digital products", note: "From single screens to flows across web and mobile." },
-        { name: "Product design", note: "Research, strategy and systems joined the craft." },
-        { name: "Lead", note: "Owning direction for complex, multi-platform products and the teams behind them." },
+        { name: "Art school", short: "Art", note: "Learning to see: drawing, composition, light." },
+        { name: "Graphic Design", short: "Graphic", note: "A degree in visual communication, and design as a way to solve problems." },
+        { name: "Freelance", short: "Freelance", note: "Real clients while still at university. Ideas turned into shipped work." },
+        { name: "Digital products", short: "Digital", note: "From single screens to flows across web and mobile." },
+        { name: "Product design", short: "Product", note: "Research, strategy and systems joined the craft." },
+        { name: "Lead", short: "Lead", note: "Owning direction for complex, multi-platform products and the teams behind them." },
       ],
     },
     glance: {
       label: "At a glance",
+      summary: "A product designer who takes a problem from a blank page to a shipped, measured product.",
       items: [
         { value: "10+", label: "Years in design", body: "From visual design and freelance work to leading product design on complex platforms." },
-        { value: "Web & Mobile", label: "Platforms", body: "Responsive web platforms, native iOS and Android apps, kiosks and internal tools." },
-        { value: "Fintech · SaaS", label: "Domains", body: "And enterprise, proptech, retail and edtech: regulated, data-heavy, multi-role products." },
-        { value: "End-to-end", label: "Product design", body: "From discovery and research to systems, delivery and measuring what shipped." },
+        { value: "2", label: "Web + Mobile", body: "Responsive web platforms and native iOS and Android apps, designed as one system." },
+        { value: "3", label: "Fintech · SaaS · Enterprise", body: "Regulated, data-heavy, multi-role products, plus proptech, retail and edtech." },
+        { value: "E2E", label: "End-to-end product design", body: "From discovery and research to systems, delivery and measuring what shipped." },
       ],
     },
     experience: {
@@ -383,30 +386,32 @@ const uk: Dictionary = {
       "Продуктовий дизайнер з досвідом понад 10 років у Fintech, Proptech, SaaS та enterprise-платформах.",
     nav: ["Вступ", "Моя історія", "Коротко", "Досвід", "Як я працюю", "Стек", "Фото"],
     hero: {
-      status: "Живу в Європі · Відкритий до нових проєктів",
-      headline: ["Я Влад.", "Дизайнер, що", "почав зі", "скетчбука."],
-      resume: "Завантажити резюме",
+      status: "Відкритий до нових проєктів",
+      headline: ["Привіт,", "я Влад."],
+      statement: "Продуктовий дизайнер, який почав зі скетчбука і виріс до лідерства у складних мультиплатформних продуктах.",
+      meta: ["Живу в Європі", "Lead Product Designer", "10+ років · Web / Mobile"],
       cover: "Влад за роботою, з ноутбуком у спільному офісі",
     },
     story: {
       label: "Моя історія",
       lead: "Я прийшов у продуктовий дизайн через мистецтво. Спершу були композиція і ремесло, а продуктове, системне й бізнесове мислення виросли з них, проєкт за проєктом.",
       path: [
-        { name: "Художня школа", note: "Вчився бачити: малюнок, композиція, світло." },
-        { name: "Graphic Design", note: "Бакалавр з візуальної комунікації і дизайн як спосіб розв’язувати задачі." },
-        { name: "Фриланс", note: "Справжні клієнти ще під час навчання. Ідеї, що ставали готовою роботою." },
-        { name: "Digital-продукти", note: "Від окремих екранів до сценаріїв у вебі й мобільних." },
-        { name: "Product Design", note: "До ремесла додались дослідження, стратегія і системи." },
-        { name: "Lead", note: "Відповідаю за напрям складних мультиплатформних продуктів і команд, що їх роблять." },
+        { name: "Художня школа", short: "Мистецтво", note: "Вчився бачити: малюнок, композиція, світло." },
+        { name: "Graphic Design", short: "Графіка", note: "Бакалавр з візуальної комунікації і дизайн як спосіб розв’язувати задачі." },
+        { name: "Фриланс", short: "Фриланс", note: "Справжні клієнти ще під час навчання. Ідеї, що ставали готовою роботою." },
+        { name: "Digital-продукти", short: "Digital", note: "Від окремих екранів до сценаріїв у вебі й мобільних." },
+        { name: "Product Design", short: "Product", note: "До ремесла додались дослідження, стратегія і системи." },
+        { name: "Lead", short: "Lead", note: "Відповідаю за напрям складних мультиплатформних продуктів і команд, що їх роблять." },
       ],
     },
     glance: {
       label: "Коротко",
+      summary: "Продуктовий дизайнер, який проводить задачу від чистого аркуша до запущеного продукту з виміряним результатом.",
       items: [
         { value: "10+", label: "Років у дизайні", body: "Від візуального дизайну і фрилансу до лідерства в продуктовому дизайні складних платформ." },
-        { value: "Web і Mobile", label: "Платформи", body: "Адаптивні веб-платформи, нативні iOS та Android застосунки, кіоски й внутрішні інструменти." },
-        { value: "Fintech · SaaS", label: "Галузі", body: "А ще enterprise, Proptech, Retail та EdTech: регульовані продукти з великими даними і багатьма ролями." },
-        { value: "End-to-end", label: "Продуктовий дизайн", body: "Від discovery і досліджень до систем, запуску й вимірювання результату." },
+        { value: "2", label: "Web + Mobile", body: "Адаптивні веб-платформи і нативні iOS та Android застосунки, спроєктовані як одна система." },
+        { value: "3", label: "Fintech · SaaS · Enterprise", body: "Регульовані продукти з великими даними і багатьма ролями, а ще Proptech, Retail та EdTech." },
+        { value: "E2E", label: "End-to-end продуктовий дизайн", body: "Від discovery і досліджень до систем, запуску й вимірювання результату." },
       ],
     },
     experience: {

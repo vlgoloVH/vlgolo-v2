@@ -1,11 +1,12 @@
-import type { Ref } from "react";
+import type { CSSProperties, Ref } from "react";
 
 /** Line drawings for the About page that are driven by scroll. Each one is a
  *  400×400 SVG rendered once by <Art>, then moved by drawArt(svg, t) with t
  *  running 0 → 1: the caller (a pinned track, see useSteps) owns the
  *  progress and this only sets attributes.
- *  Plain lines and dots in the ink colour, so they sit with the frame lines
- *  and the type rather than reading as icons from a library. */
+ *  Plain lines and dots in the current colour (How I work sets a case colour
+ *  per drawing), so they read like the case drawings rather than as icons
+ *  from a library. */
 
 /** One drawing per How I work statement. */
 export type ArtKind =
@@ -148,10 +149,12 @@ function Shapes({ kind }: { kind: ArtKind }) {
 export function Art({
   kind,
   className = "",
+  style,
   ref,
 }: {
   kind: ArtKind;
   className?: string;
+  style?: CSSProperties;
   ref?: Ref<SVGSVGElement>;
 }) {
   return (
@@ -160,6 +163,7 @@ export function Art({
       data-art={kind}
       viewBox="0 0 400 400"
       className={className}
+      style={style}
       aria-hidden="true"
       focusable="false"
     >

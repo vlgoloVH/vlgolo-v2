@@ -6,7 +6,7 @@ import { ScrollDriver } from "@/components/about/scroll-driver";
 import { AboutRail } from "@/components/about/rail";
 import { AboutHero } from "@/components/about/hero";
 import { AboutStory } from "@/components/about/story";
-import { AboutGlance } from "@/components/about/glance";
+import { CaseImpact } from "@/components/case/impact";
 import { AboutExperience } from "@/components/about/experience";
 import { AboutProcess } from "@/components/about/process";
 import { AboutStack } from "@/components/about/stack";
@@ -58,7 +58,8 @@ export default async function AboutPage({ params }: { params: Params }) {
 
       <AboutHero copy={copy.hero} />
       <AboutStory copy={copy.story} />
-      <AboutGlance copy={copy.glance} />
+      {/* At a glance runs on the case Impact stage: one figure at a time. */}
+      <CaseImpact labels={copy.glance} impact={copy.glance} />
       <AboutExperience copy={copy.experience} />
       <AboutProcess copy={copy.process} />
       <AboutStack copy={copy.stack} />

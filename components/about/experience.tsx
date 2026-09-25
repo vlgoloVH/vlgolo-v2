@@ -108,7 +108,7 @@ export function AboutExperience({ copy }: { copy: Copy }) {
               <li
                 key={chapter.company}
                 data-on={i === active ? "true" : undefined}
-                className="ab-chapter flex flex-col justify-center border-t border-white/10 py-12 md:min-h-[72vh] md:py-0"
+                className="ab-chapter flex flex-col justify-center border-t border-white/10 py-12 first:border-t-0 md:min-h-[72vh] md:py-0"
               >
                 <p className="font-mono text-[12px] tracking-[0.2em] text-ink/60">
                   {chapter.years}
