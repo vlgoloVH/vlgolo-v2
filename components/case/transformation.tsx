@@ -64,11 +64,11 @@ export function CaseTransformation({
 
   return (
     <section id="transformation" className="relative">
-      <header className="relative px-6 pt-[16vh] md:px-[var(--case-pad)] md:pt-[20vh]">
+      <header className="relative px-6 pt-[11vh] md:px-[var(--case-pad)] md:pt-[20vh]">
         <SectionTitle>{`${first}\n${rest.join(" ")}`}</SectionTitle>
       </header>
 
-      <div className="grid gap-[4vw] px-6 pb-[10vh] md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:px-[var(--case-pad)] md:pb-[14vh]">
+      <div className="grid gap-[4vw] px-6 pb-[7vh] md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:px-[var(--case-pad)] md:pb-[14vh]">
         <div>
           {chapters.map((chapter, i) => {
             const n = chapter.points.length;
@@ -79,7 +79,7 @@ export function CaseTransformation({
                 ref={(el) => {
                   refs.current[i] = el;
                 }}
-                className={`cs-chapter flex flex-col justify-center py-[8vh] md:min-h-[100svh] md:py-[12vh] ${
+                className={`cs-chapter flex flex-col justify-center py-[6vh] md:min-h-[100svh] md:py-[12vh] ${
                   i === active ? "is-on" : ""
                 } ${i <= active ? "is-seen" : ""}`}
                 style={{ "--n": n } as React.CSSProperties}

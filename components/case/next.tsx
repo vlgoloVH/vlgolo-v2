@@ -29,7 +29,7 @@ export function CaseNext({
       <Link
         href={href}
         data-cursor={labels.view}
-        className="group relative flex min-h-[46svh] items-center justify-between gap-8 px-6 py-12 md:px-[var(--case-pad)] md:py-[6svh]"
+        className="group relative flex min-h-[46svh] flex-col items-start justify-center gap-8 px-6 py-12 md:flex-row md:items-center md:justify-between md:px-[var(--case-pad)] md:py-[6svh]"
       >
         <div>
           <p className="font-mono text-[12px] uppercase tracking-[0.3em] text-ink/60">{labels.label}</p>
@@ -44,13 +44,13 @@ export function CaseNext({
             ))}
           </p>
         </div>
-        <div className="cs-next-cover hidden aspect-[4/3] h-[32svh] shrink-0 overflow-hidden rounded-[clamp(10px,1vw,18px)] sm:block">
+        <div className="cs-next-cover aspect-[4/3] w-full shrink-0 overflow-hidden rounded-[clamp(10px,1vw,18px)] md:h-[32svh] md:w-auto">
           <Image
             src={cover}
             alt=""
             width={1200}
             height={900}
-            sizes="(min-width: 768px) 32vw, 40vw"
+            sizes="(min-width: 768px) 32vw, 90vw"
             className="h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-soft)] group-can-hover:scale-[1.06]"
           />
         </div>

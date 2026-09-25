@@ -95,11 +95,13 @@ export function WorksTrack({ items, explore, progressLabel }: Props) {
           mobile it is a plain touch-swipe carousel, and on desktop SlideScroll
           feeds the wheel into this same scrollLeft instead of reinventing it.
           No snapping of its own: the cases scroll freely, so a gesture leaves
-          them wherever it leaves them. */}
+          them wherever it leaves them. On a phone the track runs the full
+          width, so each case's colour reaches the screen edges; the copy
+          keeps the same 24px inset as every other section. */}
       <div
         ref={trackRef}
         data-h-track
-        className="hide-scrollbar reveal [--reveal-i:2] absolute inset-y-0 left-[var(--frame-line)] right-[var(--frame-line)] flex overflow-x-auto overscroll-x-none"
+        className="hide-scrollbar reveal [--reveal-i:2] absolute inset-0 flex overflow-x-auto overscroll-x-none md:left-[var(--frame-line)] md:right-[var(--frame-line)]"
       >
         {items.map((item, index) => {
           const body = (
@@ -175,7 +177,7 @@ export function WorksTrack({ items, explore, progressLabel }: Props) {
 
       {/* Which case this is and how many are left: a thin rule that fills as
           the track moves, between the current number and the total. */}
-      <div className="reveal [--reveal-i:3] pointer-events-none absolute bottom-8 right-[calc(var(--frame-line)+24px)] flex items-center gap-4 font-mono text-[12px] tracking-[0.2em] text-ink/45 md:bottom-[8vh] md:right-[calc(var(--frame-line)+clamp(32px,5vw,104px))]">
+      <div className="reveal [--reveal-i:3] pointer-events-none absolute bottom-8 right-6 flex items-center gap-4 font-mono text-[12px] tracking-[0.2em] text-ink/45 md:bottom-[8vh] md:right-[calc(var(--frame-line)+clamp(32px,5vw,104px))]">
         <span className="sr-only">
           {progressLabel} {current + 1} / {items.length}
         </span>

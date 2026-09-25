@@ -1324,6 +1324,12 @@ html[data-hover-capable="true"] .ab-photos:hover .ab-photo:not(:hover) {
     transform: none;
     opacity: 1;
   }
+
+  /* Nothing pins on a phone, so the scroll fade above would hide the details
+     before they are ever read. */
+  .cs-hero-meta {
+    opacity: 1 !important;
+  }
 }
 
 /* ── Section titles: the word rises out of its mask ── */

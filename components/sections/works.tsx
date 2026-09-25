@@ -30,7 +30,7 @@ export function Works({ lang, dict }: { lang: Locale; dict: Dictionary }) {
     >
       <WorksTrack items={items} explore={dict.works.explore} progressLabel={dict.works.progress} />
 
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden md:block">
         <span className="reveal-line absolute inset-y-0 left-[var(--frame-line)] w-px bg-white/12" />
         <span className="reveal-line absolute inset-y-0 right-[var(--frame-line)] w-px bg-white/12" />
       </div>

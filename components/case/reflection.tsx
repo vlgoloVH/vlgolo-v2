@@ -16,7 +16,7 @@ export function CaseReflection({
   insights: string[];
 }) {
   return (
-    <section id="reflection" className="relative px-6 py-[14vh] md:flex md:min-h-[100svh] md:flex-col md:justify-center md:px-[var(--case-pad)] md:py-[14vh]">
+    <section id="reflection" className="relative px-6 py-[10vh] md:flex md:min-h-[100svh] md:flex-col md:justify-center md:px-[var(--case-pad)] md:py-[14vh]">
       <SectionTitle>{labels.label}</SectionTitle>
       <ol data-p className="cs-insights mt-12 grid gap-12 md:mt-[9vh] md:grid-cols-3 md:gap-[3vw]">
         {insights.map((insight, i) => (

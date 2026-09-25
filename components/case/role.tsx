@@ -21,7 +21,7 @@ export function CaseRole({
   ];
 
   return (
-    <section id="role" className="relative px-6 py-[14vh] md:px-[var(--case-pad)] md:py-[18vh]">
+    <section id="role" className="relative px-6 py-[10vh] md:px-[var(--case-pad)] md:py-[18vh]">
       <div className="grid gap-10 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:gap-[6vw]">
         <div>
           <SectionTitle>{labels.label}</SectionTitle>

@@ -38,7 +38,7 @@ export function CaseImpact({
       style={{ "--n": n } as React.CSSProperties}
     >
       {(active) => (
-        <div className="relative px-6 py-[14vh] md:sticky md:top-0 md:flex md:h-[100svh] md:flex-col md:overflow-hidden md:px-[var(--case-pad)] md:pb-[6svh] md:pt-[14svh]">
+        <div className="relative px-6 py-[10vh] md:sticky md:top-0 md:flex md:h-[100svh] md:flex-col md:overflow-hidden md:px-[var(--case-pad)] md:pb-[6svh] md:pt-[14svh]">
           <div aria-hidden="true" className="cs-impact-bg absolute inset-0 hidden md:block" />
 
           <div className="relative grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-start md:gap-[5vw]">

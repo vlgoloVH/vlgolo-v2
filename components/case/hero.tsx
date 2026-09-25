@@ -49,7 +49,7 @@ export function CaseHero({
           </div>
         </div>
 
-        <div className="cs-hero-visual relative z-0 mt-10 flex flex-1 items-start justify-center px-6 md:absolute md:inset-x-0 md:bottom-0 md:mt-0 md:h-[78svh] md:px-[var(--case-pad)]">
+        <div className="cs-hero-visual relative z-0 flex flex-1 items-center justify-center px-6 py-10 md:absolute md:inset-x-0 md:bottom-0 md:h-[78svh] md:px-[var(--case-pad)] md:py-0">
           <div className="ab-load ab-rise-soft [--d:0.2s] w-full">
             <div className="cs-hero-mock overflow-hidden rounded-[clamp(12px,1.4vw,24px)] shadow-[0_60px_120px_-40px_rgba(0,0,0,0.8)]">
               <Image

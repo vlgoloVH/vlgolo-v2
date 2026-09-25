@@ -28,7 +28,7 @@ export function CaseContext({
   return (
     <Track id="context" steps={3} onProgress={onProgress} className="relative md:h-[340vh]">
       {(active) => (
-        <div className="relative px-6 py-[12vh] md:sticky md:top-0 md:flex md:h-[100svh] md:items-center md:px-[var(--case-pad)] md:py-0">
+        <div className="relative px-6 py-[9vh] md:sticky md:top-0 md:flex md:h-[100svh] md:items-center md:px-[var(--case-pad)] md:py-0">
           <div className="grid w-full gap-12 md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] md:items-center md:gap-[6vw]">
             <div>
               <SectionTitle>{labels.label}</SectionTitle>

@@ -47,7 +47,7 @@ export function CaseStack({ overview, label }: { overview: CaseStudy["overview"]
       </Track>
 
       {/* Phone: the same deck, stacked by the page itself. */}
-      <div className="relative flex flex-col gap-6 px-4 pb-[10vh] md:hidden">
+      <div className="relative flex flex-col gap-6 px-6 pb-[7vh] md:hidden">
         {images.map((image, i) => (
           <div
             key={image.src}
