@@ -68,7 +68,10 @@ export function CaseTransformation({
         <SectionTitle>{`${first}\n${rest.join(" ")}`}</SectionTitle>
       </header>
 
-      <div className="grid gap-[4vw] px-6 pb-[var(--section-y)] md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:px-[var(--case-pad)]">
+      {/* Desktop: the last thing on screen is the pinned frame, which sits 14svh
+          above the end of its column, so the column ends that much short of
+          the section spacing. */}
+      <div className="grid gap-[4vw] px-6 pb-[var(--section-y)] md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:px-[var(--case-pad)] md:pb-[calc(var(--section-y)-14svh)]">
         <div>
           {chapters.map((chapter, i) => {
             const n = chapter.points.length;
@@ -79,9 +82,10 @@ export function CaseTransformation({
                 ref={(el) => {
                   refs.current[i] = el;
                 }}
-                // The last chapter ends where its words end, so the space after the
-                // section is the section spacing, as everywhere else.
-                className={`cs-chapter flex flex-col justify-center py-[6vh] last:pb-0 md:min-h-[100svh] md:py-[12vh] md:last:min-h-0 md:last:pb-0 ${
+                // Every chapter is a full screen on desktop, the last one too,
+                // so its words are centred beside the frame when the frame
+                // lets go. On a phone the last one ends where its words end.
+                className={`cs-chapter flex flex-col justify-center py-[6vh] last:pb-0 md:min-h-[100svh] md:py-[12vh] md:last:pb-[12vh] ${
                   i === active ? "is-on" : ""
                 } ${i <= active ? "is-seen" : ""}`}
                 style={{ "--n": n } as React.CSSProperties}
