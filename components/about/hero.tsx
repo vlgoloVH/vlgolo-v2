@@ -7,18 +7,18 @@ import { Track } from "@/components/case/track";
  *  line with the resume ring beside it, and the wide photo starts tipped back
  *  and cropped by the bottom of the screen. As the page scrolls the photo
  *  rights itself, settles into frame and scales down while the words run
- *  ahead and fade. */
+ *  ahead and fade. On a phone, like a case hero, everything is centred. */
 export function AboutHero({ copy }: { copy: Dictionary["aboutPage"]["hero"] }) {
   const { cover } = ABOUT_PAGE;
 
   return (
     <Track id="intro" className="cs-hero relative md:h-[190vh]">
-      <div className="relative flex min-h-[100svh] flex-col overflow-hidden md:sticky md:top-0 md:h-[100svh]">
+      <div className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden py-24 md:sticky md:top-0 md:h-[100svh] md:justify-start md:py-0">
         <div aria-hidden="true" className="cs-hero-bg absolute inset-0" />
         <div aria-hidden="true" className="ab-grain pointer-events-none absolute inset-0" />
 
-        <div className="cs-hero-copy relative z-10 px-6 pt-28 md:px-[var(--case-pad)] md:pt-[15svh]">
-          <p className="ab-load ab-rise [--d:0.4s] flex items-center gap-3 font-mono text-[12px] uppercase tracking-[0.2em] text-ink/70 md:text-[13px]">
+        <div className="cs-hero-copy relative z-10 px-6 text-center md:px-[var(--case-pad)] md:pt-[15svh] md:text-left">
+          <p className="ab-load ab-rise [--d:0.4s] flex items-center justify-center gap-3 font-mono text-[12px] uppercase tracking-[0.2em] text-ink/70 md:justify-start md:text-[13px]">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-[status-pulse_2.8s_ease-out_infinite] rounded-full bg-[#4ade80]" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-[#4ade80]" />
@@ -64,7 +64,7 @@ export function AboutHero({ copy }: { copy: Dictionary["aboutPage"]["hero"] }) {
           </a>
         </div>
 
-        <div className="cs-hero-visual relative z-0 mt-10 flex flex-1 items-start justify-center px-6 md:absolute md:inset-x-0 md:bottom-0 md:mt-0 md:h-[68svh] md:px-[var(--case-pad)]">
+        <div className="cs-hero-visual relative z-0 mt-14 flex items-start justify-center px-6 md:absolute md:inset-x-0 md:bottom-0 md:mt-0 md:h-[68svh] md:px-[var(--case-pad)]">
           <div className="ab-load ab-rise-soft [--d:0.2s] w-full">
             <div className="cs-hero-mock overflow-hidden rounded-[clamp(12px,1.4vw,24px)] shadow-[0_60px_120px_-40px_rgba(0,0,0,0.8)]">
               <Image

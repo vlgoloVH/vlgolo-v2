@@ -6,7 +6,7 @@ import { ScrollDriver } from "@/components/about/scroll-driver";
 import { AboutRail } from "@/components/about/rail";
 import { AboutHero } from "@/components/about/hero";
 import { AboutStory } from "@/components/about/story";
-import { AboutStats } from "@/components/about/stats";
+import { AboutGlance } from "@/components/about/glance";
 import { AboutExperience } from "@/components/about/experience";
 import { AboutProcess } from "@/components/about/process";
 import { AboutStack } from "@/components/about/stack";
@@ -32,9 +32,10 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   };
 }
 
-/** About, in the order of the About page on the current site: intro with the
- *  wide photo, about me, the numbers, experience, how I work, the stack, the
- *  photo grid and the way to get in touch. It runs on the case pages' column
+/** About, told as one story: who I am (intro with the wide photo), where I
+ *  came from (my story), the profile at a glance, how I grew (experience),
+ *  how I think (how I work), the stack, life outside work (photos) and the
+ *  way to get in touch. It runs on the case pages' column
  *  (--case-pad) with their titles and motion: ScrollDriver feeds scroll
  *  progress to CSS, Track pins the intro, and each section owns its own
  *  choreography. The frame lines run the full height of the page. */
@@ -57,7 +58,7 @@ export default async function AboutPage({ params }: { params: Params }) {
 
       <AboutHero copy={copy.hero} />
       <AboutStory copy={copy.story} />
-      <AboutStats stats={copy.stats} label={copy.nav[2]} />
+      <AboutGlance copy={copy.glance} />
       <AboutExperience copy={copy.experience} />
       <AboutProcess copy={copy.process} />
       <AboutStack copy={copy.stack} />

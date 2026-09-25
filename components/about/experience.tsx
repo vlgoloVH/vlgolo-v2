@@ -7,12 +7,15 @@ import { SectionTitle } from "@/components/case/title";
 
 type Copy = Dictionary["aboutPage"]["experience"];
 
-/** Experience. The title runs across the column, then a 35 / 65 split: the
- *  left column stays put and keeps score (range, the active chapter's year
- *  as a large outlined number, and a rail of stops), while the chapters
- *  scroll past on the right. Whichever chapter is nearest the middle of the
- *  screen is the active one: full strength, the others dimmed. On a phone the
- *  left column is just the range and the chapters stack. */
+/** Experience, told as growth. The title runs across the column, then a
+ *  35 / 65 split: the left column stays put and keeps score (range, the
+ *  active chapter's year as a large outlined number, the stage of the work it
+ *  stands for, and the evolution rail), while the chapters scroll past on
+ *  the right. Whichever chapter is nearest the middle of the screen is the
+ *  active one: full strength, the others dimmed. The stage is rewritten as
+ *  the chapters change: the old word leaves upward under its mask and the new
+ *  one rises in. On a phone the left column is just the range, and each
+ *  chapter carries its stage above its name. */
 export function AboutExperience({ copy }: { copy: Copy }) {
   const listRef = useRef<HTMLOListElement>(null);
   const [active, setActive] = useState(0);
@@ -59,19 +62,41 @@ export function AboutExperience({ copy }: { copy: Copy }) {
             ))}
           </div>
 
-          <p className="mt-4 hidden text-[clamp(28px,2.6vw,44px)] font-bold tracking-[-0.02em] text-ink md:mt-6 md:block">
-            {copy.years}
+          {/* The active chapter's stage, rewritten under a mask. */}
+          <p aria-hidden="true" className="mt-4 hidden overflow-hidden pb-[0.08em] md:mt-6 md:grid">
+            {copy.chapters.map((chapter, i) => (
+              <span
+                key={chapter.company}
+                className={`ab-stage col-start-1 row-start-1 text-[clamp(28px,2.6vw,44px)] font-bold leading-[1.05] tracking-[-0.02em] text-ink ${
+                  i === active ? "is-on" : i < active ? "is-past" : ""
+                }`}
+              >
+                {chapter.stage}
+              </span>
+            ))}
           </p>
 
-          {/* One stop per chapter; the active one is lit and longer. */}
-          <ol aria-hidden="true" className="mt-10 hidden gap-2 md:flex">
+          {/* The evolution rail: one stop per chapter with its stage beside
+              it; the active one is lit and longer, the ones behind it stay
+              half lit, so the rail reads as a climb. */}
+          <p className="mt-10 hidden font-mono text-[11px] uppercase tracking-[0.2em] text-ink/45 md:block">
+            {copy.growth}
+          </p>
+          <ol aria-hidden="true" className="mt-4 hidden flex-col gap-2.5 md:flex">
             {copy.chapters.map((chapter, i) => (
               <li
                 key={chapter.company}
-                className={`h-px transition-all duration-500 ease-[var(--ease-soft)] ${
-                  i === active ? "w-14 bg-ink" : "w-6 bg-white/25"
+                className={`flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] transition-colors duration-500 ease-[var(--ease-soft)] ${
+                  i === active ? "text-ink" : i < active ? "text-ink/55" : "text-ink/25"
                 }`}
-              />
+              >
+                <span
+                  className={`h-px transition-all duration-500 ease-[var(--ease-soft)] ${
+                    i === active ? "w-14 bg-ink" : i < active ? "w-6 bg-white/50" : "w-6 bg-white/20"
+                  }`}
+                />
+                {chapter.stage}
+              </li>
             ))}
           </ol>
         </aside>
@@ -85,7 +110,11 @@ export function AboutExperience({ copy }: { copy: Copy }) {
                 data-on={i === active ? "true" : undefined}
                 className="ab-chapter flex flex-col justify-center border-t border-white/10 py-12 md:min-h-[72vh] md:py-0"
               >
-                <p className="font-mono text-[12px] tracking-[0.2em] text-ink/60">{chapter.years}</p>
+                <p className="font-mono text-[12px] tracking-[0.2em] text-ink/60">
+                  {chapter.years}
+                  {/* Phone: the stage rides with the chapter. */}
+                  <span className="cs-accent ml-4 uppercase md:hidden">{chapter.stage}</span>
+                </p>
                 <p className="mt-4 flex flex-wrap gap-x-4 font-mono text-[12px] uppercase tracking-[0.2em] md:text-[13px]">
                   <span className="text-ink">{role}</span>
                   <span className="text-ink/50">{mode}</span>

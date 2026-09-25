@@ -1174,6 +1174,21 @@ html:not([data-ready]) .ab-load {
   }
 }
 
+/* The stage under the year: the active one rises out of its mask, the ones
+   already passed wait above it, the ones still to come below. */
+.ab-stage {
+  transform: translate3d(0, 105%, 0);
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.1, 1);
+
+  &.is-past {
+    transform: translate3d(0, -105%, 0);
+  }
+
+  &.is-on {
+    transform: none;
+  }
+}
+
 /* A chapter's tags follow it in, one after another, when it becomes the
    active one. */
 .ab-tag {
@@ -1188,6 +1203,63 @@ html:not([data-ready]) .ab-load {
     opacity: 1;
     transform: none;
   }
+}
+
+/* ── My story: the path draws itself ──
+   --d runs 0 → 1 as the path comes up the screen: on desktop it draws the
+   rising line left to right, on a phone it fills the line down the side.
+   Each stage lights when the line reaches it (--on). */
+
+.ab-path {
+  --d: clamp(0, calc((var(--p, 1) - 0.12) * 2.8), 1);
+  --path-ink: color-mix(in srgb, rgb(var(--tint)) 45%, white);
+}
+
+.ab-path-stage,
+.ab-path-dot,
+.ab-path-pip {
+  --on: clamp(0, calc((var(--d) * (var(--n) - 1) - var(--i)) * 4 + 1), 1);
+}
+
+.ab-path-base,
+.ab-path-line {
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.ab-path-base {
+  stroke: rgb(255 255 255 / 0.12);
+}
+
+.ab-path-line {
+  stroke: var(--path-ink);
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: calc(1 - var(--d));
+}
+
+.ab-path-dot {
+  stroke: rgb(255 255 255 / 0.3);
+  stroke-width: 1.5;
+  fill: color-mix(in srgb, var(--path-ink) calc(var(--on) * 100%), var(--color-surface));
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(calc(0.7 + var(--on) * 0.5));
+}
+
+.ab-path-fill {
+  background: var(--path-ink);
+  transform: scaleY(var(--d));
+}
+
+.ab-path-pip {
+  box-shadow: inset 0 0 0 1.5px rgb(255 255 255 / 0.3);
+  background: color-mix(in srgb, var(--path-ink) calc(var(--on) * 100%), var(--color-surface));
+}
+
+.ab-path-stage {
+  opacity: calc(0.3 + var(--on) * 0.7);
+  transform: translate3d(0, calc((1 - var(--on)) * 12px), 0);
 }
 
 /* ── Intro: the resume ring turns slowly, faster under the pointer ── */
@@ -1273,9 +1345,14 @@ html[data-hover-capable="true"] .ab-photos:hover .ab-photo:not(:hover) {
   .ab-statement,
   .ab-chapter,
   .ab-year,
+  .ab-stage,
   .ab-tag,
   .ab-rail-name {
     transition: none;
+  }
+
+  .ab-path {
+    --d: 1;
   }
 }
 
