@@ -69,6 +69,19 @@
   --video-dim: 0.48;
 }
 
+/* The space above and below every section's content on the About and case
+   pages, so that any two sections sit exactly twice this apart. Pinned scenes
+   use it too (see Track's `fit`). */
+:root {
+  --section-y: 10vh;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --section-y: 15vh;
+  }
+}
+
 /* On a phone the vw scale bottoms out at its clamp floor, which reads small, so
    the two sizes are set a step up there. Desktop keeps the Figma scale above. */
 @media (max-width: 767px) {
@@ -101,16 +114,19 @@
      `always` is doing the real work here: it forbids skipping a snap point,
      however hard the flick was thrown.
      No `scroll-behavior: smooth` anywhere: it animates every scroll the page
-     makes, including SlideScroll's own, and then the two pull at once. */
+     makes, including SlideScroll's own, and then the two pull at once.
+     Only on a page made of slides (the home page): the About and case pages
+     have no snap points, and in Safari a snapping root with nothing to snap to
+     latches a mouse wheel gesture, so the page stops until the pointer moves. */
   @media (prefers-reduced-motion: no-preference) {
     @media (pointer: fine) {
-      html {
+      html:has(.section-slide) {
         scroll-snap-type: y proximity;
       }
     }
 
     @media not (pointer: fine) {
-      html {
+      html:has(.section-slide) {
         scroll-snap-type: y mandatory;
       }
 
@@ -1580,10 +1596,12 @@ html[data-hover-capable="true"] .ab-photos:hover .ab-photo:not(:hover) {
 
 .cs-stack {
   --pos: calc(var(--sp, 0) * var(--steps));
+  /* Card width: the content column, or as wide as still leaves the section's
+     spacing above and below the card on screen. */
+  --w: min(calc(100vw - var(--case-pad) * 2), calc((100svh - var(--section-y) * 2) * 2));
 }
 
 .cs-card {
-  --w: min(calc(100vw - var(--case-pad) * 2), calc(86svh * 2));
   --a: clamp(0, calc(var(--pos) - var(--i) + 1), 1);
   --e: calc(var(--a) * var(--a) * (3 - 2 * var(--a)));
   --d: clamp(0, calc(var(--pos) - var(--i)), 3);

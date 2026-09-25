@@ -40,12 +40,13 @@ export function AboutStory({ copy }: { copy: Copy }) {
     <Track
       id="story"
       steps={n}
+      fit
       onProgress={onProgress}
-      className="relative md:h-[calc(var(--n)*60vh+100vh)]"
+      className="relative md:h-[calc(var(--pin-h,100svh)+var(--n)*60vh)]"
       style={{ "--n": n } as React.CSSProperties}
     >
       {(active) => (
-        <div className="relative px-6 py-[9vh] md:sticky md:top-0 md:flex md:h-[100svh] md:items-center md:px-[var(--case-pad)] md:py-0">
+        <div data-pin className="relative px-6 py-[var(--section-y)] md:sticky md:top-[var(--pin-top,0px)] md:px-[var(--case-pad)]">
           <div className="grid w-full gap-12 md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] md:items-center md:gap-[6vw]">
             <div>
               <SectionTitle>{copy.label}</SectionTitle>

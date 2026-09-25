@@ -64,11 +64,11 @@ export function CaseTransformation({
 
   return (
     <section id="transformation" className="relative">
-      <header className="relative px-6 pt-[11vh] md:px-[var(--case-pad)] md:pt-[20vh]">
+      <header className="relative px-6 pt-[var(--section-y)] md:px-[var(--case-pad)]">
         <SectionTitle>{`${first}\n${rest.join(" ")}`}</SectionTitle>
       </header>
 
-      <div className="grid gap-[4vw] px-6 pb-[7vh] md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:px-[var(--case-pad)] md:pb-[14vh]">
+      <div className="grid gap-[4vw] px-6 pb-[var(--section-y)] md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:px-[var(--case-pad)]">
         <div>
           {chapters.map((chapter, i) => {
             const n = chapter.points.length;
@@ -79,7 +79,9 @@ export function CaseTransformation({
                 ref={(el) => {
                   refs.current[i] = el;
                 }}
-                className={`cs-chapter flex flex-col justify-center py-[6vh] md:min-h-[100svh] md:py-[12vh] ${
+                // The last chapter ends where its words end, so the space after the
+                // section is the section spacing, as everywhere else.
+                className={`cs-chapter flex flex-col justify-center py-[6vh] last:pb-0 md:min-h-[100svh] md:py-[12vh] md:last:min-h-0 md:last:pb-0 ${
                   i === active ? "is-on" : ""
                 } ${i <= active ? "is-seen" : ""}`}
                 style={{ "--n": n } as React.CSSProperties}

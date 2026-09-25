@@ -13,7 +13,7 @@ export function AboutHero({ copy }: { copy: Dictionary["aboutPage"]["hero"] }) {
   const { cover } = ABOUT_PAGE;
 
   return (
-    <Track id="intro" className="cs-hero relative md:h-[190vh]">
+    <Track id="intro" className="cs-hero relative md:mb-[var(--section-y)] md:h-[190vh]">
       <div className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden py-24 md:sticky md:top-0 md:h-[100svh] md:justify-start md:py-0">
         <div aria-hidden="true" className="cs-hero-bg absolute inset-0" />
         <div aria-hidden="true" className="ab-grain pointer-events-none absolute inset-0" />

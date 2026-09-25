@@ -6,7 +6,7 @@ import { SectionTitle } from "@/components/case/title";
  *  screen, the same way a case lays out what I owned and who I worked with. */
 export function AboutStack({ copy }: { copy: Dictionary["aboutPage"]["stack"] }) {
   return (
-    <section id="stack" className="relative px-6 py-[14vh] md:px-[var(--case-pad)] md:py-[18vh]">
+    <section id="stack" className="relative px-6 py-[var(--section-y)] md:px-[var(--case-pad)]">
       <SectionTitle>{copy.label}</SectionTitle>
 
       <div className="mt-12 grid gap-x-[3vw] gap-y-12 border-t border-white/12 pt-10 sm:grid-cols-2 md:mt-[9vh] md:grid-cols-3 md:gap-y-[7vh]">

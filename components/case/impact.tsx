@@ -34,11 +34,12 @@ export function CaseImpact({
     <Track
       id="impact"
       steps={n}
-      className="cs-impact relative md:h-[calc(var(--n)*75vh+100vh)]"
+      fit
+      className="cs-impact relative md:h-[calc(var(--pin-h,100svh)+var(--n)*75vh)]"
       style={{ "--n": n } as React.CSSProperties}
     >
       {(active) => (
-        <div className="relative px-6 py-[10vh] md:sticky md:top-0 md:flex md:h-[100svh] md:flex-col md:overflow-hidden md:px-[var(--case-pad)] md:pb-[6svh] md:pt-[14svh]">
+        <div data-pin className="relative px-6 py-[var(--section-y)] md:sticky md:top-[var(--pin-top,0px)] md:flex md:flex-col md:overflow-hidden md:px-[var(--case-pad)]">
           <div aria-hidden="true" className="cs-impact-bg absolute inset-0 hidden md:block" />
 
           <div className="relative grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-start md:gap-[5vw]">
@@ -49,7 +50,7 @@ export function CaseImpact({
           </div>
 
           {/* Desktop: the stage. */}
-          <div className="relative mt-auto hidden grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] items-end gap-[5vw] md:grid">
+          <div className="relative mt-[8svh] hidden grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] items-end gap-[5vw] md:grid">
             <div className="grid">
               {items.map((item, i) => (
                 <span

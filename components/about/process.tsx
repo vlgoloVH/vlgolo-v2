@@ -69,12 +69,13 @@ export function AboutProcess({ copy }: { copy: Copy }) {
   return (
     <Track
       id="process"
+      fit
       onProgress={onProgress}
-      className="relative md:h-[calc(var(--n)*80vh+100vh)]"
+      className="relative md:h-[calc(var(--pin-h,100svh)+var(--n)*80vh)]"
       style={{ "--n": n } as React.CSSProperties}
     >
       {/* Desktop: the titles and the deck, pinned. */}
-      <div className="sticky top-0 hidden h-[100svh] items-center overflow-hidden px-[var(--case-pad)] md:flex">
+      <div data-pin className="sticky top-[var(--pin-top,0px)] hidden items-center overflow-hidden px-[var(--case-pad)] py-[var(--section-y)] md:flex">
         <div className="grid w-full grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-[5vw]">
           <div>
             {heading}
@@ -95,7 +96,7 @@ export function AboutProcess({ copy }: { copy: Copy }) {
             </ol>
           </div>
 
-          <div ref={deckRef} className="relative h-[min(74svh,640px)]">
+          <div ref={deckRef} className="relative h-[min(62svh,580px)]">
             {copy.steps.map((step, i) => (
               <div
                 key={step.title}
@@ -112,7 +113,7 @@ export function AboutProcess({ copy }: { copy: Copy }) {
       </div>
 
       {/* Phone: the same cards, stacked by the page itself. */}
-      <div className="px-6 py-[10vh] md:hidden">
+      <div className="px-6 py-[var(--section-y)] md:hidden">
         {heading}
         <ol ref={phoneRef} className="mt-10 flex flex-col gap-6">
           {copy.steps.map((step, i) => (

@@ -21,7 +21,7 @@ export function AboutPhotos({ copy }: { copy: Dictionary["aboutPage"]["photos"] 
       id="photos"
       aria-label={copy.label}
       data-p
-      className="relative overflow-hidden px-6 pb-[14vh] pt-[4vh] md:px-[var(--case-pad)] md:pb-[20vh] md:pt-[8vh]"
+      className="relative overflow-hidden px-6 py-[var(--section-y)] md:px-[var(--case-pad)]"
     >
       <div className="ab-photos grid grid-cols-2 gap-3 md:h-[82svh] md:grid-cols-3 md:gap-[1.2vw]">
         {columns.map((column, c) => (

@@ -12,7 +12,7 @@ import { Words } from "@/components/about/words";
  *  phone. */
 export function AboutGlance({ copy }: { copy: Dictionary["aboutPage"]["glance"] }) {
   return (
-    <section id="glance" className="relative px-6 py-[10vh] md:flex md:min-h-[100svh] md:flex-col md:justify-center md:px-[var(--case-pad)] md:py-[14vh]">
+    <section id="glance" className="relative px-6 py-[var(--section-y)] md:px-[var(--case-pad)]">
       <SectionTitle>{copy.label}</SectionTitle>
 
       <ol data-p className="cs-insights mt-12 grid gap-12 sm:grid-cols-2 md:mt-[9vh] lg:grid-cols-4 md:gap-[3vw]">

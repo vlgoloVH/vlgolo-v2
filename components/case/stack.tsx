@@ -20,10 +20,13 @@ export function CaseStack({ overview, label }: { overview: CaseStudy["overview"]
   return (
     <section id="overview" aria-label={label} className="relative">
       <Track
+        fit
         className="cs-stack relative hidden md:block"
-        style={{ height: `${(steps * PER + 1) * 100}vh`, "--steps": steps } as React.CSSProperties}
+        style={{ height: `calc(var(--pin-h, 100svh) + ${steps * PER * 100}vh)`, "--steps": steps } as React.CSSProperties}
       >
-        <div className="sticky top-0 h-[100svh] overflow-hidden">
+        {/* The stage is the card and the section's spacing above and below
+            it, held in the middle of the screen while the deck plays. */}
+        <div data-pin className="sticky top-[var(--pin-top,0px)] h-[calc(var(--w)/2+var(--section-y)*2)] overflow-hidden">
           {images.map((image, i) => (
             <div
               key={image.src}
@@ -47,7 +50,7 @@ export function CaseStack({ overview, label }: { overview: CaseStudy["overview"]
       </Track>
 
       {/* Phone: the same deck, stacked by the page itself. */}
-      <div className="relative flex flex-col gap-6 px-6 pb-[7vh] md:hidden">
+      <div className="relative flex flex-col gap-6 px-6 py-[var(--section-y)] md:hidden">
         {images.map((image, i) => (
           <div
             key={image.src}

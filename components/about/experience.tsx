@@ -43,7 +43,7 @@ export function AboutExperience({ copy }: { copy: Copy }) {
   const startYear = (years: string) => years.split(/[–-]/)[0];
 
   return (
-    <section id="experience" className="relative px-6 pt-[14vh] md:px-[var(--case-pad)] md:pt-[18vh]">
+    <section id="experience" className="relative px-6 py-[var(--section-y)] md:px-[var(--case-pad)]">
       <SectionTitle>{copy.label}</SectionTitle>
 
       <div className="md:grid md:grid-cols-[minmax(0,0.35fr)_minmax(0,0.65fr)] md:gap-[4vw]">
@@ -101,14 +101,16 @@ export function AboutExperience({ copy }: { copy: Copy }) {
           </ol>
         </aside>
 
-        <ol ref={listRef} className="mt-12 pb-[10vh] md:mt-0 md:pb-[14vh]">
+        <ol ref={listRef} className="mt-12 md:mt-0">
           {copy.chapters.map((chapter, i) => {
             const [role, mode] = chapter.role;
             return (
               <li
                 key={chapter.company}
                 data-on={i === active ? "true" : undefined}
-                className="ab-chapter flex flex-col justify-center border-t border-white/10 py-12 first:border-t-0 md:min-h-[72vh] md:py-0"
+                // The last chapter ends where its words end, so the space after the
+                // section is the section spacing, as everywhere else.
+                className="ab-chapter flex flex-col justify-center border-t border-white/10 py-12 first:border-t-0 last:pb-0 md:last:min-h-0 md:last:pt-[12vh] md:min-h-[72vh] md:py-0"
               >
                 <p className="font-mono text-[12px] tracking-[0.2em] text-ink/60">
                   {chapter.years}
