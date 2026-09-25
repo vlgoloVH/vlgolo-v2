@@ -35,17 +35,28 @@ export function MobileMenu({ lang, dict }: { lang: Locale; dict: Dictionary }) {
       if (wide.matches) setOpen(false);
     };
 
+    // Any link tapped while the sheet is open closes it on the spot. This
+    // listens on window in the capture phase because SlideScroll catches
+    // same-page section links on document, also in capture, and stops them
+    // there to run its own glide, so a click handler on the link itself would
+    // never fire. The scroll lock comes off first, so that glide can move.
+    const onLink = (event: MouseEvent) => {
+      if (!(event.target as Element | null)?.closest?.("a[href]")) return;
+      root.style.overflow = "";
+      setOpen(false);
+    };
+
     window.addEventListener("keydown", onKey);
+    window.addEventListener("click", onLink, true);
     wide.addEventListener("change", onWide);
 
     return () => {
       root.style.overflow = "";
       window.removeEventListener("keydown", onKey);
+      window.removeEventListener("click", onLink, true);
       wide.removeEventListener("change", onWide);
     };
   }, [open]);
-
-  const close = () => setOpen(false);
 
   return (
     <>
@@ -98,7 +109,6 @@ export function MobileMenu({ lang, dict }: { lang: Locale; dict: Dictionary }) {
                   >
                     <Link
                       href={localizePath(lang, link.href)}
-                      onClick={close}
                       className="text-[32px] font-medium tracking-tight text-ink"
                     >
                       {dict.nav[link.key]}

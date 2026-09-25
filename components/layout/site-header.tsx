@@ -11,7 +11,9 @@ export function SiteHeader({ lang, dict }: { lang: Locale; dict: Dictionary }) {
       <div className="relative flex items-center justify-between px-5 py-5 md:px-[var(--frame-pad)] md:py-8">
         <div className="flex items-center gap-4 md:gap-7">
           <Link
-            href={localizePath(lang, "/")}
+            // To the hero: on the home page SlideScroll glides up to it, from
+            // any other page it opens the home page at the top.
+            href={localizePath(lang, "/#top")}
             className="text-[13px] font-bold tracking-tight text-ink transition-opacity duration-300 can-hover:opacity-70 md:text-lg"
           >
             {SITE.wordmark}
