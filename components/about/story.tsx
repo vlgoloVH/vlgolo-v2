@@ -4,22 +4,37 @@ import { useCallback, useRef } from "react";
 import type { Dictionary } from "@/lib/dictionaries";
 import { Track } from "@/components/case/track";
 import { SectionTitle } from "@/components/case/title";
-import { MotifArt, drawMotif } from "@/components/case/motif";
+import { StoryArt, drawStory } from "@/components/about/story-art";
 
 type Copy = Dictionary["aboutPage"]["story"];
+
+/** Each stage borrows a colour, as "r g b": the case colours, then the green
+ *  of the availability dot for today. */
+const TINTS = ["249 115 22", "202 138 4", "8 145 178", "29 78 216", "124 58 237", "34 197 94"];
 
 /** My story, built like a case's Context and pinned on desktop the same way.
  *  Under the title and a short lead the stages of the path sit in a row, each
  *  hairline filling while its stage is read; the stage itself swaps in below.
- *  On the right the path draws itself: scattered points travel into one line
- *  from art school to lead, the way a case's drawing goes from fragments to
- *  structure. On a phone the stages simply follow one another. */
+ *  On the right, on the case drawings' dot grid, each stage has its own
+ *  drawing in its own colour, drawn in line by line while it is read: from a
+ *  loose sketch to a system. On a phone the stages follow one another, each
+ *  with its drawing, finished. */
 export function AboutStory({ copy }: { copy: Copy }) {
-  const artRef = useRef<SVGSVGElement>(null);
-  const onProgress = useCallback((p: number) => {
-    if (artRef.current) drawMotif(artRef.current, p);
-  }, []);
   const n = copy.path.length;
+  const stageRef = useRef<HTMLDivElement>(null);
+  const phoneRef = useRef<HTMLOListElement>(null);
+  // The stage being read draws with the scroll; those before it stay
+  // finished, those after it wait blank. The phone copies are always drawn.
+  const onProgress = useCallback(
+    (p: number) => {
+      const at = Math.min(p * n, n - 0.0001);
+      stageRef.current?.querySelectorAll<SVGSVGElement>("svg").forEach((svg, i) => {
+        drawStory(svg, Math.min(Math.max((at - i) * 1.25, 0), 1));
+      });
+      phoneRef.current?.querySelectorAll<SVGSVGElement>("svg").forEach((svg) => drawStory(svg, 1));
+    },
+    [n],
+  );
 
   return (
     <Track
@@ -64,7 +79,7 @@ export function AboutStory({ copy }: { copy: Copy }) {
                 {copy.path.map((stage, i) => (
                   <div key={stage.name} className={`cs-beat col-start-1 row-start-1 ${i === active ? "is-on" : ""}`}>
                     <p className="cs-accent font-mono text-[13px] uppercase tracking-[0.22em]">{stage.name}</p>
-                    <p className="mt-4 text-[clamp(21px,1.75vw,30px)] font-medium leading-[1.4] tracking-[-0.01em] text-ink">
+                    <p className="mt-4 text-[clamp(18px,1.4vw,24px)] font-medium leading-[1.45] tracking-[-0.01em] text-ink">
                       {stage.note}
                     </p>
                   </div>
@@ -72,27 +87,40 @@ export function AboutStory({ copy }: { copy: Copy }) {
               </div>
 
               {/* Phone: every stage, in order. */}
-              <ol className="mt-10 flex flex-col gap-10 md:hidden">
+              <ol ref={phoneRef} className="mt-10 flex flex-col gap-12 md:hidden">
                 {copy.path.map((stage, i) => (
                   <li key={stage.name}>
-                    <p className="flex gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-ink/50">
+                    <div className="cs-motif-frame relative aspect-[16/10] w-full">
+                      <span aria-hidden="true" className="ab-corners pointer-events-none absolute inset-0" />
+                      <StoryArt
+                        index={i}
+                        style={{ "--tint": TINTS[i] } as React.CSSProperties}
+                        className="ab-art-tint absolute inset-[6%] h-[88%] w-[88%]"
+                      />
+                    </div>
+                    <p className="mt-6 flex gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-ink/50">
                       <span>{String(i + 1).padStart(2, "0")}</span>
                       {stage.name}
                     </p>
-                    <p className="mt-4 text-[19px] leading-[1.5] text-ink">{stage.note}</p>
+                    <p className="mt-4 text-[18px] leading-[1.55] text-ink">{stage.note}</p>
                   </li>
                 ))}
               </ol>
             </div>
 
-            <div className="cs-motif-frame relative mx-auto aspect-square w-full max-w-[min(520px,62svh)] md:mr-0">
+            <div
+              ref={stageRef}
+              className="cs-motif-frame relative mx-auto hidden aspect-square w-full max-w-[min(520px,62svh)] md:mr-0 md:block"
+            >
               <span aria-hidden="true" className="ab-corners pointer-events-none absolute inset-0" />
-              <MotifArt
-                ref={artRef}
-                motif="journey"
-                labels={copy.path.map((stage) => stage.short)}
-                className="absolute inset-[10%] h-[80%] w-[80%]"
-              />
+              {copy.path.map((stage, i) => (
+                <StoryArt
+                  key={stage.name}
+                  index={i}
+                  style={{ "--tint": TINTS[i] } as React.CSSProperties}
+                  className={`ab-art ab-art-tint absolute inset-[10%] h-[80%] w-[80%] ${i === active ? "opacity-100" : "opacity-0"}`}
+                />
+              ))}
             </div>
           </div>
         </div>

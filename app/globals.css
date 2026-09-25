@@ -1120,23 +1120,46 @@ html:not([data-ready]) .ab-load {
   }
 }
 
-.ab-art,
-.ab-art-glow {
+.ab-art {
   transition: opacity 0.6s var(--ease-soft);
 }
 
-/* Each drawing in its principle's colour, lifted towards white the way a
-   case's drawing is, so it reads on the dark ground. */
+/* Each drawing in its own colour (a How I work step, a My story stage),
+   lifted towards white the way a case's drawing is, so it reads on the dark
+   ground. */
 .ab-art-tint {
   color: color-mix(in srgb, rgb(var(--tint)) 62%, white);
 }
 
-/* A soft pool of the same colour under the drawing. */
-.ab-art-glow {
-  background: radial-gradient(circle at 50% 55%, rgb(var(--tint) / 0.22), transparent 62%);
+/* How I work, the deck: --pos (set by AboutProcess) runs from just before
+   the first card to just past the last. Card i slides up as --pos goes from
+   i − 1 to i; --d is how many cards now lie on it, which sinks it back:
+   smaller, darker, a little higher, its top edge still showing. The same
+   moves as the case Overview deck. */
+.ab-card {
+  --a: clamp(0, calc(var(--pos, 0) - var(--i) + 1), 1);
+  --e: calc(var(--a) * var(--a) * (3 - 2 * var(--a)));
+  --d: clamp(0, calc(var(--pos, 0) - var(--i)), 3);
+  transform: translate3d(0, calc((1 - var(--e)) * 110svh - var(--d) * 3.2svh), 0)
+    scale(calc(1 - var(--d) * 0.04));
+  transform-origin: 50% 0;
+  will-change: transform;
+
+  &:first-child {
+    --a: 1;
+  }
 }
 
-/* The active principle's number takes its colour. */
+.ab-card-shade {
+  opacity: clamp(0, calc(var(--d) * 0.24), 0.6);
+}
+
+.ab-card-face {
+  background: color-mix(in srgb, var(--color-surface), white 4%);
+  box-shadow: 0 -30px 80px -20px rgb(0 0 0 / 0.7);
+}
+
+/* The active step's number takes its colour. */
 .ab-statement-num {
   transition: color 0.6s var(--ease-soft);
 

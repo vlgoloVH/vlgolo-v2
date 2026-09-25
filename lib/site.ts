@@ -102,7 +102,7 @@ export const ABOUT = {
  *  dictionary under `aboutPage`. Section ids are what the left rail and any
  *  in-page link point at, in page order. */
 export const ABOUT_PAGE = {
-  sections: ["intro", "story", "impact", "experience", "process", "stack", "photos"],
+  sections: ["intro", "story", "glance", "experience", "process", "stack", "photos"],
   /** The wide photo the intro opens on. */
   cover: { src: "/about-page/story-desk.webp", width: 2400, height: 1050 },
   /** The photo grid: the first is the tall one on the left. */

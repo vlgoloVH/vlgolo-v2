@@ -96,25 +96,42 @@ const en = {
     story: {
       label: "My story",
       lead: "I came to product design through art. Composition and craft came first; product, systems and business thinking grew out of them, one project at a time.",
-      /** The path, oldest first: each stage with one line on what it added,
-       *  and a short name for its point in the drawing. */
+      /** The path, oldest first: each stage with a few lines on what it
+       *  added. */
       path: [
-        { name: "Art school", short: "Art", note: "Learning to see: drawing, composition, light." },
-        { name: "Graphic Design", short: "Graphic", note: "A degree in visual communication, and design as a way to solve problems." },
-        { name: "Freelance", short: "Freelance", note: "Real clients while still at university. Ideas turned into shipped work." },
-        { name: "Digital products", short: "Digital", note: "From single screens to flows across web and mobile." },
-        { name: "Product design", short: "Product", note: "Research, strategy and systems joined the craft." },
-        { name: "Lead", short: "Lead", note: "Owning direction for complex, multi-platform products and the teams behind them." },
+        {
+          name: "Art school",
+          note: "Where it started: years of drawing, painting and composition. I learned to look closely, to notice light, proportion and rhythm, and to keep reworking something until it holds together.",
+        },
+        {
+          name: "Graphic Design",
+          note: "A Bachelor’s degree in Graphic Design turned taste into method. Visual communication, typography and grids, and the idea that design is a way to solve a problem, not to decorate it.",
+        },
+        {
+          name: "Freelance",
+          note: "Real clients while still at university. Briefs, deadlines and feedback taught me ownership, and that the work only counts once it ships and does its job for the business.",
+        },
+        {
+          name: "Digital products",
+          note: "From single screens to whole flows across web and mobile. Interfaces stopped being pictures and became journeys, states and edge cases that real people move through.",
+        },
+        {
+          name: "Product design",
+          note: "Research, strategy and design systems joined the craft. I started with the problem and the metrics, then shaped the solution with product and engineering around them.",
+        },
+        {
+          name: "Lead",
+          note: "Today I own the design direction of complex, multi-platform products: framing problems, aligning stakeholders, building systems that scale and helping other designers grow.",
+        },
       ],
     },
     glance: {
       label: "At a glance",
-      summary: "A product designer who takes a problem from a blank page to a shipped, measured product.",
       items: [
         { value: "10+", label: "Years in design", body: "From visual design and freelance work to leading product design on complex platforms." },
-        { value: "2", label: "Web + Mobile", body: "Responsive web platforms and native iOS and Android apps, designed as one system." },
-        { value: "3", label: "Fintech · SaaS · Enterprise", body: "Regulated, data-heavy, multi-role products, plus proptech, retail and edtech." },
-        { value: "E2E", label: "End-to-end product design", body: "From discovery and research to systems, delivery and measuring what shipped." },
+        { value: "Web & Mobile", label: "Platforms", body: "Responsive web platforms and native iOS and Android apps, designed as one system." },
+        { value: "Fintech · SaaS", label: "Domains", body: "And enterprise, proptech, retail and edtech: regulated, data-heavy, multi-role products." },
+        { value: "End-to-end", label: "Product design", body: "From discovery and research to systems, delivery and measuring what shipped." },
       ],
     },
     experience: {
@@ -167,12 +184,24 @@ const en = {
     },
     process: {
       label: "How I work",
-      statements: [
-        "Understand before designing.",
-        "Make the problem smaller.",
-        "Bring people into the process early.",
-        "Use evidence when opinions collide.",
-        "Ship, learn, improve.",
+      /** Four steps, each a short name on the left and a card on the right. */
+      steps: [
+        {
+          title: "Understand first",
+          body: "Before any screen, I get to the real problem: who it hurts, what the business needs and what we already know. Good design starts with the right question.",
+        },
+        {
+          title: "Make it smaller",
+          body: "Big problems hide simple decisions. I break the work into pieces we can reason about, test and ship, so progress is visible early.",
+        },
+        {
+          title: "Decide together",
+          body: "Product, engineering and stakeholders come in early. When opinions collide, research and data settle it, not the loudest voice in the room.",
+        },
+        {
+          title: "Ship and learn",
+          body: "Launch is the start, not the finish. I measure what shipped, learn from real use and keep improving the product and the system behind it.",
+        },
       ],
     },
     stack: {
@@ -396,22 +425,39 @@ const uk: Dictionary = {
       label: "Моя історія",
       lead: "Я прийшов у продуктовий дизайн через мистецтво. Спершу були композиція і ремесло, а продуктове, системне й бізнесове мислення виросли з них, проєкт за проєктом.",
       path: [
-        { name: "Художня школа", short: "Мистецтво", note: "Вчився бачити: малюнок, композиція, світло." },
-        { name: "Graphic Design", short: "Графіка", note: "Бакалавр з візуальної комунікації і дизайн як спосіб розв’язувати задачі." },
-        { name: "Фриланс", short: "Фриланс", note: "Справжні клієнти ще під час навчання. Ідеї, що ставали готовою роботою." },
-        { name: "Digital-продукти", short: "Digital", note: "Від окремих екранів до сценаріїв у вебі й мобільних." },
-        { name: "Product Design", short: "Product", note: "До ремесла додались дослідження, стратегія і системи." },
-        { name: "Lead", short: "Lead", note: "Відповідаю за напрям складних мультиплатформних продуктів і команд, що їх роблять." },
+        {
+          name: "Художня школа",
+          note: "Звідси все почалося: роки малюнку, живопису й композиції. Я навчився уважно дивитися, помічати світло, пропорції й ритм і переробляти роботу, поки вона не складеться.",
+        },
+        {
+          name: "Graphic Design",
+          note: "Бакалавр з графічного дизайну перетворив смак на метод. Візуальна комунікація, типографіка й сітки, і розуміння, що дизайн розв’язує задачу, а не прикрашає її.",
+        },
+        {
+          name: "Фриланс",
+          note: "Справжні клієнти ще під час навчання. Брифи, дедлайни й фідбек навчили відповідальності і того, що робота рахується лише тоді, коли запущена і працює на бізнес.",
+        },
+        {
+          name: "Digital-продукти",
+          note: "Від окремих екранів до цілих сценаріїв у вебі й мобільних. Інтерфейси перестали бути картинками і стали шляхами, станами й крайніми випадками, якими ходять живі люди.",
+        },
+        {
+          name: "Product Design",
+          note: "До ремесла додались дослідження, стратегія і дизайн-системи. Я почав з проблеми й метрик, а рішення формував разом з продактами й інженерами навколо них.",
+        },
+        {
+          name: "Lead",
+          note: "Сьогодні я веду дизайн-напрям складних мультиплатформних продуктів: формулюю проблеми, узгоджую стейкхолдерів, будую системи, що масштабуються, і допомагаю рости іншим дизайнерам.",
+        },
       ],
     },
     glance: {
       label: "Коротко",
-      summary: "Продуктовий дизайнер, який проводить задачу від чистого аркуша до запущеного продукту з виміряним результатом.",
       items: [
         { value: "10+", label: "Років у дизайні", body: "Від візуального дизайну і фрилансу до лідерства в продуктовому дизайні складних платформ." },
-        { value: "2", label: "Web + Mobile", body: "Адаптивні веб-платформи і нативні iOS та Android застосунки, спроєктовані як одна система." },
-        { value: "3", label: "Fintech · SaaS · Enterprise", body: "Регульовані продукти з великими даними і багатьма ролями, а ще Proptech, Retail та EdTech." },
-        { value: "E2E", label: "End-to-end продуктовий дизайн", body: "Від discovery і досліджень до систем, запуску й вимірювання результату." },
+        { value: "Web і Mobile", label: "Платформи", body: "Адаптивні веб-платформи і нативні iOS та Android застосунки, спроєктовані як одна система." },
+        { value: "Fintech · SaaS", label: "Галузі", body: "А ще enterprise, Proptech, Retail та EdTech: регульовані продукти з великими даними і багатьма ролями." },
+        { value: "End-to-end", label: "Продуктовий дизайн", body: "Від discovery і досліджень до систем, запуску й вимірювання результату." },
       ],
     },
     experience: {
@@ -463,12 +509,23 @@ const uk: Dictionary = {
     },
     process: {
       label: "Як я працюю",
-      statements: [
-        "Зрозуміти, перш ніж проєктувати.",
-        "Зробити проблему меншою.",
-        "Залучати людей у процес рано.",
-        "Спиратися на факти, коли думки розходяться.",
-        "Запускати, вчитися, покращувати.",
+      steps: [
+        {
+          title: "Спершу зрозуміти",
+          body: "Ще до першого екрана я добираюся до справжньої проблеми: кому вона болить, що потрібно бізнесу і що ми вже знаємо. Хороший дизайн починається з правильного питання.",
+        },
+        {
+          title: "Зменшити задачу",
+          body: "За великими проблемами ховаються прості рішення. Я розбиваю роботу на частини, які можна обговорити, перевірити й запустити, щоб прогрес було видно одразу.",
+        },
+        {
+          title: "Вирішувати разом",
+          body: "Продакт, інженери й стейкхолдери долучаються рано. Коли думки розходяться, вирішують дослідження й дані, а не найгучніший голос у кімнаті.",
+        },
+        {
+          title: "Запускати і вчитися",
+          body: "Запуск це початок, а не фініш. Я вимірюю результат, вчуся на реальному використанні й далі покращую продукт і систему за ним.",
+        },
       ],
     },
     stack: {
