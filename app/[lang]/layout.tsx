@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
+import { Analytics } from "@vercel/analytics/next";
 import "@fontsource-variable/inter";
 import "../globals.css";
 import { HoverCapability } from "@/components/layout/hover-capability";
@@ -71,6 +72,7 @@ export default async function RootLayout({
         <SiteHeader lang={lang} dict={dict} />
         <SocialRail />
         <main>{children}</main>
+        <Analytics />
       </body>
     </html>
   );
