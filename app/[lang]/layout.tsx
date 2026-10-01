@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Analytics } from "@vercel/analytics/next";
 import "@fontsource-variable/inter";
 import "../globals.css";
+import { Analytics } from "@vercel/analytics/next";
 import { HoverCapability } from "@/components/layout/hover-capability";
 import { Preloader } from "@/components/layout/preloader";
 import { SiteHeader } from "@/components/layout/site-header";
