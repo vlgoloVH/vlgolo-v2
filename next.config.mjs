@@ -10,7 +10,7 @@ const nextConfig = {
         headers: [
           {
             key: "Content-Disposition",
-            value: 'inline; filename="Vladyslav-Holoborodko-CV.pdf"',
+            value: 'attachment; filename="Vladyslav-Holoborodko-CV.pdf"',
           },
         ],
       },
