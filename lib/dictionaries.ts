@@ -9,7 +9,7 @@ const en = {
     name: "Vlad Holoborodko",
     role: "Senior Product Designer",
     description:
-      "Senior Product Designer, designing products since 2015. I take ideas from a rough problem statement to a shipped product: research, UX, UI and the business case behind every screen.",
+      "Senior Product Designer, designing products since 2016. I take ideas from a rough problem statement to a shipped product: research, UX, UI and the business case behind every screen.",
   },
   ui: {
     mainNav: "Main",
@@ -52,7 +52,7 @@ const en = {
     more: "Read more",
     /** One entry per paragraph. */
     body: [
-      "I’m a Product Designer with 10+ years of experience solving complex product problems. I turn complicated workflows, business requirements and user needs into products that feel clear and simple.",
+      "Senior Product Designer since 2016. Fintech and enterprise products, design systems, complex data-heavy tools.",
       "I’ve worked across fintech, SaaS, enterprise and consumer products, helping teams turn early ideas into scalable, shipped experiences. My work sits at the intersection of users, business and technology. I focus on understanding the problem, finding the right direction, simplifying complexity and building systems that can grow with the product.",
     ],
     cta: "More about me",
@@ -86,7 +86,7 @@ const en = {
   aboutPage: {
     title: "About",
     description:
-      "Senior Product Designer with 10+ years of experience across fintech, proptech, SaaS and enterprise platforms.",
+      "Senior Product Designer since 2016. Fintech and enterprise products, design systems, complex data-heavy tools.",
     /** The left rail's names for the sections, in page order. */
     nav: ["Intro", "My story", "At a glance", "Experience", "How I work", "Stack", "Photos"],
     hero: {
@@ -94,7 +94,7 @@ const en = {
       /** Placeholder until the final wording is in. Two lines, like a case. */
       headline: ["Hi, I’m", "Vlad."],
       statement: "A product designer who started with a sketchbook and grew into leading complex, multi-platform products.",
-      meta: ["Based in Europe", "Senior Product Designer", "10+ years · Web / Mobile"],
+      meta: ["Kyiv, Ukraine", "Senior Product Designer", "10+ years · Web / Mobile"],
       cover: "Vlad at work, laptop open in a shared office",
     },
     story: {
@@ -146,44 +146,44 @@ const en = {
       growth: "How the work grew",
       chapters: [
         {
-          years: "2016–2018",
+          years: "Jul 2016 – Mar 2018",
           company: "Wandr",
           stage: "UI/UX",
-          role: ["UX/UI Designer", "Remote"],
-          note: "Designed UI and UX solutions for multiple client projects across web and mobile platforms, creating user flows, wireframes, prototypes, and high-fidelity interfaces.",
+          role: ["UI/UX Designer", "Remote"],
+          note: "Designed websites and mobile apps for client projects and early-stage startups, from user flows to final UI.",
           tags: ["UX Design", "User Flows", "Information Architecture", "Wireframing", "Prototyping", "Web & Mobile"],
         },
         {
-          years: "2018–2023",
+          years: "Sep 2018 – Apr 2023",
           company: "BitterBrains",
           stage: "Product Design",
           role: ["Product Designer", "Remote"],
-          note: "Designed end-to-end user experiences for educational and SaaS products, from research and wireframes to polished interfaces, design systems, and developer handoff.",
+          note: "First and only designer at a developer education company (Vue School, Mastering Nuxt, official Vue.js Certification). Joined a team of 5 and stayed while it grew to 30+.",
           tags: ["EdTech", "SaaS", "User Research", "Design Systems", "Developer Handoff", "End-to-End Design"],
         },
         {
-          years: "2023–2025",
+          years: "Dec 2022 – Jun 2025",
           company: "SPD Tech",
           stage: "Complex Systems",
-          role: ["Lead Product Designer", "Part-time"],
-          note: "Led end-to-end product design for complex digital products, shaping user experiences, influencing product decisions, and driving successful product launches across multiple platforms.",
-          tags: ["Product Design", "Complex Workflows", "Cross-platform", "Design Leadership", "Product Strategy", "Digital Products"],
+          role: ["Senior Product Designer", "Contract"],
+          note: "Designed products for clients in the US, Australia and Mexico: Space Needle ticketing, Notary HUB, Dan-Mon Fairwind CRM. First mentoring of another designer.",
+          tags: ["Product Design", "Complex Workflows", "Cross-platform", "Product Strategy", "Digital Products", "Mentoring"],
         },
         {
-          years: "2024–2025",
+          years: "Jun 2024 – Aug 2025",
           company: "Fozzy Group",
           stage: "Product Thinking",
-          role: ["Product Designer", "Part-time"],
-          note: "Designed scalable enterprise solutions for one of Ukraine’s largest retail groups, simplifying complex processes, improving user productivity, and enhancing operational efficiency.",
-          tags: ["Enterprise Products", "Retail Operations", "Workflow Optimization", "Process Simplification", "Data-heavy Interfaces", "Scalable Systems"],
+          role: ["Senior Product Designer", "Part-time"],
+          note: "Core team of the Silpo back office. Grew and maintained the back-office design system used by other product teams.",
+          tags: ["Enterprise Products", "Retail Operations", "Workflow Optimization", "Process Simplification", "Data-heavy Interfaces"],
         },
         {
-          years: "2025–2026",
+          years: "Jun 2025 – Jul 2026",
           company: "SmartCrowd",
           stage: "Lead",
           role: ["Lead Product Designer", "Remote"],
-          note: "Led product design for a regulated real estate investment platform, shaping core investment experiences across web and mobile products while driving product innovation and business growth.",
-          tags: ["Product Leadership", "Fintech", "Investment Platform", "Cross-platform", "Product Innovation", "Business Growth"],
+          note: "Redesigned the whole regulated investment platform on web and mobile in 5 months, from a new design system to production. New user sign-ups grew 20% after the onboarding redesign.",
+          tags: ["Product Leadership", "Fintech", "Investment Platform", "Cross-platform"],
         },
       ],
     },
@@ -350,7 +350,7 @@ const uk: Dictionary = {
     name: "Влад Голобородько",
     role: "Senior Product Designer",
     description:
-      "Senior Product Designer, проєктую продукти з 2015 року. Веду ідею від сирої постановки задачі до запущеного продукту: дослідження, UX, UI і бізнес-логіка за кожним екраном.",
+      "Senior Product Designer, проєктую продукти з 2016 року. Веду ідею від сирої постановки задачі до запущеного продукту: дослідження, UX, UI і бізнес-логіка за кожним екраном.",
   },
   ui: {
     mainNav: "Головне меню",
@@ -389,7 +389,7 @@ const uk: Dictionary = {
     eyebrow: "Привіт, я Влад!",
     more: "Читати далі",
     body: [
-      "Я продуктовий дизайнер з досвідом понад 10 років у розв’язанні складних продуктових задач. Перетворюю заплутані процеси, бізнес-вимоги й потреби користувачів на продукти, які сприймаються зрозумілими і простими.",
+      "Senior Product Designer з 2016 року. Fintech та enterprise продукти, дизайн-системи, складні дата-важкі інструменти.",
       "Працював із фінтехом, SaaS, enterprise і споживчими продуктами, допомагаючи командам перетворювати ранні ідеї на масштабовані запущені продукти. Моя робота лежить на перетині користувачів, бізнесу й технологій. Я зосереджуюсь на тому, щоб зрозуміти проблему, знайти правильний напрямок, спростити складне і побудувати системи, які ростуть разом із продуктом.",
     ],
     cta: "Більше про мене",
@@ -419,13 +419,13 @@ const uk: Dictionary = {
   aboutPage: {
     title: "Про мене",
     description:
-      "Senior Product Designer з досвідом понад 10 років у Fintech, Proptech, SaaS та enterprise-платформах.",
+      "Senior Product Designer з 2016 року. Fintech та enterprise продукти, дизайн-системи, складні дата-важкі інструменти.",
     nav: ["Вступ", "Моя історія", "Коротко", "Досвід", "Як я працюю", "Стек", "Фото"],
     hero: {
       status: "Відкритий до нових проєктів",
       headline: ["Привіт,", "я Влад."],
       statement: "Продуктовий дизайнер, який почав зі скетчбука і виріс до лідерства у складних мультиплатформних продуктах.",
-      meta: ["Живу в Європі", "Senior Product Designer", "10+ років · Web / Mobile"],
+      meta: ["Київ, Україна", "Senior Product Designer", "10+ років · Web / Mobile"],
       cover: "Влад за роботою, з ноутбуком у спільному офісі",
     },
     story: {
@@ -473,44 +473,44 @@ const uk: Dictionary = {
       growth: "Як росла робота",
       chapters: [
         {
-          years: "2016–2018",
+          years: "Лип 2016 – Бер 2018",
           company: "Wandr",
           stage: "UI/UX",
-          role: ["UX/UI Designer", "Remote"],
-          note: "Проєктував UI та UX для клієнтських проєктів у вебі й мобільних: user flows, вайрфрейми, прототипи та фінальні інтерфейси.",
+          role: ["UI/UX Designer", "Remote"],
+          note: "Проєктував сайти й мобільні застосунки для клієнтських проєктів і ранніх стартапів: від user flows до фінального UI.",
           tags: ["UX Design", "User Flows", "Information Architecture", "Wireframing", "Prototyping", "Web & Mobile"],
         },
         {
-          years: "2018–2023",
+          years: "Вер 2018 – Кві 2023",
           company: "BitterBrains",
           stage: "Product Design",
           role: ["Product Designer", "Remote"],
-          note: "Проєктував повний користувацький досвід для освітніх і SaaS-продуктів: від досліджень і вайрфреймів до готових інтерфейсів, дизайн-систем і передачі в розробку.",
+          note: "Перший і єдиний дизайнер у компанії розробницької освіти (Vue School, Mastering Nuxt, офіційна Vue.js Certification). Прийшов у команду з 5 людей і лишився, поки вона виросла до 30+.",
           tags: ["EdTech", "SaaS", "User Research", "Design Systems", "Developer Handoff", "End-to-End Design"],
         },
         {
-          years: "2023–2025",
+          years: "Гру 2022 – Чер 2025",
           company: "SPD Tech",
           stage: "Complex Systems",
-          role: ["Lead Product Designer", "Part-time"],
-          note: "Вів продуктовий дизайн складних цифрових продуктів від початку до кінця: формував досвід користувачів, впливав на продуктові рішення й доводив запуски до успіху на кількох платформах.",
-          tags: ["Product Design", "Complex Workflows", "Cross-platform", "Design Leadership", "Product Strategy", "Digital Products"],
+          role: ["Senior Product Designer", "Contract"],
+          note: "Проєктував продукти для клієнтів у США, Австралії та Мексиці: Space Needle ticketing, Notary HUB, Dan-Mon Fairwind CRM. Перший досвід менторства іншого дизайнера.",
+          tags: ["Product Design", "Complex Workflows", "Cross-platform", "Product Strategy", "Digital Products", "Mentoring"],
         },
         {
-          years: "2024–2025",
+          years: "Чер 2024 – Сер 2025",
           company: "Fozzy Group",
           stage: "Product Thinking",
-          role: ["Product Designer", "Part-time"],
-          note: "Проєктував масштабовані enterprise-рішення для однієї з найбільших ритейл-груп України: спрощував складні процеси, підвищував продуктивність користувачів і операційну ефективність.",
-          tags: ["Enterprise Products", "Retail Operations", "Workflow Optimization", "Process Simplification", "Data-heavy Interfaces", "Scalable Systems"],
+          role: ["Senior Product Designer", "Part-time"],
+          note: "Core team бек-офісу Сільпо. Розвивав і підтримував дизайн-систему бек-офісу, якою користувались інші продуктові команди.",
+          tags: ["Enterprise Products", "Retail Operations", "Workflow Optimization", "Process Simplification", "Data-heavy Interfaces"],
         },
         {
-          years: "2025–2026",
+          years: "Чер 2025 – Лип 2026",
           company: "SmartCrowd",
           stage: "Lead",
           role: ["Lead Product Designer", "Remote"],
-          note: "Вів продуктовий дизайн регульованої платформи інвестицій у нерухомість: формував ключовий інвестиційний досвід у веб- і мобільних продуктах, рухаючи інновації та зростання бізнесу.",
-          tags: ["Product Leadership", "Fintech", "Investment Platform", "Cross-platform", "Product Innovation", "Business Growth"],
+          note: "Переробив всю регульовану інвестиційну платформу на вебі й мобільних за 5 місяців: від нової дизайн-системи до продакшну. Реєстрації нових користувачів зросли на 20% після редизайну онбордингу.",
+          tags: ["Product Leadership", "Fintech", "Investment Platform", "Cross-platform"],
         },
       ],
     },

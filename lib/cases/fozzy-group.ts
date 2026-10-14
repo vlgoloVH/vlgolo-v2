@@ -6,7 +6,7 @@ export const fozzyGroup: CaseStudy = {
   slug: "fozzy-group",
   hero: {
     statement: "Designing the back-office behind Silpo, the flagship supermarket chain of one of Ukraine’s largest retailers.",
-    meta: ["Retail · Enterprise","2025","Senior Product Designer","Desktop / Web"],
+    meta: ["Retail · Enterprise","2024–2025","Senior Product Designer","Desktop / Web"],
   },
   context: {
     invite:
