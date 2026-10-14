@@ -141,7 +141,7 @@ const en = {
     },
     experience: {
       label: "Experience",
-      range: "2015 → Now",
+      range: "2016 → Now",
       /** The label over the evolution rail. */
       growth: "How the work grew",
       chapters: [
@@ -469,7 +469,7 @@ const uk: Dictionary = {
     },
     experience: {
       label: "Досвід",
-      range: "2015 → Сьогодні",
+      range: "2016 → Сьогодні",
       growth: "Як росла робота",
       chapters: [
         {

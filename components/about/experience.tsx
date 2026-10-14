@@ -40,7 +40,7 @@ export function AboutExperience({ copy }: { copy: Copy }) {
     });
   }, []);
 
-  const startYear = (years: string) => years.split(/[–-]/)[0];
+  const startYear = (years: string) => years.match(/\d{4}/)?.[0] ?? years;
 
   return (
     <section id="experience" className="relative px-6 py-[var(--section-y)] md:px-[var(--case-pad)]">
