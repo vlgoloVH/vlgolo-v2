@@ -63,7 +63,7 @@ export function SiteHeader({ lang, dict }: { lang: Locale; dict: Dictionary }) {
 
           <a
             href={SITE.resume}
-            download
+            download={SITE.resumeName}
             className="flex items-center gap-2 whitespace-nowrap text-[13px] text-ink/85 transition-colors duration-300 can-hover:text-ink md:text-[15px]"
           >
             {/* The full label, cut to the short one on the narrowest phones

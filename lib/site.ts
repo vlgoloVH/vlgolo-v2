@@ -6,6 +6,8 @@ export const SITE = {
   email: "vlgolo1996@gmail.com",
   url: "https://vlgolo.com",
   resume: "/resume.pdf",
+  /** The name the CV is saved under, whatever the file is called on disk. */
+  resumeName: "Vladyslav-Holoborodko-CV.pdf",
   /** Where the contact form posts. */
   formspree: "https://formspree.io/f/mvznjbod",
 } as const;

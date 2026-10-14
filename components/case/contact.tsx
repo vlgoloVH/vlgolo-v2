@@ -44,7 +44,7 @@ export function CaseContact({
         </p>
         <div className="reveal [--reveal-i:6] mt-8 grid gap-4 sm:grid-cols-2 md:mt-10">
           <ContactDialog label={copy.email} copy={dict.contact} glassSource="#case-contact-scene" className="w-full" />
-          <GlassButton href={SITE.resume} label={copy.resume} download videoSelector="#case-contact-scene" className="w-full" />
+          <GlassButton href={SITE.resume} label={copy.resume} download={SITE.resumeName} videoSelector="#case-contact-scene" className="w-full" />
         </div>
       </div>
 

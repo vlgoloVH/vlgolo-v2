@@ -80,7 +80,7 @@ export function Contacts({ dict }: { dict: Dictionary }) {
           <GlassButton
             href={SITE.resume}
             label={copy.resume}
-            download
+            download={SITE.resumeName}
             videoSelector="#contact-scene"
             className="w-full"
           />

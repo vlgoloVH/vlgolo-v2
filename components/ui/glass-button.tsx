@@ -195,7 +195,7 @@ interface Props {
    *  glare and the hover colour still play. */
   videoSelector?: string | null;
   /** Set for a file the visitor should get rather than a page to open. */
-  download?: boolean;
+  download?: boolean | string;
   /** Open the link in a new tab (for other sites). */
   newTab?: boolean;
   onClick?: () => void;
@@ -217,7 +217,7 @@ export function GlassButton({
   href,
   label,
   videoSelector = "video",
-  download = false,
+  download = false as boolean | string,
   newTab = false,
   onClick,
   type = "button",
